@@ -1,0 +1,40 @@
+{
+  "artifact": "mon-panier-pwa-exact-v1",
+  "generated_at": "2026-08-16T15:35:37Z",
+  "status": "internal_only",
+  "source": {
+    "path": "/Users/emmanuel/LocalVaults/Freelance/3_FREELANCE/03_TASKS/panier_ia/ios/MonPanierLocalV1/OpenDesignBundle",
+    "canonical_file_count": 2532,
+    "canonical_bytes": 796253050,
+    "index_sha256": "64ac7d2da7b8044ac9451b2342fae4a6f01e4fa93e503f1d1bae078a39f19bad",
+    "app_css_sha256": "d7720df3ef5add89238d25e0aa712e507b87792e54af3347f891476571867acc",
+    "app_js_sha256": "079e80fcb0a4b730db6c95352471754adaec01a19f5c53d3396a3bdc63130d40"
+  },
+  "candidate": {
+    "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
+    "file_count": 2542,
+    "bytes": 796301338,
+    "index_sha256": "2242227a93468e15abe3fa03f1fadb3ec879bbd7b03536023d03408cbacb2c17",
+    "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
+    "service_worker_sha256": "07c3d609d6e57e24b4e272da090cb26a9572f696793c48bf9b347a3fd58bec1d",
+    "registration_sha256": "66238a627321365dbcd952fcb595ae11e23eab815d101a135b1b4bb0862822ed",
+    "parity_test_sha256": "a13cd146655ee594ffe2deec761155c1a2f61ee68319ed5eb3f8eda5dd99c64d"
+  },
+  "pwa_additions": [
+    "manifest.webmanifest",
+    "sw.js",
+    "pwa-register.js",
+    "favicon.svg",
+    "apple-touch-icon.png",
+    "mon-panier-icon-192.png",
+    "mon-panier-icon-512.png"
+  ],
+  "local_data_model": "separate browser-local state; no account, backend, or cross-device synchronization",
+  "qa_command": "node --test qa/pwa-shell.test.mjs",
+  "rollback_backup": "/Volumes/USB/Hermes-External/workspaces/panier_ia/backups/app_pwa_v0-react-20260816T151716Z",
+  "promotion_blockers": [
+    "HTTPS staging URL not created or verified",
+    "iPhone and Android real-device smoke not run",
+    "external tester identity/privacy/media preflight not completed"
+  ]
+}
