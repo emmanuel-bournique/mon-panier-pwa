@@ -47,6 +47,7 @@ function withoutPwaAdditions(html) {
     .replace(/\n?\s*<link rel="manifest" href="manifest\.webmanifest">/g, '')
     .replace(/\n?\s*<link rel="apple-touch-icon" href="apple-touch-icon\.png">/g, '')
     .replace(/\n?\s*<script src="pwa-register\.js" defer><\/script>/g, '')
+    .replace(/\n?\s*<meta name="mon-panier-feedback-endpoint"[^>]*>/g, '')
 }
 
 test('PWA shell exposes the install and offline contract', async () => {
@@ -54,6 +55,7 @@ test('PWA shell exposes the install and offline contract', async () => {
   assert.match(index, /manifest\.webmanifest/, 'index.html must link the PWA manifest')
   assert.match(index, /apple-touch-icon\.png/, 'index.html must expose the iOS install icon')
   assert.match(index, /pwa-register\.js/, 'index.html must register the service worker')
+  assert.doesNotMatch(index, /n8n-server\.tailb4f72c\.ts\.net|https:\/\/[^\s"']*\/v1\/feedback/i, 'PWA must not expose the external feedback endpoint')
 
   const manifestPath = join(candidateRoot, 'manifest.webmanifest')
   const serviceWorkerPath = join(candidateRoot, 'sw.js')
@@ -107,8 +109,8 @@ test('runtime files remain byte-identical to the canonical iOS bundle', async ()
       const candidateHtml = await readFile(candidatePath, 'utf8')
       assert.equal(
         withoutPwaAdditions(candidateHtml),
-        canonicalHtml,
-        'index.html may differ only by the explicit PWA links/registration',
+        withoutPwaAdditions(canonicalHtml),
+        'index.html may differ only by the explicit PWA links/registration and disabled external feedback configuration',
       )
     } else {
       assert.equal(

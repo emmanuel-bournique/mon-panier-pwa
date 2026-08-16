@@ -16,11 +16,11 @@
     "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
     "file_count": 2542,
     "bytes": 796301338,
-    "index_sha256": "2242227a93468e15abe3fa03f1fadb3ec879bbd7b03536023d03408cbacb2c17",
+    "index_sha256": "80fd20c4767e00faa22b38a132cfd6b8cd6355ce4a3ff872267fed6fa4222f6c",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
     "service_worker_sha256": "07c3d609d6e57e24b4e272da090cb26a9572f696793c48bf9b347a3fd58bec1d",
     "registration_sha256": "66238a627321365dbcd952fcb595ae11e23eab815d101a135b1b4bb0862822ed",
-    "parity_test_sha256": "a13cd146655ee594ffe2deec761155c1a2f61ee68319ed5eb3f8eda5dd99c64d"
+    "parity_test_sha256": "ed7834ae63e1faaa0f973df26e833f98ae284c949142f2c041ac4e70d520d5ab"
   },
   "pwa_additions": [
     "manifest.webmanifest",
