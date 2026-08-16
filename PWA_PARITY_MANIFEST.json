@@ -1,9 +1,9 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-16T16:16:00Z",
+  "generated_at": "2026-08-16T16:48:10Z",
   "status": "public_pilot_individual",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
-  "deployment": {"provider": "GitHub Pages", "repository": "https://github.com/emmanuel-bournique/mon-panier-pwa", "workflow_run": "https://github.com/emmanuel-bournique/mon-panier-pwa/actions/runs/31957762317", "https_enforced": true},
+  "deployment": {"provider": "GitHub Pages", "repository": "https://github.com/emmanuel-bournique/mon-panier-pwa", "workflow_run": "https://github.com/emmanuel-bournique/mon-panier-pwa/actions/runs/31959519250", "https_enforced": true},
   "source": {
     "path": "/Users/emmanuel/LocalVaults/Freelance/3_FREELANCE/03_TASKS/panier_ia/ios/MonPanierLocalV1/OpenDesignBundle",
     "canonical_file_count": 2532,
