@@ -2469,6 +2469,9 @@
     }
     loadActiveGroceryList(created);
     state.groceryView = 'hub';
+    state.tab = 'groceries';
+    state.detail = null;
+    state.mealListTargetId = created.activeListId;
     window.closeGroceryListCreator();
     persistAppState();
     render();
@@ -3140,6 +3143,7 @@
     const displaySelections = selections.length ? selections : preparedSelections;
     const preparedOnly = selections.length === 0 && preparedSelections.length > 0;
     const recipeCount = mealListRecipeCount(list);
+    if (list?.id === 'list-default' && recipeCount === 0) return '';
     const navigation = displaySelections.map(selection => `'${localGroceryInlineKey(selection.recipeId)}'`).join(',');
     const rows = displaySelections.map(selection => {
       const source = recipe(selection.recipeId);
@@ -3386,8 +3390,15 @@
     const created = GROCERY_CORE.createGroceryList(saved, { id, name, kind: 'manual', items: [], checked: [], history: [] });
     loadActiveGroceryList(created);
     state.mealListTargetId = id;
+    state.groceryView = 'hub';
+    state.tab = 'groceries';
+    state.detail = null;
     window.closeGroceryListCreator();
-    return openMealList(id, 'groceries');
+    persistAppState();
+    render();
+    screen.scrollTop = 0;
+    toast(`Liste « ${name} » créée`);
+    return true;
   };
 
   const baseMealListOpenDetail = openDetail;

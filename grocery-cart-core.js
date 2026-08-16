@@ -743,7 +743,7 @@
     const requestedId = String(list.id || `list-${current.lists.length + 1}`).trim();
     const nextId = uniqueGroceryListId(current.lists, requestedId);
     const next = normalizedGroceryList({ ...list, id: nextId }, nextId);
-    return { activeListId: next.id, lists: [...current.lists, next] };
+    return { activeListId: next.id, lists: [next, ...current.lists] };
   }
 
   function updateActiveGroceryList(collection = {}, changes = {}) {
