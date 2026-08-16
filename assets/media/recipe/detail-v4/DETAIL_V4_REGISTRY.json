@@ -1,0 +1,42 @@
+{
+  "schema_version": "mon_panier_detail_v4_single_registry_v1",
+  "asset_count": 1,
+  "format_contract": {
+    "format": "PNG",
+    "mode": "RGB",
+    "dimensions": [941, 1672]
+  },
+  "runtime_contract": "detailImage-only; card image and Discover routes remain unchanged",
+  "generation": {
+    "engine": "codex-cli-native-image_gen-chatgpt-oauth",
+    "candidate_status": "integrated_development_candidate",
+    "staging_sha256": "e6f5881f9cadbcea1f72afb2c202df0238037709e104e1356d238236c8bc258c"
+  },
+  "items": [
+    {
+      "recipe_id": "r-v3-061-croque-monsieur-classique",
+      "title": "Croque-monsieur classique",
+      "destination": {
+        "relative_path": "assets/media/recipe/detail-v4/recipe__r-v3-061-croque-monsieur-classique.png",
+        "bytes": 2003804,
+        "width": 941,
+        "height": 1672,
+        "sha256": "e6f5881f9cadbcea1f72afb2c202df0238037709e104e1356d238236c8bc258c"
+      },
+      "previous_detail": {
+        "relative_path": "assets/media/recipe/detail-v3/recipe__r-v3-061-croque-monsieur-classique.png",
+        "bytes": 2029775,
+        "width": 941,
+        "height": 1672,
+        "sha256": "66a7e619b44494849f9739fabf359dc74d661ecafa79a67f91f0390d5a3c2e9f"
+      },
+      "card_unchanged": {
+        "relative_path": "assets/media/recipe/card/recipe__r-v3-061-croque-monsieur-classique.webp",
+        "bytes": 19762,
+        "width": 480,
+        "height": 360,
+        "sha256": "3e065c58fe77e7fee3948a8872bb097b82ac7cfbc8bcc27ea828d65e3614563d"
+      }
+    }
+  ]
+}
