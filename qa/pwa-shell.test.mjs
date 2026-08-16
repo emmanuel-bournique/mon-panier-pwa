@@ -81,11 +81,11 @@ test('PWA shell exposes the install and offline contract', async () => {
   const serviceWorker = await readFile(serviceWorkerPath, 'utf8')
   const criticalShellUrls = [
     './media-v1.js',
-    './grocery-cart-core.js?v=20260807-local-cart-v1',
+    './grocery-cart-core.js?v=20260816-prepared-direct-actions-v1',
     './personalization-core.js?v=20260808-avoid-v1',
     './card-badge-core.js?v=20260813-pilot-v1',
-    './app-v1.js?v=20260809-hero-copy-proximity-v2',
-    './app-v1.css?v=20260812-filter-controls-v1',
+    './app-v1.js?v=20260816-direct-recipe-actions-v1',
+    './app-v1.css?v=20260816-bright-direct-actions-v1',
   ]
   for (const url of criticalShellUrls) {
     assert.ok(serviceWorker.includes(url), `critical offline shell missing: ${url}`)

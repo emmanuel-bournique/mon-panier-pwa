@@ -832,7 +832,10 @@
     const current = createGroceryListCollection(collection);
     const targetId = String(listId || current.activeListId || '').trim();
     const list = current.lists.find(entry => entry.id === targetId);
-    const existingSelections = list ? recipeSelectionsForList(list) : [];
+    const activeSelections = list ? recipeSelectionsForList(list) : [];
+    const preparedSelections = activeSelections.length ? [] : normalizedRecipeSelections(list?.preparedRecipeSelections);
+    const usePreparedSnapshot = activeSelections.length === 0 && preparedSelections.length > 0;
+    const existingSelections = usePreparedSnapshot ? preparedSelections : activeSelections;
     const requestedSelectionId = String(selection?.selectionId || '').trim();
     const selectionWithId = requestedSelectionId
       ? selection
@@ -840,6 +843,7 @@
     const nextSelection = normalizedRecipeSelection(selectionWithId, existingSelections.length);
     if (!list || !nextSelection) return current;
     const selections = normalizedRecipeSelections([...existingSelections, nextSelection]);
+    if (usePreparedSnapshot) return rebuildPreparedMealListCourses(current, targetId, selections);
     const updated = updateGroceryListById(current, targetId, {
       ...list,
       kind: 'meal',
@@ -873,12 +877,44 @@
     return addMealListRecipe(current, targetId, selected);
   }
 
+  function rebuildPreparedMealListCourses(collection = {}, listId = '', preparedSelections = []) {
+    const current = createGroceryListCollection(collection);
+    const targetId = String(listId || current.activeListId || '').trim();
+    const list = current.lists.find(entry => entry.id === targetId);
+    if (!list) return current;
+    const selections = normalizedRecipeSelections(preparedSelections);
+    // Rebuild once from the prepared snapshot, then keep the active source empty:
+    // the snapshot remains the editable source for the prepared recipe rows.
+    const activeCollection = updateGroceryListById(current, targetId, {
+      ...list,
+      kind: 'meal',
+      basketId: '',
+      recipeSelections: selections,
+      sourceRecipeSelections: selections,
+      sourceRecipeIds: recipeIdsForSelections(selections),
+    });
+    const rebuilt = rebuildMealListCourses(activeCollection, targetId);
+    const rebuiltList = rebuilt.lists.find(entry => entry.id === targetId);
+    if (!rebuiltList) return rebuilt;
+    return updateGroceryListById(rebuilt, targetId, {
+      ...rebuiltList,
+      recipeSelections: [],
+      sourceRecipeSelections: [],
+      sourceRecipeIds: [],
+      preparedRecipeSelections: selections,
+      preparedRecipeCount: selections.length,
+    });
+  }
+
   function updateMealListRecipeServings(collection = {}, listId = '', selectionId = '', servings = 1) {
     const current = createGroceryListCollection(collection);
     const targetId = String(listId || current.activeListId || '').trim();
     const list = current.lists.find(entry => entry.id === targetId);
     if (!list) return current;
-    const selectionsBeforeUpdate = recipeSelectionsForList(list);
+    const activeSelections = recipeSelectionsForList(list);
+    const preparedSelections = activeSelections.length ? [] : normalizedRecipeSelections(list.preparedRecipeSelections);
+    const usePreparedSnapshot = activeSelections.length === 0 && preparedSelections.length > 0;
+    const selectionsBeforeUpdate = usePreparedSnapshot ? preparedSelections : activeSelections;
     const selectedSelectionId = resolveSelectionId(selectionsBeforeUpdate, selectionId);
     if (!selectedSelectionId) return current;
     let changed = false;
@@ -888,6 +924,7 @@
       return { ...selection, servings: Math.max(1, finiteNumber(servings) || selection.baseServings || 1) };
     });
     if (!changed) return current;
+    if (usePreparedSnapshot) return rebuildPreparedMealListCourses(current, targetId, selections);
     const updated = updateGroceryListById(current, targetId, {
       ...list,
       kind: 'meal',
@@ -904,11 +941,15 @@
     const targetId = String(listId || current.activeListId || '').trim();
     const list = current.lists.find(entry => entry.id === targetId);
     if (!list) return current;
-    const original = recipeSelectionsForList(list);
+    const activeSelections = recipeSelectionsForList(list);
+    const preparedSelections = activeSelections.length ? [] : normalizedRecipeSelections(list.preparedRecipeSelections);
+    const usePreparedSnapshot = activeSelections.length === 0 && preparedSelections.length > 0;
+    const original = usePreparedSnapshot ? preparedSelections : activeSelections;
     const selectedSelectionId = resolveSelectionId(original, selectionId);
     if (!selectedSelectionId) return current;
     const selections = original.filter(selection => selection.selectionId !== selectedSelectionId);
     if (selections.length === original.length) return current;
+    if (usePreparedSnapshot) return rebuildPreparedMealListCourses(current, targetId, selections);
     const updated = updateGroceryListById(current, targetId, {
       ...list,
       kind: 'meal',
