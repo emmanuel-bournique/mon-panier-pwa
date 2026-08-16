@@ -1,0 +1,53 @@
+{
+  "application_registry": "/mnt/HC_Volume_106191670/mon_panier/media_v1_180_2026-07-26/application_media_v1/application_media_registry.json",
+  "broken_references": [],
+  "bytes": {
+    "reduction_percent": 96.3706,
+    "saved": 1052114654,
+    "source_total": 1091738392,
+    "webp_total": 39623738
+  },
+  "counts": {
+    "by_class": {
+      "ingredient": 216,
+      "product": 109,
+      "recipe": 180,
+      "utensil": 53
+    },
+    "by_variant": {
+      "card": 180,
+      "detail": 558,
+      "list": 378
+    },
+    "derivatives": 1116,
+    "sources": 558
+  },
+  "free_bytes": {
+    "after": 5937242112,
+    "before": 5936107520,
+    "minimum_required": 4000000000
+  },
+  "schema_version": "mon_panier_application_media_validation_v1",
+  "sha256": {
+    "application_registry": "452eab07e9156dda0cbb08d2b6beb63e784c1a97a68a80124c65300f1911c0a2",
+    "derivative_unique_by_variant": {
+      "card": 180,
+      "detail": 558,
+      "list": 378
+    },
+    "source_unique": 558
+  },
+  "source_resolved_registry": "/root/workspace/mac-freelance/3_FREELANCE/03_TASKS/panier_ia/media_v1_180_2026-07-26/visual_review_v1/resolved_media_registry.json",
+  "tests": {
+    "coverage_558_of_558": true,
+    "derivative_sha_unique_per_variant_no_inter_asset_collision": true,
+    "derivatives_1116_of_1116": true,
+    "dimensions_exact": true,
+    "free_space_stayed_at_least_4GB": true,
+    "images_openable": true,
+    "no_broken_references": true,
+    "source_sha_conform": true,
+    "source_sha_unique_558": true,
+    "variant_counts_exact": true
+  }
+}
