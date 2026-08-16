@@ -1,7 +1,7 @@
 ---
 path: 3_FREELANCE/03_TASKS/panier_ia/app_pwa_v0/README.md
 parent: 3_FREELANCE/03_TASKS/panier_ia/_index.md
-destination: garder comme staging PWA exacte jusqu’au gate HTTPS et appareils réels
+destination: garder comme staging PWA exacte publiée pour pilote individuel jusqu’au gate appareils réels
 ---
 
 # Mon Panier — PWA exacte
@@ -24,7 +24,7 @@ Le lien local `app_pwa_v0` dans le workspace pointe vers l’artefact lourd situ
 
 ## Modèle de partage validé
 
-Chaque téléphone dispose de son propre `localStorage`. Aucun compte réel, backend, synchronisation inter-appareils ou panier collaboratif n’a été ajouté dans ce palier. Le partage visé ici est l’accès à la même application par un futur lien HTTPS, pas le partage des données d’un panier.
+Chaque téléphone dispose de son propre `localStorage`. Aucun compte réel, backend, synchronisation inter-appareils ou panier collaboratif n’a été ajouté dans ce palier. Le partage visé ici est l’accès à la même application par le lien HTTPS public ci-dessous, pas le partage des données d’un panier.
 
 Le bundle conserve volontairement les écrans et le comportement de la source canonique, y compris les parcours locaux de démonstration. Les boutons Apple/Google/e-mail ne constituent donc pas une authentification réelle pour des testeurs externes. Le pont Google Swift `WKScriptMessageHandler` existe seulement dans l’hôte iOS ; dans Safari, le code canonique suit son fallback local existant. Cela doit être testé et expliqué avant toute invitation externe.
 
@@ -37,7 +37,9 @@ node --test qa/pwa-shell.test.mjs
 python3 -m http.server 4173
 ```
 
-Puis ouvrir `http://127.0.0.1:4173/`. HTTP local permet de tester le rendu et le service worker ; il ne constitue pas encore un lien partageable à des amis.
+Lien de pilote HTTPS : `https://emmanuel-bournique.github.io/mon-panier-pwa/`
+
+Le pilote reste individuel : chaque téléphone conserve son propre état local. L’iPhone et l’Android réels restent à tester avant invitation large.
 
 ## Backup de rollback
 
@@ -47,4 +49,4 @@ L’ancien candidat React complet a été sauvegardé avant remplacement ici :
 
 ## Gate suivant
 
-Avant d’envoyer une URL : héberger cette empreinte exacte en HTTPS, tester l’URL déployée sur un iPhone et un Android réels, vérifier le manifest/service worker après fermeture et rechargement, confirmer les droits des médias et fournir une consigne de test sans données personnelles. Statut actuel : `internal_only`.
+Avant une invitation large : tester l’URL déployée sur un iPhone et un Android réels, vérifier le manifest/service worker après fermeture et rechargement, confirmer les droits des médias et fournir une consigne de test sans données personnelles. Statut actuel : `public_pilot_individual`.
