@@ -81,16 +81,16 @@ test('PWA shell exposes the install and offline contract', async () => {
   const serviceWorker = await readFile(serviceWorkerPath, 'utf8')
   const criticalShellUrls = [
     './media-v1.js',
-    './grocery-cart-core.js?v=20260816-classic-basket-target-v1',
+    './grocery-cart-core.js?v=20260817-cart-coherence-v2',
     './personalization-core.js?v=20260808-avoid-v1',
     './card-badge-core.js?v=20260813-pilot-v1',
-    './app-v1.js?v=20260816-classic-basket-target-v1',
+    './app-v1.js?v=20260817-cart-coherence-v2',
     './app-v1.css?v=20260816-classic-basket-target-v1',
   ]
   for (const url of criticalShellUrls) {
     assert.ok(serviceWorker.includes(url), `critical offline shell missing: ${url}`)
   }
-  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v7-cart-coherence['"]/, 'cache name must change when the initial state or cart state changes')
+  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v8-cart-coherence-update['"]/, 'cache name must change when the initial state or cart state changes')
   assert.match(serviceWorker, /addEventListener\(['"]fetch['"]/) 
   assert.match(serviceWorker, /cache/i)
   assert.doesNotMatch(serviceWorker, /https?:\/\//i, 'service worker must not add a remote origin')
