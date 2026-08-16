@@ -3143,7 +3143,7 @@
     const displaySelections = selections.length ? selections : preparedSelections;
     const preparedOnly = selections.length === 0 && preparedSelections.length > 0;
     const recipeCount = mealListRecipeCount(list);
-    if (list?.id === 'list-default' && recipeCount === 0) return '';
+    if (recipeCount === 0) return '';
     const navigation = displaySelections.map(selection => `'${localGroceryInlineKey(selection.recipeId)}'`).join(',');
     const rows = displaySelections.map(selection => {
       const source = recipe(selection.recipeId);
@@ -3273,11 +3273,11 @@
     renderMealRecipePicker();
   };
 
-  window.addRecipeToMealList = function(recipeId, servings = null, ingredientsOverride = null, selectionId = '') {
+  window.addRecipeToMealList = function(recipeId, servings = null, ingredientsOverride = null, selectionId = '', targetOverride = '') {
     const source = recipe(recipeId);
     if (!source) return false;
     const saved = syncActiveGroceryListFromState();
-    const targetId = mealListTargetId();
+    const targetId = String(targetOverride || mealListTargetId()).trim() || 'list-default';
     const target = mealListById(targetId, saved);
     if (!target) return false;
     const selectedServings = Math.max(1, Number(servings) || (state.detail?.id === source.id ? state.detail.servings : PROFILE.householdSize) || source.servings || 1);
@@ -3430,10 +3430,10 @@
     const source = state.detail ? recipe(state.detail.id) : null;
     const html = baseMealListDetailRenderer();
     if (!source) return html;
-    const target = mealListById(mealListTargetId());
+    const target = mealListById('list-default');
     const selected = mealListSelectionFor(target, state.detail.selectionId);
-    const added = Boolean(selected);
-    const actionLabel = added ? `Ajouter une autre version à ${escapeHtml(mealListTargetName())}` : `Ajouter à ${escapeHtml(mealListTargetName())}`;
+    const added = Boolean(selected) || mealListRecipeSelections(target).some(selection => selection.recipeId === source.id);
+    const actionLabel = added ? 'Ajouter une autre version au Panier' : 'Ajouter au Panier';
     const action = `<button class="primary ${added ? 'success' : ''}" data-detail-add onclick="addCart('${localGroceryInlineKey(source.id)}',${state.detail.servings},true)">${actionLabel}</button>`;
     return html.replace(/<button class="primary[^"]*" data-detail-add onclick="addCart\('[^']+',[-\d.]+,true\)">[^<]*<\/button>/, action);
   };
@@ -3734,7 +3734,7 @@
     return true;
   };
   window.addCart = function mealListAddRecipe(id, servings) {
-    return window.addRecipeToMealList(id, servings);
+    return window.addRecipeToMealList(id, servings, null, '', 'list-default');
   };
   addCart = window.addCart;
 

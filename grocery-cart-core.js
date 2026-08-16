@@ -743,7 +743,15 @@
     const requestedId = String(list.id || `list-${current.lists.length + 1}`).trim();
     const nextId = uniqueGroceryListId(current.lists, requestedId);
     const next = normalizedGroceryList({ ...list, id: nextId }, nextId);
-    return { activeListId: next.id, lists: [next, ...current.lists] };
+    const permanentIndex = current.lists.findIndex(entry => entry.id === 'list-default' || entry.kind === 'basket' || entry.basketId);
+    const permanent = permanentIndex >= 0 ? current.lists[permanentIndex] : null;
+    const existingManualLists = permanentIndex >= 0
+      ? current.lists.filter((_, index) => index !== permanentIndex)
+      : current.lists;
+    const lists = permanent
+      ? [permanent, next, ...existingManualLists]
+      : [next, ...existingManualLists];
+    return { activeListId: next.id, lists };
   }
 
   function updateActiveGroceryList(collection = {}, changes = {}) {
