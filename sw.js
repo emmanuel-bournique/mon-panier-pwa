@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mon-panier-runtime-v5-classic-basket-target'
+const CACHE_NAME = 'mon-panier-runtime-v7-cart-coherence'
 const SHELL_URLS = [
   './',
   './manifest.webmanifest',

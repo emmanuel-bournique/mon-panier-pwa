@@ -4017,7 +4017,7 @@
   renderNav = function mealListNav() {
     const defaultList = mealListById('list-default');
     const activeSelections = mealListRecipeSelections(defaultList);
-    const count = (activeSelections.length ? activeSelections : mealListPreparedRecipeSelections(defaultList)).length;
+    const count = activeSelections.length;
     const items = [['discover', 'Découvrir', 'discover'], ['favorites', 'Favoris', 'heart'], ['cart', 'Mon panier', 'cart'], ['groceries', 'Listes', 'list'], ['profile', 'Profil', 'user']];
     const active = state.tab === 'archives' ? 'cart' : state.tab;
     nav.innerHTML = items.map(([id, label, glyph]) => `<button class="nav-item ${active === id ? 'active' : ''}" data-tab="${id}" onclick="setTab('${id}')">${icon(glyph)}<span>${label}</span>${id === 'cart' && count ? `<b class="badge-count">${count}</b>` : ''}</button>`).join('');

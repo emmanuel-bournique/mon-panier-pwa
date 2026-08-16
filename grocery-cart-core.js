@@ -836,13 +836,16 @@
     return candidate;
   }
 
-  function addMealListRecipe(collection = {}, listId = '', selection = {}) {
+  function addMealListRecipe(collection = {}, listId = '', selection = {}, options = {}) {
     const current = createGroceryListCollection(collection);
     const targetId = String(listId || current.activeListId || '').trim();
     const list = current.lists.find(entry => entry.id === targetId);
     const activeSelections = list ? recipeSelectionsForList(list) : [];
-    const preparedSelections = activeSelections.length ? [] : normalizedRecipeSelections(list?.preparedRecipeSelections);
-    const usePreparedSnapshot = activeSelections.length === 0 && preparedSelections.length > 0;
+    const resumePrepared = options?.resumePrepared === true;
+    const preparedSelections = resumePrepared && activeSelections.length === 0
+      ? normalizedRecipeSelections(list?.preparedRecipeSelections)
+      : [];
+    const usePreparedSnapshot = resumePrepared && activeSelections.length === 0 && preparedSelections.length > 0;
     const existingSelections = usePreparedSnapshot ? preparedSelections : activeSelections;
     const requestedSelectionId = String(selection?.selectionId || '').trim();
     const selectionWithId = requestedSelectionId
@@ -882,7 +885,7 @@
     const byRecipeId = preparedSelections.filter(selection => selection.recipeId === value);
     const selected = bySelectionId || (byRecipeId.length === 1 ? byRecipeId[0] : null);
     if (!selected) return current;
-    return addMealListRecipe(current, targetId, selected);
+    return addMealListRecipe(current, targetId, selected, { resumePrepared: true });
   }
 
   function rebuildPreparedMealListCourses(collection = {}, listId = '', preparedSelections = []) {
