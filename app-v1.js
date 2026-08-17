@@ -956,7 +956,7 @@
     return `<section data-screen="favorites"><div class="library-tabs"><button class="library-tab ${mine ? '' : 'active'}" onclick="setLibraryView('favorites')">Mes favoris</button><button class="library-tab ${mine ? 'active' : ''}" onclick="setLibraryView('personal')">Mes recettes${personal.length ? ` · ${personal.length}` : ''}</button></div>${libraryTools}${list.length ? `<div class="recipe-grid">${sortedList.map(item => card(item, navigationIds)).join('')}</div>` : `<div class="empty"><div class="empty-mark">${icon(mine ? 'list' : 'heart')}</div><h2>${emptyTitle}</h2><p>${emptyCopy}</p>${emptyAction}</div>`}${mine ? renderDeletedPersonal() : ''}</section>`;
   };
 
-  const DEFAULT_DETAIL_FRAMING = Object.freeze({ focalX: 50, focalY: 50, scale: 1.01, fit: 'cover' });
+  const DEFAULT_DETAIL_FRAMING = Object.freeze({ focalX: 50, focalY: 50, scale: 1, fit: 'cover' });
   const DETAIL_FRAMING = Object.freeze({
     'r-v3-136-crepes-sucrees': Object.freeze({ focalX: 50, focalY: 0, scale: 1, fit: 'contain' }),
     'r-v3-098-raclette-traditionnelle': Object.freeze({ focalX: 50, focalY: 0, scale: 1, fit: 'contain' }),

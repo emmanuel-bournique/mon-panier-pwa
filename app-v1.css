@@ -789,7 +789,7 @@ button:active{transform:translateY(1px)}
   --detail-hero-scroll-offset:0px;
   --detail-focal-x:50%;
   --detail-focal-y:50%;
-  --detail-scale:1.01;
+  --detail-scale:1;
   --detail-fit:cover;
   --detail-ui-shift:40px;
   --detail-actions-shift:40px;
