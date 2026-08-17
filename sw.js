@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mon-panier-runtime-v11-responsive-photo'
+const CACHE_NAME = 'mon-panier-runtime-v12-ios-safe-area-meta'
 const SHELL_URLS = [
   './',
   './manifest.webmanifest',
@@ -9,8 +9,8 @@ const SHELL_URLS = [
   './grocery-cart-core.js?v=20260817-cart-coherence-v3',
   './personalization-core.js?v=20260808-avoid-v1',
   './card-badge-core.js?v=20260813-pilot-v1',
-  './app-v1.js?v=20260817-responsive-photo-v1',
-  './app-v1.css?v=20260817-responsive-photo-v1',
+  './app-v1.js?v=20260817-ios-safe-area-meta-v1',
+  './app-v1.css?v=20260817-ios-safe-area-meta-v1',
 ]
 
 self.addEventListener('install', (event) => {

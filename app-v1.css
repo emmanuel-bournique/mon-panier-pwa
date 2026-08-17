@@ -1485,13 +1485,13 @@ html,body{background:#f8fcf9}
 /* food-preferences-catalog-v1:end */
 
 /* native-edge-to-edge-detail-v1:start */
-@media (display-mode: standalone), (display-mode: fullscreen) {
+@media (max-width:560px) {
   .phone:has(.detail) .detail-hero{margin-top:calc(-1 * env(safe-area-inset-top));min-height:calc(100svh + env(safe-area-inset-top));height:calc(100svh + env(safe-area-inset-top))}
 }
-.phone:has(.detail){--detail-actions-clearance:226px}
+.phone:has(.detail){--detail-actions-clearance:158px}
 .phone:has(.detail) .detail-hero-meta{right:12px;left:12px}
 @media(max-width:380px){
-  .phone:has(.detail){--detail-actions-clearance:222px}
+  .phone:has(.detail){--detail-actions-clearance:158px}
   .phone:has(.detail) .detail-hero-meta{right:12px;left:12px}
 }
 /* native-edge-to-edge-detail-v1:end */
