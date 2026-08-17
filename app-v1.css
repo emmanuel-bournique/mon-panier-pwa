@@ -522,11 +522,11 @@ button:active{transform:translateY(1px)}
 #feedbackPanel .form-page-head,#createRecipePanel .form-page-head{position:relative;top:auto;z-index:3;display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:10px;flex:0 0 auto;margin:0;padding:39px 16px 10px;border-bottom:1px solid var(--form-line);background:var(--form-surface)}
 .form-page-back{width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border:0;border-radius:11px;background:transparent;color:var(--form-ink);font-size:24px;line-height:1}.form-page-back:hover{background:var(--form-soft)}
 #createRecipePanel .form-page-head{grid-template-columns:minmax(116px,max-content) minmax(0,1fr) auto;gap:8px}
-#createRecipePanel .form-page-back{width:auto;min-width:0;padding:0;justify-content:flex-start;gap:6px;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none;color:var(--form-ink);font-size:13px}
-#createRecipePanel .form-page-back svg{width:18px;height:18px;flex:0 0 18px}
-#createRecipePanel .form-page-back span{font-size:13px;font-weight:750;line-height:1;white-space:nowrap}
-#createRecipePanel .form-page-back:hover{background:transparent!important;color:var(--form-ink)}
-.form-page-title{min-width:0;overflow:hidden;color:var(--form-ink);font-size:15px;font-weight:650;letter-spacing:-.01em;text-overflow:ellipsis;white-space:nowrap}.form-step-indicator{color:var(--form-muted);font-size:12px;font-weight:750;white-space:nowrap}
+#createRecipePanel .form-page-back{width:auto;min-width:0;min-height:44px;padding:0 8px 0 0;justify-content:flex-start;gap:5px;border:0!important;border-radius:10px!important;background:transparent!important;box-shadow:none;color:var(--green);font-size:13px;font-weight:850}
+#createRecipePanel .form-page-back svg{width:19px;height:19px;flex:0 0 19px}
+#createRecipePanel .form-page-back span{font-size:13px;font-weight:850;line-height:1;white-space:nowrap}
+#createRecipePanel .form-page-back:hover{background:transparent!important;color:var(--green)}
+.form-page-title{min-width:0;overflow:hidden;color:var(--form-ink);font-size:15px;font-weight:650;letter-spacing:-.01em;text-overflow:ellipsis;white-space:nowrap}.form-page-title-sr-only{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.form-step-indicator{color:var(--form-muted);font-size:12px;font-weight:750;white-space:nowrap}
 #feedbackPanel .form-page-form,#createRecipePanel .form-page-form{position:relative;display:flex;flex:1;flex-direction:column;min-height:0;overflow:hidden;padding:0;background:var(--form-surface)}
 .form-page-body{flex:1;min-width:0;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding:24px 18px 28px;background:var(--form-bg);scrollbar-color:var(--form-line) transparent;scrollbar-width:thin}.form-page-body::-webkit-scrollbar{width:6px}.form-page-body::-webkit-scrollbar-thumb{border-radius:99px;background:var(--form-line)}
 .form-page-intro{margin:0 0 24px}.form-page-intro h2{margin:0 0 8px;color:var(--form-ink);font-family:var(--body);font-size:28px;font-weight:650!important;line-height:1.08;letter-spacing:-.035em}.form-page-intro p{margin:0;color:var(--form-muted);font-size:14px;line-height:1.45}

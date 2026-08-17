@@ -82,19 +82,19 @@ test('PWA shell exposes the install and offline contract', async () => {
   const serviceWorker = await readFile(serviceWorkerPath, 'utf8')
   const criticalShellUrls = [
     './media-v1.js',
-    './grocery-cart-core.js?v=20260817-cart-coherence-v3',
+    './grocery-cart-core.js?v=20260817-courses-create-v14',
     './personalization-core.js?v=20260808-avoid-v1',
     './card-badge-core.js?v=20260813-pilot-v1',
-    './app-v1.js?v=20260817-worker-activation-v1',
-    './app-v1.css?v=20260817-worker-activation-v1',
+    './app-v1.js?v=20260817-courses-create-v14',
+    './app-v1.css?v=20260817-courses-create-v14',
   ]
   for (const url of criticalShellUrls) {
     assert.ok(index.includes(url.replace(/^\.\//, '')), `entry must version critical runtime: ${url}`)
     assert.ok(serviceWorker.includes(url), `critical offline shell missing: ${url}`)
   }
-  const registrationRuntimeUrl = 'pwa-register.js?v=20260817-worker-activation-v1'
+  const registrationRuntimeUrl = 'pwa-register.js?v=20260817-courses-create-v14'
   assert.ok(index.includes(registrationRuntimeUrl), 'the waiting-worker bootstrap must receive a unique runtime URL')
-  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v13-worker-activation['"]/, 'cache name must change when the waiting-worker activation runtime changes')
+  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v14-courses-create['"]/, 'cache name must change when the Courses/create runtime changes')
   assert.match(serviceWorker, /addEventListener\(['"]fetch['"]/)
   assert.match(serviceWorker, /cache/i)
   assert.doesNotMatch(serviceWorker, /https?:\/\//i, 'service worker must not add a remote origin')

@@ -94,7 +94,7 @@ test('une nouvelle recette après des Courses terminées repart sans coche héri
   assert.deepEqual(list.history, [{ type: 'archive', id: 'historique-conserve' }]);
 });
 
-test('une nouvelle occurrence après préparation reçoit une identité jamais réutilisée', () => {
+test('une nouvelle occurrence après plusieurs préparations reçoit une identité jamais réutilisée', () => {
   let collection = groceryCore.createGroceryListCollection({
     activeListId: 'list-default',
     lists: [{
@@ -108,13 +108,23 @@ test('une nouvelle occurrence après préparation reçoit une identité jamais r
   });
   collection = groceryCore.rebuildMealListCourses(collection, 'list-default');
   collection = groceryCore.finalizeMealListPreparation(collection, 'list-default');
-  const completed = collection.lists.find((entry) => entry.id === 'list-default');
-  const preparedSelectionId = completed.preparedRecipeSelections[0].selectionId;
+  const firstCompleted = collection.lists.find((entry) => entry.id === 'list-default');
+  assert.equal(firstCompleted.preparedRecipeSelections[0].selectionId, 'recette-a--selection-1');
+
+  collection = groceryCore.addMealListRecipe(collection, 'list-default', recipeSelection('recette-a'));
+  let list = collection.lists.find((entry) => entry.id === 'list-default');
+  assert.deepEqual(list.recipeSelections.map((selection) => selection.selectionId), ['recette-a--selection-2']);
+
+  collection = groceryCore.finalizeMealListPreparation(collection, 'list-default');
+  const secondCompleted = collection.lists.find((entry) => entry.id === 'list-default');
+  collection = groceryCore.updateGroceryListById(collection, 'list-default', {
+    checked: secondCompleted.items.map((item) => item.key),
+  });
   collection = groceryCore.addMealListRecipe(collection, 'list-default', recipeSelection('recette-a'));
 
-  const list = collection.lists.find((entry) => entry.id === 'list-default');
-  assert.equal(preparedSelectionId, 'recette-a--selection-1');
-  assert.deepEqual(list.recipeSelections.map((selection) => selection.selectionId), ['recette-a--selection-2']);
+  list = collection.lists.find((entry) => entry.id === 'list-default');
+  assert.deepEqual(list.recipeSelections.map((selection) => selection.selectionId), ['recette-a--selection-3']);
+  assert.deepEqual(list.checked, []);
 });
 
 function sourceBlock(source, from, to) {
@@ -144,6 +154,22 @@ test('réajouter depuis Découvrir ignore les recettes seulement préparées', (
   const personalToggle = sourceBlock(app, '  window.toggleRecipeActionCart = function toggleRecipeActionCart', '  window.openRecipeActionEditor = function');
   assert.doesNotMatch(personalToggle, /mealListSelectionForDirectMutation/);
   assert.doesNotMatch(personalToggle, /mealListDirectMutationCollection/);
+});
+
+test('réajouter depuis Découvrir recharge la liste active avant de persister les Courses', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const app = fs.readFileSync(path.join(__dirname, '..', 'app-v1.js'), 'utf8');
+
+  const refresh = sourceBlock(app, '  function applyMealListMutationForTarget', '  window.toggleDiscoverCart = function toggleDiscoverCart');
+  assert.match(refresh, /collection\.activeListId === targetId/);
+  assert.match(refresh, /loadActiveGroceryList\(\{ \.\.\.collection, activeListId: targetId \}\)/);
+  assert.match(refresh, /applyMealListCollection\(collection\)/);
+
+  const toggle = sourceBlock(app, '  window.toggleDiscoverCart = function toggleDiscoverCart', '  window.addCart = function mealListAddRecipe');
+  assert.match(toggle, /applyMealListMutationForTarget\(updated, target\.id\)/);
+  const personalToggle = sourceBlock(app, '  window.toggleRecipeActionCart = function toggleRecipeActionCart', '  window.openRecipeActionEditor = function');
+  assert.match(personalToggle, /applyMealListMutationForTarget\(updated, target\.id\)/);
 });
 
 test('reprendre une archive recrée seulement le panier courant et conserve son historique', () => {

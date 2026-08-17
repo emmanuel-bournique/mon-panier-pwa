@@ -1,6 +1,6 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-17T17:03:59Z",
+  "generated_at": "2026-08-17T18:39:37Z",
   "status": "public_pilot_individual",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
   "deployment": {
@@ -13,37 +13,37 @@
   "source": {
     "path": "/Users/emmanuel/LocalVaults/Freelance/3_FREELANCE/03_TASKS/panier_ia/ios/MonPanierLocalV1/OpenDesignBundle",
     "canonical_file_count": 2533,
-    "canonical_bytes": 796269844,
-    "index_sha256": "87064a193d6f28e240e6496594f5076bfd5f97d1d8ad85e99360a358979df23c",
-    "app_css_sha256": "df92023f5be0e1ff153076cc2d86aee446476e9920de4189a2c6dc564f9ef24b",
-    "app_js_sha256": "9c98fca34939bd3cd0dfa963019feafa63a9614e8e5a99ba6e5dbc40fd29e2c4",
-    "grocery_cart_core_sha256": "86eb69c6405e0cbf6adc2ca0ac29194ddb1f095aa8e84cf3710f963e4498cd75",
-    "service_worker_sha256": "50ee6e5ec058a684c2969bcdffa815ad24fe4e2585b9b66971ef1027f994144f"
+    "canonical_bytes": 796271695,
+    "index_sha256": "03de57da89c30e31e900d9e54bc3eeae4b6d6effa63cd23535867a3bebf8cfa3",
+    "app_css_sha256": "24075f33ed51249703983f708ba0b6d36872f39bb36bde65583917b304ffe936",
+    "app_js_sha256": "4419d6d80b3c31af3f967418bde37e1d51bb8c6b0cd9d644e04d09b760f053ad",
+    "grocery_cart_core_sha256": "01424ffad4ba117ddb1da8b870b9b4fd3c939f269f5b9da1c95b743fc3d86183",
+    "service_worker_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
   },
   "candidate": {
     "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
     "file_count_excluding_manifest_self": 2546,
-    "bytes_excluding_manifest_self": 796338247,
-    "index_sha256": "15056232ae8713dc901458bb3083065457bf48076b0b1d07514e6586d2682e2a",
+    "bytes_excluding_manifest_self": 796342291,
+    "index_sha256": "b815dfc027afd9ce7da46d82a7a4e519e03721592ad8b90fa2a26bba0eb8b37e",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "50ee6e5ec058a684c2969bcdffa815ad24fe4e2585b9b66971ef1027f994144f",
+    "service_worker_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26",
     "registration_sha256": "c6ced712ff7247a7b145c321c64d9c29b4cef14f0170cadc046dfc8e85ed5755",
-    "pwa_shell_test_sha256": "99f237b2d32821bc68277064957e4729d4d1e9a5f900cf6d8e4f740359274853",
-    "shopping_flow_test_sha256": "96d158f7921e51c0d96324bae7d9bbe49a1d966d4c4985a1c93107f47a09c7c7",
-    "recipe_create_test_sha256": "276f52be122170741ece960b304d1eac7332a809aeaf90740c8fa55c3a478e7d",
-    "cache_name": "mon-panier-runtime-v13-worker-activation",
+    "pwa_shell_test_sha256": "838bdf02da419e2573200dc087649467c32d7ff21000742b31908e1852480c6e",
+    "shopping_flow_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
+    "recipe_create_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a",
+    "cache_name": "mon-panier-runtime-v14-courses-create",
     "versioned_runtime_urls": [
-      "grocery-cart-core.js?v=20260817-cart-coherence-v3",
+      "grocery-cart-core.js?v=20260817-courses-create-v14",
       "personalization-core.js?v=20260808-avoid-v1",
       "card-badge-core.js?v=20260813-pilot-v1",
-      "pwa-register.js?v=20260817-worker-activation-v1",
-      "app-v1.js?v=20260817-worker-activation-v1",
-      "app-v1.css?v=20260817-worker-activation-v1"
+      "pwa-register.js?v=20260817-courses-create-v14",
+      "app-v1.js?v=20260817-courses-create-v14",
+      "app-v1.css?v=20260817-courses-create-v14"
     ],
-    "recipe_detail_responsive_photo_test_sha256": "3a8edda22e6f491308f926223fac6ac341f6a87882dd4c59779a56f722813591",
+    "recipe_detail_responsive_photo_test_sha256": "a363d78abdc43782d06c877050e6c2ced76b40b8fc82c89a7e673cbf64104156",
     "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "6ccd201fddbe4f841d15bde27a54f8cb513e82769b56bba717e37af6bb93c598",
-    "shopping_flow_regression_test_sha256": "96d158f7921e51c0d96324bae7d9bbe49a1d966d4c4985a1c93107f47a09c7c7",
-    "recipe_create_ui_contract_test_sha256": "276f52be122170741ece960b304d1eac7332a809aeaf90740c8fa55c3a478e7d"
+    "shopping_flow_regression_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
+    "recipe_create_ui_contract_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a"
   },
   "pwa_additions": [
     "manifest.webmanifest",
@@ -55,8 +55,8 @@
     "mon-panier-icon-512.png"
   ],
   "local_data_model": "separate browser-local state; no account, backend, or cross-device synchronization",
-  "qa_command": "node --test qa/shopping-flow-regression.test.cjs qa/recipe-create-ui-contract.test.cjs qa/recipe-detail-responsive-photo.test.cjs qa/recipe-detail-native-safe-area-and-meta-spacing.test.cjs qa/pwa-shell.test.mjs",
-  "rollback_backup": "/Volumes/USB/Hermes-External/backups/mon-panier-pwa-before-ios-safe-area-and-meta-spacing-20260817T162421Z",
+  "qa_command": "node --test qa/*.test.cjs qa/*.test.mjs",
+  "rollback_backup": "/Volumes/USB/Hermes-External/backups/mon-panier-pwa-before-v14-courses-create-release-20260817T183406Z",
   "promotion_blockers": [
     "iPhone and Android real-device smoke not run",
     "external tester identity/privacy/media preflight not completed"

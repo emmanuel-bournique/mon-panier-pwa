@@ -3661,7 +3661,7 @@
         ingredients: ingredients.map(item => ({ ...item })),
       });
     }
-    applyMealListCollection(updated);
+    applyMealListMutationForTarget(updated, target.id);
     persistAppState();
     syncPersonalRecipeActionCartControls(source.id, updated);
     toast(existing ? 'Recette retirée du panier' : 'Recette ajoutée au panier');
@@ -3764,6 +3764,14 @@
   function syncDiscoverCartControls(id) {
     renderNav();
   }
+  function applyMealListMutationForTarget(collection, targetId) {
+    if (collection.activeListId === targetId) {
+      loadActiveGroceryList({ ...collection, activeListId: targetId });
+    } else {
+      applyMealListCollection(collection);
+    }
+    return collection;
+  }
   window.toggleDiscoverCart = function toggleDiscoverCart(id, servings = PROFILE.householdSize) {
     const source = recipe(id);
     if (!source) return false;
@@ -3786,7 +3794,7 @@
           // Découvrir et la recherche ajoutent toujours le catalogue original.
           ingredients: source.ingredients.map(item => ({ ...item })),
         });
-    applyMealListCollection(updated);
+    applyMealListMutationForTarget(updated, target.id);
     persistAppState();
     syncDiscoverCartControls(id);
     toast(originalSelection ? 'Recette originale retirée du panier' : 'Recette originale ajoutée au panier');

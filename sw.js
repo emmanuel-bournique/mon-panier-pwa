@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mon-panier-runtime-v13-worker-activation'
+const CACHE_NAME = 'mon-panier-runtime-v14-courses-create'
 const SHELL_URLS = [
   './',
   './manifest.webmanifest',
@@ -6,11 +6,11 @@ const SHELL_URLS = [
   './mon-panier-icon-512.png',
   './apple-touch-icon.png',
   './media-v1.js',
-  './grocery-cart-core.js?v=20260817-cart-coherence-v3',
+  './grocery-cart-core.js?v=20260817-courses-create-v14',
   './personalization-core.js?v=20260808-avoid-v1',
   './card-badge-core.js?v=20260813-pilot-v1',
-  './app-v1.js?v=20260817-worker-activation-v1',
-  './app-v1.css?v=20260817-worker-activation-v1',
+  './app-v1.js?v=20260817-courses-create-v14',
+  './app-v1.css?v=20260817-courses-create-v14',
 ]
 
 self.addEventListener('install', (event) => {

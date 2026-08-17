@@ -672,6 +672,18 @@
     return [...bySelectionId.values()];
   }
 
+  function normalizedSelectionIdLedger(values = []) {
+    return [...new Set((values || []).map(value => String(value || '').trim()).filter(Boolean))];
+  }
+
+  function selectionIdLedgerForList(list = {}, recipeSelections = [], preparedRecipeSelections = []) {
+    return normalizedSelectionIdLedger([
+      ...(Array.isArray(list.selectionIdLedger) ? list.selectionIdLedger : []),
+      ...recipeSelections.map(selection => selection.selectionId),
+      ...preparedRecipeSelections.map(selection => selection.selectionId),
+    ]);
+  }
+
   function recipeSelectionsForList(list = {}) {
     const explicit = Array.isArray(list.recipeSelections) && list.recipeSelections.length
       ? list.recipeSelections
@@ -704,6 +716,7 @@
     const id = String(list.id || fallbackId).trim() || fallbackId;
     const recipeSelections = recipeSelectionsForList(list);
     const preparedRecipeSelections = normalizedRecipeSelections(list.preparedRecipeSelections);
+    const selectionIdLedger = selectionIdLedgerForList(list, recipeSelections, preparedRecipeSelections);
     const rawPantryReminders = Array.isArray(list.pantryReminders) ? list.pantryReminders : [];
     const legacySelections = recipeSelections.length ? recipeSelections : preparedRecipeSelections;
     const canRestoreLegacyPantryItems = rawPantryReminders.length > 0
@@ -730,6 +743,8 @@
       kind,
       basketId: String(list.basketId || ''),
       sourceRecipeIds: recipeIdsForSelections(recipeSelections),
+      // Durable IDs prevent a later occurrence from colliding with an archived one.
+      selectionIdLedger,
       // Count snapshot kept after preparation; it does not rebuild active recipes.
       preparedRecipeCount: normalizedPreparedRecipeCount(list.preparedRecipeCount),
       // Read-only snapshot used to render the recipes that generated a prepared list.
@@ -856,9 +871,12 @@
     });
   }
 
-  function nextSelectionId(existingSelections = [], selection = {}) {
+  function nextSelectionId(existingSelections = [], selection = {}, reservedSelectionIds = []) {
     const recipeId = String(selection?.recipeId || '').trim();
-    const used = new Set(existingSelections.map(item => String(item?.selectionId || '').trim()).filter(Boolean));
+    const used = new Set([
+      ...existingSelections.map(item => String(item?.selectionId || '').trim()).filter(Boolean),
+      ...normalizedSelectionIdLedger(reservedSelectionIds),
+    ]);
     let index = 1;
     let candidate = `${recipeId}--selection-${index}`;
     while (used.has(candidate)) {
@@ -874,8 +892,9 @@
     const list = current.lists.find(entry => entry.id === targetId);
     const activeSelections = list ? recipeSelectionsForList(list) : [];
     const resumePrepared = options?.resumePrepared === true;
+    const preparedSnapshotSelections = normalizedRecipeSelections(list?.preparedRecipeSelections);
     const preparedSelections = resumePrepared && activeSelections.length === 0
-      ? normalizedRecipeSelections(list?.preparedRecipeSelections)
+      ? preparedSnapshotSelections
       : [];
     const usePreparedSnapshot = resumePrepared && activeSelections.length === 0 && preparedSelections.length > 0;
     const existingSelections = usePreparedSnapshot ? preparedSelections : activeSelections;
@@ -883,16 +902,16 @@
     // must never reuse one of them, even when its caller carried the old ID.
     const knownSelections = normalizedRecipeSelections([
       ...activeSelections,
-      ...normalizedRecipeSelections(list?.preparedRecipeSelections),
+      ...preparedSnapshotSelections,
     ]);
+    const selectionIdLedger = selectionIdLedgerForList(list, activeSelections, preparedSnapshotSelections);
     const requestedSelectionId = String(selection?.selectionId || '').trim();
     const canReusePreparedSelectionId = usePreparedSnapshot
       && existingSelections.some(item => item.selectionId === requestedSelectionId);
-    const requestedSelectionIdIsTaken = requestedSelectionId
-      && knownSelections.some(item => item.selectionId === requestedSelectionId);
+    const requestedSelectionIdIsTaken = requestedSelectionId && selectionIdLedger.includes(requestedSelectionId);
     const selectionWithId = requestedSelectionId && (!requestedSelectionIdIsTaken || canReusePreparedSelectionId)
       ? selection
-      : { ...selection, selectionId: nextSelectionId(knownSelections, selection) };
+      : { ...selection, selectionId: nextSelectionId(knownSelections, selection, selectionIdLedger) };
     const nextSelection = normalizedRecipeSelection(selectionWithId, existingSelections.length);
     if (!list || !nextSelection) return current;
     // A prepared list is a closed shopping cycle. The first new recipe opens a
@@ -900,7 +919,7 @@
     const startsFreshCycle = !resumePrepared
       && activeSelections.length === 0
       && (
-        normalizedRecipeSelections(list.preparedRecipeSelections).length > 0
+        preparedSnapshotSelections.length > 0
         || Number(list.preparedRecipeCount) > 0
         || (list.items || []).some(item => item?.source === 'recipe')
       );
@@ -911,6 +930,7 @@
       checked: startsFreshCycle ? [] : list.checked,
       kind: 'meal',
       basketId: '',
+      selectionIdLedger: normalizedSelectionIdLedger([...selectionIdLedger, nextSelection.selectionId]),
       recipeSelections: selections,
       sourceRecipeSelections: selections,
       sourceRecipeIds: recipeIdsForSelections(selections),
@@ -1037,6 +1057,10 @@
       recipeSelections: restoredSelections,
       sourceRecipeSelections: restoredSelections,
       sourceRecipeIds: recipeIdsForSelections(restoredSelections),
+      selectionIdLedger: normalizedSelectionIdLedger([
+        ...(list.selectionIdLedger || []),
+        ...restoredSelections.map(selection => selection.selectionId),
+      ]),
       preparedRecipeSelections: [],
       preparedRecipeCount: 0,
       checked: [],
