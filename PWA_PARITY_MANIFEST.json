@@ -1,26 +1,42 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-16T16:48:10Z",
+  "generated_at": "2026-08-17T14:38:30Z",
   "status": "public_pilot_individual",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
-  "deployment": {"provider": "GitHub Pages", "repository": "https://github.com/emmanuel-bournique/mon-panier-pwa", "workflow_run": "https://github.com/emmanuel-bournique/mon-panier-pwa/actions/runs/31959519250", "https_enforced": true},
+  "deployment": {
+    "provider": "GitHub Pages",
+    "repository": "https://github.com/emmanuel-bournique/mon-panier-pwa",
+    "target_branch": "main",
+    "workflow": ".github/workflows/pages.yml",
+    "https_enforced": true
+  },
   "source": {
     "path": "/Users/emmanuel/LocalVaults/Freelance/3_FREELANCE/03_TASKS/panier_ia/ios/MonPanierLocalV1/OpenDesignBundle",
-    "canonical_file_count": 2532,
-    "canonical_bytes": 796253050,
-    "index_sha256": "64ac7d2da7b8044ac9451b2342fae4a6f01e4fa93e503f1d1bae078a39f19bad",
-    "app_css_sha256": "d7720df3ef5add89238d25e0aa712e507b87792e54af3347f891476571867acc",
-    "app_js_sha256": "079e80fcb0a4b730db6c95352471754adaec01a19f5c53d3396a3bdc63130d40"
+    "canonical_file_count": 2533,
+    "canonical_bytes": 796269868,
+    "index_sha256": "a1c31d5cff36db6eab404105a3a17a3a3dfced18a670bb28cd4a445f659b0b9d",
+    "app_css_sha256": "787970afd4059a470e42dbffb54cb4298b27df7271a95c89092aa08454fe7702",
+    "app_js_sha256": "4c650c0d9862fa5d617b2e9cde90dbf9fe2f41d5ac500304cbb4f52a1457876e",
+    "grocery_cart_core_sha256": "86eb69c6405e0cbf6adc2ca0ac29194ddb1f095aa8e84cf3710f963e4498cd75",
+    "service_worker_sha256": "03b108b5f67d36b55c4e633fb7715e7fe9f8ee9c4f7cb641abea48753403c141"
   },
   "candidate": {
     "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
-    "file_count": 2542,
-    "bytes": 796301338,
-    "index_sha256": "80fd20c4767e00faa22b38a132cfd6b8cd6355ce4a3ff872267fed6fa4222f6c",
+    "file_count_excluding_manifest_self": 2544,
+    "bytes_excluding_manifest_self": 796331385,
+    "index_sha256": "74d32297868e07c216203d65cf85a05cf3274f19d56c3b057f4787f9e1235af2",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "07c3d609d6e57e24b4e272da090cb26a9572f696793c48bf9b347a3fd58bec1d",
-    "registration_sha256": "66238a627321365dbcd952fcb595ae11e23eab815d101a135b1b4bb0862822ed",
-    "parity_test_sha256": "ed7834ae63e1faaa0f973df26e833f98ae284c949142f2c041ac4e70d520d5ab"
+    "service_worker_sha256": "03b108b5f67d36b55c4e633fb7715e7fe9f8ee9c4f7cb641abea48753403c141",
+    "registration_sha256": "bc20a643c8ae55c5fbe7966b2745f761eac8adb5d19887f17025ea8ed9c11a40",
+    "pwa_shell_test_sha256": "0fe29fbb8584da96ad2d9df0ea572a09dab2591d24e81631df6ec0c667e086d3",
+    "shopping_flow_test_sha256": "96d158f7921e51c0d96324bae7d9bbe49a1d966d4c4985a1c93107f47a09c7c7",
+    "recipe_create_test_sha256": "276f52be122170741ece960b304d1eac7332a809aeaf90740c8fa55c3a478e7d",
+    "cache_name": "mon-panier-runtime-v10-shopping-integrity",
+    "versioned_runtime_urls": [
+      "grocery-cart-core.js?v=20260817-cart-coherence-v3",
+      "app-v1.js?v=20260817-food-catalog-v2",
+      "app-v1.css?v=20260817-food-catalog-v2"
+    ]
   },
   "pwa_additions": [
     "manifest.webmanifest",
@@ -32,8 +48,8 @@
     "mon-panier-icon-512.png"
   ],
   "local_data_model": "separate browser-local state; no account, backend, or cross-device synchronization",
-  "qa_command": "node --test qa/pwa-shell.test.mjs",
-  "rollback_backup": "/Volumes/USB/Hermes-External/workspaces/panier_ia/backups/app_pwa_v0-react-20260816T151716Z",
+  "qa_command": "node --test qa/shopping-flow-regression.test.cjs qa/recipe-create-ui-contract.test.cjs qa/pwa-shell.test.mjs",
+  "rollback_backup": "/Volumes/USB/Hermes-External/backups/mon-panier-pwa-before-public-shopping-update-20260817T143445Z",
   "promotion_blockers": [
     "iPhone and Android real-device smoke not run",
     "external tester identity/privacy/media preflight not completed"

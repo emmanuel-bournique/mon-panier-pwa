@@ -263,29 +263,53 @@
       .trim();
     if (/^sel(?: fin| de table)?$/.test(normalized)) return 'sel';
     if (/^poivre(?: noir| blanc)?(?: moulu)?$/.test(normalized)) return 'poivre';
+    if (/^huile de cuisson$/.test(normalized)) return 'huile de cuisson';
     if (/^huile d olive(?: pour (?:la )?cuisson)?$/.test(normalized)) return 'huile de cuisson';
     if (/^huile (?:de |d )?friture$|^huile pour (?:la )?friture$/.test(normalized)) return 'huile de friture';
     if (/^huile(?: de | d )?(?:tournesol|colza|arachide|pepins de raisin|vegetale|neutre)?$/.test(normalized)) return 'huile de cuisson';
     return '';
   }
 
+  function legacyPantryReminderIdentity(name = '') {
+    return pantryStapleLabel(name) || canonicalPurchaseIdentity(name).key;
+  }
+
   function separatePantryStaples(items = [], pantryReminders = []) {
-    const reminders = new Set();
-    for (const reminder of pantryReminders || []) {
-      const label = pantryStapleLabel(reminder) || String(reminder || '').trim();
-      if (label) reminders.add(label);
-    }
-    const purchasable = [];
-    for (const item of items || []) {
-      const source = String(item?.source || 'recipe').trim() || 'recipe';
-      const label = source === 'recipe' ? pantryStapleLabel(item?.name) : '';
-      if (label) reminders.add(label);
-      else purchasable.push(item);
-    }
-    return {
-      items: purchasable,
-      pantryReminders: [...reminders].sort((left, right) => left.localeCompare(right, 'fr')),
-    };
+    const migrated = [...(items || [])];
+    const occupiedKeys = new Set(migrated.map(item => String(item?.key || item?.id || '').trim()).filter(Boolean));
+    const knownIdentities = new Set(migrated.map(item => legacyPantryReminderIdentity(item?.name)).filter(Boolean));
+
+    (pantryReminders || []).forEach((rawReminder, index) => {
+      const name = String(rawReminder || '').trim();
+      const identity = legacyPantryReminderIdentity(name);
+      if (!name || !identity || knownIdentities.has(identity)) return;
+      const baseKey = `legacy-pantry|${identity.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || `item-${index + 1}`}`;
+      let key = baseKey;
+      let suffix = 2;
+      while (occupiedKeys.has(key)) {
+        key = `${baseKey}-${suffix}`;
+        suffix += 1;
+      }
+      migrated.push({
+        key,
+        id: key,
+        aisle: 'À classer',
+        name,
+        q: 0,
+        unit: 'piece',
+        missingQty: true,
+        needsReview: true,
+        reviewReason: 'quantity_missing',
+        origins: [],
+        localProduct: true,
+        productType: 'local_generic',
+        source: 'legacy_pantry',
+      });
+      occupiedKeys.add(key);
+      knownIdentities.add(identity);
+    });
+
+    return { items: migrated, pantryReminders: [] };
   }
 
   function reviewReason(name, quantity) {
@@ -330,7 +354,7 @@
       if (!raw) continue;
       const oldKey = String(raw.key || raw.id || '').trim();
       const source = String(raw.source || 'recipe').trim() || 'recipe';
-      const shouldCanonicalize = source !== 'manual' && source !== 'user_replaced';
+      const shouldCanonicalize = source !== 'manual' && source !== 'user_replaced' && source !== 'legacy_pantry';
       const identity = shouldCanonicalize ? canonicalPurchaseIdentity(raw.name) : null;
       const key = identity ? `product|${identity.key}` : oldKey;
       if (!key) continue;
@@ -390,7 +414,6 @@
 
   function buildLocalGroceryPlan(selections = []) {
     const grouped = new Map();
-    const pantryReminders = new Set();
 
     for (const selection of selections) {
       const recipeId = String(selection?.recipeId || '').trim();
@@ -399,13 +422,8 @@
       const scale = servings / baseServings;
 
       for (const ingredient of selection?.ingredients || []) {
-        if (ingredient?.coursesStatus !== 'inclure') continue;
-
-        const pantryLabel = pantryStapleLabel(ingredient.name);
-        if (pantryLabel) {
-          pantryReminders.add(pantryLabel);
-          continue;
-        }
+        // Courses reflects every named recipe ingredient. Pantry status is not an exclusion rule.
+        if (!String(ingredient?.name || '').trim()) continue;
 
         const normalized = normalizedUnit(ingredient);
         const identity = canonicalPurchaseIdentity(ingredient.name);
@@ -457,7 +475,7 @@
       items: [...grouped.values()].map(canonicalizeGroceryQuantity).sort((left, right) =>
         left.aisle.localeCompare(right.aisle, 'fr') || left.name.localeCompare(right.name, 'fr'),
       ),
-      pantryReminders: [...pantryReminders].sort((left, right) => left.localeCompare(right, 'fr')),
+      pantryReminders: [],
     };
   }
 
@@ -468,9 +486,9 @@
   function removeRecipeFromLocalGroceryList({ items = [], checkedKeys = new Set(), recipeId = '', remainingSelections = [] } = {}) {
     const selectedRecipeId = String(recipeId || '').trim();
     const selections = (remainingSelections || []).filter(selection => String(selection?.recipeId || '').trim() !== selectedRecipeId);
-    const manualItems = (items || []).filter(item => String(item?.source || '').trim() === 'manual');
+    const preservedItems = (items || []).filter(item => ['manual', 'legacy_pantry'].includes(String(item?.source || '').trim()));
     const regenerated = buildLocalGroceryPlan(selections).items;
-    const merged = mergeLocalGroceryItems([...regenerated, ...manualItems]).items;
+    const merged = mergeLocalGroceryItems([...regenerated, ...preservedItems]).items;
     const validKeys = new Set(merged.map(item => String(item?.key || item?.id || '')).filter(Boolean));
     const checked = new Set([...(checkedKeys || [])].map(String).filter(key => validKeys.has(key)));
     return {
@@ -607,10 +625,7 @@
       if (!groups.has(aisle)) groups.set(aisle, []);
       groups.get(aisle).push(item);
     }
-    const reminders = [...new Set((pantryReminders || [])
-      .map(reminder => pantryStapleLabel(reminder) || String(reminder || '').trim())
-      .filter(Boolean))].sort((left, right) => left.localeCompare(right, 'fr'));
-    const reminderSection = reminders.length ? [`À vérifier chez vous : ${reminders.join(', ')}.`] : [];
+    const reminderSection = [];
     if (!groups.size) return ['Courses Mon Panier', ...reminderSection, 'Aucun produit.'].join('\n\n');
 
     const sections = [...groups.entries()]
@@ -688,8 +703,27 @@
   function normalizedGroceryList(list = {}, fallbackId = 'list-default') {
     const id = String(list.id || fallbackId).trim() || fallbackId;
     const recipeSelections = recipeSelectionsForList(list);
+    const preparedRecipeSelections = normalizedRecipeSelections(list.preparedRecipeSelections);
+    const rawPantryReminders = Array.isArray(list.pantryReminders) ? list.pantryReminders : [];
+    const legacySelections = recipeSelections.length ? recipeSelections : preparedRecipeSelections;
+    const canRestoreLegacyPantryItems = rawPantryReminders.length > 0
+      && legacySelections.some(selection => Array.isArray(selection.ingredients) && selection.ingredients.length > 0);
+    let items = cloneGroceryItems(list.items);
+    let checked = [...new Set(Array.isArray(list.checked) ? list.checked.map(String).filter(Boolean) : [])];
+    if (canRestoreLegacyPantryItems) {
+      const generated = buildLocalGroceryPlan(legacySelections).items;
+      const manualItems = items.filter(item => ['manual', 'user_replaced'].includes(String(item?.source || '')));
+      const merged = mergeLocalGroceryItems([...generated, ...manualItems]);
+      const validKeys = new Set(merged.items.map(item => item.key));
+      checked = checked
+        .map(key => merged.keyAliases.get(key) || key)
+        .filter(key => validKeys.has(key));
+      items = merged.items;
+    }
     const rawKind = String(list.kind || 'manual').trim();
     const kind = rawKind === 'meal' ? 'meal' : rawKind === 'basket' ? 'basket' : 'manual';
+    const migratedPantry = separatePantryStaples(items, rawPantryReminders);
+    items = migratedPantry.items;
     return {
       id,
       name: String(list.name || 'Ma liste').trim() || 'Ma liste',
@@ -700,15 +734,13 @@
       preparedRecipeCount: normalizedPreparedRecipeCount(list.preparedRecipeCount),
       // Read-only snapshot used to render the recipes that generated a prepared list.
       // It is deliberately separate from active recipe selections.
-      preparedRecipeSelections: normalizedRecipeSelections(list.preparedRecipeSelections),
+      preparedRecipeSelections,
       // sourceRecipeSelections is retained only as a backward-compatible read path.
       sourceRecipeSelections: recipeSelections.map(selection => ({ ...selection, ingredients: selection.ingredients.map(ingredient => ({ ...ingredient })) })),
       recipeSelections: recipeSelections.map(selection => ({ ...selection, ingredients: selection.ingredients.map(ingredient => ({ ...ingredient })) })),
-      items: cloneGroceryItems(list.items),
-      pantryReminders: [...new Set((Array.isArray(list.pantryReminders) ? list.pantryReminders : [])
-        .map(reminder => pantryStapleLabel(reminder) || String(reminder || '').trim())
-        .filter(Boolean))].sort((left, right) => left.localeCompare(right, 'fr')),
-      checked: [...new Set(Array.isArray(list.checked) ? list.checked.map(String).filter(Boolean) : [])],
+      items,
+      pantryReminders: migratedPantry.pantryReminders,
+      checked,
       history: Array.isArray(list.history) ? list.history.map(entry => ({ ...entry })) : [],
     };
   }
@@ -770,15 +802,15 @@
     return { activeListId: current.activeListId, lists };
   }
 
-  function mealManualItems(items = []) {
-    return cloneGroceryItems(items).filter(item => String(item?.source || '').trim() === 'manual');
+  function mealPersistentItems(items = []) {
+    return cloneGroceryItems(items).filter(item => ['manual', 'legacy_pantry'].includes(String(item?.source || '').trim()));
   }
 
   function buildMealListCourses(list = {}) {
     const meal = normalizedGroceryList({ ...list, kind: 'meal' }, list.id || 'list-default');
     const recipeSelections = normalizedRecipeSelections(meal.recipeSelections);
     const groceryPlan = buildLocalGroceryPlan(recipeSelections);
-    const merged = mergeLocalGroceryItems([...groceryPlan.items, ...mealManualItems(meal.items)]);
+    const merged = mergeLocalGroceryItems([...groceryPlan.items, ...mealPersistentItems(meal.items)]);
     const validKeys = new Set(merged.items.map(item => String(item?.key || item?.id || '')).filter(Boolean));
     const checked = [...new Set((meal.checked || []).map(String))].filter(key => validKeys.has(key));
     return normalizedGroceryList({
@@ -847,16 +879,36 @@
       : [];
     const usePreparedSnapshot = resumePrepared && activeSelections.length === 0 && preparedSelections.length > 0;
     const existingSelections = usePreparedSnapshot ? preparedSelections : activeSelections;
+    // A closed cycle still owns its prepared identities. A new active occurrence
+    // must never reuse one of them, even when its caller carried the old ID.
+    const knownSelections = normalizedRecipeSelections([
+      ...activeSelections,
+      ...normalizedRecipeSelections(list?.preparedRecipeSelections),
+    ]);
     const requestedSelectionId = String(selection?.selectionId || '').trim();
-    const selectionWithId = requestedSelectionId
+    const canReusePreparedSelectionId = usePreparedSnapshot
+      && existingSelections.some(item => item.selectionId === requestedSelectionId);
+    const requestedSelectionIdIsTaken = requestedSelectionId
+      && knownSelections.some(item => item.selectionId === requestedSelectionId);
+    const selectionWithId = requestedSelectionId && (!requestedSelectionIdIsTaken || canReusePreparedSelectionId)
       ? selection
-      : { ...selection, selectionId: nextSelectionId(existingSelections, selection) };
+      : { ...selection, selectionId: nextSelectionId(knownSelections, selection) };
     const nextSelection = normalizedRecipeSelection(selectionWithId, existingSelections.length);
     if (!list || !nextSelection) return current;
+    // A prepared list is a closed shopping cycle. The first new recipe opens a
+    // fresh cycle, so no old checked product may make it appear already complete.
+    const startsFreshCycle = !resumePrepared
+      && activeSelections.length === 0
+      && (
+        normalizedRecipeSelections(list.preparedRecipeSelections).length > 0
+        || Number(list.preparedRecipeCount) > 0
+        || (list.items || []).some(item => item?.source === 'recipe')
+      );
     const selections = normalizedRecipeSelections([...existingSelections, nextSelection]);
     if (usePreparedSnapshot) return rebuildPreparedMealListCourses(current, targetId, selections);
     const updated = updateGroceryListById(current, targetId, {
       ...list,
+      checked: startsFreshCycle ? [] : list.checked,
       kind: 'meal',
       basketId: '',
       recipeSelections: selections,
@@ -972,6 +1024,27 @@
     return rebuildMealListCourses(updated, targetId);
   }
 
+  function restoreMealListRecipeSelections(collection = {}, listId = '', selections = []) {
+    const current = createGroceryListCollection(collection);
+    const targetId = String(listId || current.activeListId || '').trim();
+    const list = current.lists.find(entry => entry.id === targetId);
+    const restoredSelections = normalizedRecipeSelections(selections);
+    if (!list || !restoredSelections.length) return current;
+    const updated = updateGroceryListById(current, targetId, {
+      ...list,
+      kind: 'meal',
+      basketId: '',
+      recipeSelections: restoredSelections,
+      sourceRecipeSelections: restoredSelections,
+      sourceRecipeIds: recipeIdsForSelections(restoredSelections),
+      preparedRecipeSelections: [],
+      preparedRecipeCount: 0,
+      checked: [],
+      pantryReminders: [],
+    });
+    return rebuildMealListCourses(updated, targetId);
+  }
+
   function migrateLegacyMealListCollection(collection = {}, { legacyCartSelections = [] } = {}) {
     const current = createGroceryListCollection(collection);
     const legacySelections = normalizedRecipeSelections(legacyCartSelections);
@@ -1013,8 +1086,7 @@
     const current = createGroceryListCollection(collection);
     const automatic = current.lists.filter(list => list.kind === 'basket' || list.basketId);
     const permanent = current.lists.find(list => list.id === 'list-default') || automatic[0];
-    const historyRecipeIds = [...(permanent?.history || [])].reverse().find(entry => Array.isArray(entry.recipeIds))?.recipeIds || [];
-    const sourceRecipeIds = permanent?.sourceRecipeIds?.length ? permanent.sourceRecipeIds : historyRecipeIds;
+    const sourceRecipeIds = permanent?.sourceRecipeIds?.length ? permanent.sourceRecipeIds : [];
     const manual = current.lists.filter(list => list.id !== permanent?.id && list.kind !== 'basket' && !list.basketId);
     const defaultList = normalizedGroceryList({
       ...(permanent || {}),
@@ -1075,6 +1147,7 @@
     resumePreparedMealListRecipe,
     updateMealListRecipeServings,
     removeMealListRecipe,
+    restoreMealListRecipeSelections,
     migrateLegacyMealListCollection,
     ensurePermanentBasketList,
     updatePermanentBasketList,

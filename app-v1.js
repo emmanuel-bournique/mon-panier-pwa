@@ -1390,11 +1390,12 @@
     return `<div class="preference-level-items">${values.map(value => `<div class="preference-level-item"><span>${escapeHtml(tasteLabel(value))}</span><button type="button" class="secondary" onclick="setAvoidLevel(decodeURIComponent('${encodeURIComponent(value)}'),'${level === 'soft' ? 'strict' : 'soft'}')">${level === 'soft' ? 'Rendre strict' : 'Remettre en souple'}</button><button type="button" class="preference-remove" aria-label="Retirer ${escapeHtml(tasteLabel(value))}" onclick="toggleProfilePreference('avoid',decodeURIComponent('${encodeURIComponent(value)}'))">×</button></div>`).join('')}</div>`;
   }
 
-  function preferenceOption(kind, value, label, image = '') {
+  function preferenceOption(kind, value, label, image = '', meta = '') {
     const selected = preferenceSelected(kind, value);
     const encoded = encodeURIComponent(value);
-    const search = normalizeSearch(`${value} ${label}`);
-    return `<button type="button" class="preference-option ${image ? 'with-image' : ''} ${selected ? 'selected' : ''}" data-preference-search="${escapeHtml(search)}" aria-pressed="${selected}" onclick="toggleProfilePreference('${kind}',decodeURIComponent('${encoded}'))">${image}<span>${escapeHtml(label)}</span><b aria-hidden="true">${selected ? '✓' : ''}</b></button>`;
+    const search = normalizeSearch(`${value} ${label} ${meta}`);
+    const copy = `<span class="preference-option-copy"><strong>${escapeHtml(label)}</strong>${meta ? `<small>${escapeHtml(meta)}</small>` : ''}</span>`;
+    return `<button type="button" class="preference-option ${image ? 'with-image' : ''} ${selected ? 'selected' : ''}" data-preference-search="${escapeHtml(search)}" aria-pressed="${selected}" onclick="toggleProfilePreference('${kind}',decodeURIComponent('${encoded}'))">${image}${copy}<b aria-hidden="true">${selected ? '✓' : ''}</b></button>`;
   }
 
   function renderPreferenceEditor() {
@@ -1410,18 +1411,19 @@
     if (kind === 'allergies') {
       title.textContent = 'Allergies';
       const noneSelected = !PROFILE.allergies.length;
-      body.innerHTML = `<p class="preference-help strict">Filtrage strict : toute recette incompatible ou incertaine est écartée. Les adaptations ne sont jamais une garantie pour une allergie ; vérifiez toujours l’étiquette du produit.</p><button type="button" class="preference-radio ${noneSelected ? 'selected' : ''}" aria-pressed="${noneSelected}" onclick="clearProfileAllergies()"><span>Aucune allergie</span><b aria-hidden="true">${noneSelected ? '✓' : ''}</b></button><div class="preference-option-grid">${Object.entries(allergenLabels).map(([value,label]) => preferenceOption('allergies', value, tasteLabel(label))).join('')}</div>`;
+      const allergyChoices = ALLERGY_CHOICES.map(([value, label, detail]) => preferenceOption('allergies', value, label, allergenVisual(value, label), detail)).join('');
+      body.innerHTML = `<p class="preference-help strict">Filtrage strict : toute recette incompatible ou incertaine est écartée. Les adaptations ne sont jamais une garantie pour une allergie ; vérifiez toujours l’étiquette du produit.</p><button type="button" class="preference-radio ${noneSelected ? 'selected' : ''}" aria-pressed="${noneSelected}" onclick="clearProfileAllergies()"><span>Aucune allergie</span><b aria-hidden="true">${noneSelected ? '✓' : ''}</b></button><p class="preference-catalog-note"><strong>14 familles suivies</strong><span>Les autres aliments ou sensibilités se gèrent séparément dans « Ne jamais proposer ».</span><button type="button" onclick="openPreferenceEditor('avoid')">Gérer les autres exclusions</button></p><div class="preference-option-grid preference-allergy-grid">${allergyChoices}</div>`;
       return;
     }
     const favorites = kind === 'favorites';
     title.textContent = favorites ? 'Goûts favoris' : 'Aliments à éviter';
     const selectedValues = favorites ? [...PROFILE.adored, ...PROFILE.liked] : [...PROFILE.avoid, ...PROFILE.strictAvoid];
-    const sourceChoices = favorites ? TASTE_CHOICES : [...WIZARD_STEPS[1].options.map(([value,label]) => [value,label,'']), ...AVOID_CHOICES];
+    const sourceChoices = favorites ? TASTE_CHOICES : [...AVOID_CHOICES, ...WIZARD_STEPS[1].options.map(([value,label]) => [value,label,foodMediaKey(value),''])];
     const uniqueChoices = [...new Map(sourceChoices.map(choice => [preferenceKey(choice[0]), choice])).values()];
     const selected = favorites
       ? (selectedValues.length ? `<div class="preference-selected">${selectedValues.map(value => `<button type="button" onclick="toggleProfilePreference('${kind}',decodeURIComponent('${encodeURIComponent(value)}'))">${escapeHtml(tasteLabel(value))} ×</button>`).join('')}</div>` : '')
       : `<section class="preference-level"><h3>À éviter si possible</h3><p>La recette reste accessible, mais elle descend dans le classement et affiche un avertissement.</p>${avoidLevelList(PROFILE.avoid, 'soft')}</section><section class="preference-level strict"><h3>Ne jamais proposer</h3><p>Exclusion stricte dans Découvrir, les rayons et les recherches.</p>${avoidLevelList(PROFILE.strictAvoid, 'strict')}</section>`;
-    body.innerHTML = `<p class="preference-help${favorites ? '' : ' strict'}">${favorites ? 'Ces choix font remonter les recettes correspondantes. Ils ne créent pas de contrainte médicale.' : 'Un aliment simplement évité n’est pas traité comme une allergie. Une adaptation n’est proposée que si elle est validée éditorialement.'}</p>${selected}<label class="preference-search" for="preferenceSearchInput"><span class="sr-only">Rechercher ou ajouter</span><input id="preferenceSearchInput" type="search" autocomplete="off" placeholder="Rechercher ou ajouter un aliment" oninput="preferenceSearch('${kind}',this)" onkeydown="if(event.key==='Enter'){event.preventDefault();addFreeProfilePreference('${kind}')}"><button id="preferenceFreeAdd" type="button" disabled onclick="addFreeProfilePreference('${kind}')">Ajouter</button></label><div class="${favorites ? 'preference-visual-grid' : 'preference-option-grid'}">${uniqueChoices.map(([value,label,recipeId]) => preferenceOption(kind, value, label, favorites && recipeId ? onboardingRecipeImage(recipeId, 'preference-choice-image') : '')).join('')}</div>`;
+    body.innerHTML = `<p class="preference-help${favorites ? '' : ' strict'}">${favorites ? 'Ces choix font remonter les recettes correspondantes. Ils ne créent pas de contrainte médicale.' : 'Un aliment simplement évité n’est pas traité comme une allergie. Une adaptation n’est proposée que si elle est validée éditorialement.'}</p>${selected}<label class="preference-search" for="preferenceSearchInput"><span class="sr-only">Rechercher ou ajouter</span><input id="preferenceSearchInput" type="search" autocomplete="off" placeholder="Rechercher ou ajouter un aliment" oninput="preferenceSearch('${kind}',this)" onkeydown="if(event.key==='Enter'){event.preventDefault();addFreeProfilePreference('${kind}')}"><button id="preferenceFreeAdd" type="button" disabled onclick="addFreeProfilePreference('${kind}')">Ajouter</button></label><div class="${favorites ? 'preference-visual-grid' : 'preference-visual-grid'}">${uniqueChoices.map(([value,label,mediaKey,category]) => preferenceOption(kind, value, label, onboardingFoodImage(mediaKey || foodMediaKey(value), 'preference-choice-image', label), category)).join('')}</div>`;
   }
 
   function openPreferenceEditor(kind) {
@@ -1740,33 +1742,84 @@
   const ONBOARDING_KEY = 'mon-panier-onboarding-useful-v1';
   const ONBOARDING_STEPS = 6;
   const TASTE_CHOICES = [
-    ['tomate','Tomate','r-v3-067-spaghetti-sauce-tomate-et-basilic'],
-    ['poulet','Poulet','r-v3-017-poulet-roti-au-citron-thym-et-pommes-de-terre'],
-    ['champignon','Champignons','r-v3-114-risotto-aux-champignons'],
-    ['chocolat','Chocolat','r-v3-147-mousse-au-chocolat'],
-    ['pomme de terre','Pommes de terre','r-v3-077-gratin-dauphinois'],
-    ['mozzarella','Mozzarella','r-v3-111-pizza-margherita'],
-    ['lentille','Lentilles','r-v3-002-curry-de-lentilles-corail-aux-epinards'],
-    ['poisson','Poisson','r-v3-133-fish-and-chips'],
-    ['oeuf','Œufs','r-v3-065-omelette-jambon-fromage'],
-    ['riz','Riz','r-v3-074-riz-a-la-tomate-et-oeuf'],
-    ['courgette','Courgettes','r-v3-170-gratin-de-ravioles-aux-courgettes'],
-    ['pois chiche','Pois chiches','r-v3-057-salade-de-pois-chiches-concombre-et-tomate'],
-    ['saumon','Saumon','r-v3-027-gratin-de-saumon-poireaux-et-pommes-de-terre'],
-    ['brocoli','Brocoli','r-v3-045-pates-au-brocoli-citron-et-parmesan'],
-    ['coco','Coco','r-v3-161-dahl-de-pois-chiches-au-lait-de-coco'],
-    ['pomme','Pommes','r-v3-149-tarte-aux-pommes'],
-    ['banane','Banane','r-v3-139-porridge-banane-et-cannelle'],
-    ['aubergine','Aubergines','r-v3-113-aubergines-a-la-parmigiana'],
-    ['crevette','Crevettes','r-v3-132-paella-poulet-et-crevettes'],
-    ['pâtes','Pâtes','r-v3-069-spaghetti-carbonara'],
-    ['boeuf','Bœuf','r-v3-092-boeuf-bourguignon'],
-    ['avocat','Avocat','r-v3-208-guacamole-et-tortilla-chips'],
-    ['carotte','Carottes','r-v3-054-veloute-de-carottes-gingembre-et-coco'],
-    ['épinard','Épinards','r-v3-047-lasagnes-aux-epinards-et-a-la-ricotta']
+    ['tomate','Tomate','tomate','Légumes'],
+    ['citron','Citron','citron jaune','Fruits & agrumes'],
+    ['poulet','Poulet','blanc de poulet','Viandes'],
+    ['champignon','Champignons','champignon de Paris','Légumes'],
+    ['chocolat','Chocolat','chocolat noir','Douceurs'],
+    ['pomme de terre','Pommes de terre','pomme de terre','Féculents'],
+    ['mozzarella','Mozzarella','mozzarella','Fromages'],
+    ['lentille','Lentilles','lentilles corail sèches','Légumineuses'],
+    ['poisson','Poisson','filet de poisson blanc','Poissons'],
+    ['oeuf','Œufs','oeuf','Œufs'],
+    ['riz','Riz','riz','Féculents'],
+    ['courgette','Courgettes','courgette','Légumes'],
+    ['pois chiche','Pois chiches','pois chiches cuits','Légumineuses'],
+    ['saumon','Saumon','filet de saumon','Poissons'],
+    ['brocoli','Brocoli','brocoli','Légumes'],
+    ['coco','Coco','lait de coco','Fruits & graines'],
+    ['pomme','Pommes','pomme','Fruits'],
+    ['banane','Banane','banane','Fruits'],
+    ['aubergine','Aubergines','aubergine','Légumes'],
+    ['crevette','Crevettes','crevette crue décortiquée','Fruits de mer'],
+    ['pâtes','Pâtes','pâtes courtes de blé','Féculents'],
+    ['boeuf','Bœuf','boeuf haché','Viandes'],
+    ['avocat','Avocat','avocat','Fruits & légumes'],
+    ['carotte','Carottes','carotte','Légumes'],
+    ['épinard','Épinards','épinards frais','Légumes'],
+    ['ail','Ail','ail','Aromates'],
+    ['oignon','Oignons','oignon jaune','Légumes'],
+    ['poivron','Poivrons','poivron rouge','Légumes'],
+    ['concombre','Concombre','concombre','Légumes'],
+    ['chou-fleur','Chou-fleur','chou-fleur','Légumes'],
+    ['haricot vert','Haricots verts','haricot vert','Légumes'],
+    ['petit pois','Petits pois','petits pois','Légumes'],
+    ['patate douce','Patate douce','patate douce','Féculents'],
+    ['poireau','Poireaux','poireau','Légumes'],
+    ['feta','Feta','feta','Fromages'],
+    ['parmesan','Parmesan','parmesan','Fromages'],
+    ['chevre','Chèvre','fromage de chèvre','Fromages'],
+    ['thon','Thon','thon au naturel','Poissons'],
+    ['orange','Orange','orange','Fruits & agrumes'],
+    ['quinoa','Quinoa','quinoa','Céréales & graines'],
+    ['yaourt','Yaourt','yaourt nature','Laitages'],
+    ['basilic','Basilic','basilic frais','Aromates'],
+    ['mais','Maïs','maïs doux nature','Céréales & graines']
   ];
+  function foodMediaKey(value) {
+    const key = preferenceKey(value);
+    return TASTE_CHOICES.find(([choice]) => preferenceKey(choice) === key)?.[2] || '';
+  }
   const AVOID_CHOICES = TASTE_CHOICES.map(choice => [...choice]);
-  const ALLERGY_CHOICES = [['cereales_contenant_du_gluten','Gluten'],['lait','Lait'],['oeufs','Œufs'],['arachides','Arachides'],['fruits_a_coque','Fruits à coque'],['poissons','Poisson'],['crustaces','Crustacés'],['soja','Soja'],['graines_de_sesame','Sésame'],['moutarde','Moutarde']];
+  const ALLERGY_CHOICES = [
+    ['cereales_contenant_du_gluten','Gluten','blé, seigle, orge, avoine'],
+    ['lait','Lait','lait et produits laitiers'],
+    ['oeufs','Œufs','œufs et préparations à base d’œufs'],
+    ['arachides','Arachides','cacahuètes et produits dérivés'],
+    ['fruits_a_coque','Fruits à coque','noix, amandes, noisettes…'],
+    ['poissons','Poisson','poissons et produits de la pêche'],
+    ['crustaces','Crustacés','crevettes, crabes, langoustines…'],
+    ['soja','Soja','soja et produits à base de soja'],
+    ['graines_de_sesame','Sésame','graines et pâte de sésame'],
+    ['moutarde','Moutarde','moutarde et préparations associées'],
+    ['celeri','Céleri','céleri et préparations associées'],
+    ['anhydride_sulfureux_et_sulfites','Sulfites','sulfites et anhydride sulfureux'],
+    ['lupin','Lupin','lupin et farines de lupin'],
+    ['mollusques','Mollusques','moules, huîtres, calamars…']
+  ];
+  const ALLERGY_MEDIA_KEYS = Object.freeze({
+    cereales_contenant_du_gluten: 'farine de blé',
+    lait: 'lait',
+    oeufs: 'oeuf',
+    arachides: 'cacahuètes grillées',
+    fruits_a_coque: 'noix',
+    poissons: 'filet de poisson blanc',
+    crustaces: 'crevette crue décortiquée',
+    soja: 'tofu ferme nature',
+    graines_de_sesame: 'tahini',
+    moutarde: 'moutarde de Dijon',
+    anhydride_sulfureux_et_sulfites: 'vin rouge'
+  });
   const ONBOARDING_HERO_IDS = ['r-v3-069-spaghetti-carbonara','r-v3-002-curry-de-lentilles-corail-aux-epinards','r-v3-137-pancakes-moelleux'];
   const onboardingSearch = { adored: '', avoid: '', strictAvoid: '' };
   let onboardingStep = 0;
@@ -2055,12 +2108,27 @@
   function onboardingMealMosaic(context = 'onboarding') {
     return `<div class="meal-mosaic ${context}" data-od-id="${context}-meal-mosaic" aria-label="Trois idées de plats finis">${ONBOARDING_HERO_IDS.map((id,index) => `<figure class="meal-mosaic-item meal-${index + 1}">${onboardingRecipeImage(id,'meal-mosaic-image')}</figure>`).join('')}</div>`;
   }
+  function onboardingFoodImage(mediaKey, className = '', alt = 'Aliment') {
+    const src = mediaUrl('ingredient', mediaKey, 'list');
+    if (!src) return '';
+    return `<img class="${className}" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" width="320" height="240" loading="lazy">`;
+  }
+  function allergenVisual(value, label, className = 'preference-choice-image') {
+    const image = onboardingFoodImage(ALLERGY_MEDIA_KEYS[value], className, label);
+    if (image) return image;
+    return `<span class="allergen-visual-fallback" role="img" aria-label="${escapeHtml(label)}">${escapeHtml(label.slice(0, 2).toLocaleUpperCase('fr'))}</span>`;
+  }
+  function onboardingAllergyChoice(value, label, detail) {
+    const selected = selectedClass('allergies', value);
+    return `<button type="button" class="onboarding-allergy${selected}" aria-pressed="${selected ? 'true' : 'false'}" onclick="onboardingToggle('allergies','${value}')">${allergenVisual(value, label, 'onboarding-allergy-image')}<span class="onboarding-allergy-copy"><strong>${escapeHtml(label)}</strong><small>${escapeHtml(detail)}</small></span>${selected ? '<b aria-hidden="true">✓</b>' : ''}</button>`;
+  }
   function onboardingChoiceGrid(group, choices) {
     const query = normalizeSearch(onboardingSearch[group].trim());
-    return `<div class="onboarding-taste-grid" data-onboarding-grid="${group}" data-od-id="${group}-choices">${choices.map(([value,label,recipeId], index) => {
-      const searchText = normalizeSearch(`${value} ${label}`);
+    return `<div class="onboarding-taste-grid" data-onboarding-grid="${group}" data-od-id="${group}-choices">${choices.map(([value,label,mediaKey,category], index) => {
+      const searchText = normalizeSearch(`${value} ${label} ${category || ''}`);
       const hidden = query && !searchText.includes(query) ? ' hidden' : '';
-      return `<button type="button" class="onboarding-taste${selectedClass(group,value)}" data-choice-search="${escapeHtml(searchText)}" data-choice-index="${index}" aria-pressed="${selectedClass(group,value) ? 'true' : 'false'}" onclick="onboardingToggle('${group}','${value}')"${hidden}>${onboardingRecipeImage(recipeId,'onboarding-taste-image')}<span>${label}</span></button>`;
+      const image = onboardingFoodImage(mediaKey || foodMediaKey(value), 'onboarding-taste-image', label);
+      return `<button type="button" class="onboarding-taste${selectedClass(group,value)}" data-choice-search="${escapeHtml(searchText)}" data-choice-index="${index}" aria-pressed="${selectedClass(group,value) ? 'true' : 'false'}" onclick="onboardingToggle('${group}','${value}')"${hidden}>${image}<span class="onboarding-taste-copy"><strong>${escapeHtml(label)}</strong>${category ? `<small>${escapeHtml(category)}</small>` : ''}</span>${selectedClass(group,value) ? '<b class="onboarding-taste-check" aria-hidden="true">✓</b>' : ''}</button>`;
     }).join('')}</div>`;
   }
   function onboardingSearchField(group, placeholder) {
@@ -2077,7 +2145,7 @@
     const draft = ensureOnboardingDraft();
     if (onboardingStep === 0) return onboardingShell('Les repas ? On s’en occupe.', 'Des idées pour la semaine, les bonnes quantités et la liste de courses déjà prête.', `${onboardingMealMosaic()}<div class="onboarding-benefits" aria-label="Bénéfices"><span>Idées adaptées</span><span>Semaine organisée</span><span>Courses prêtes</span></div>`, {skippable:false,effect:'Vos choix restent modifiables'});
     if (onboardingStep === 1) return onboardingShell('Comment mangez-vous ?', 'Ce choix retire les recettes incompatibles du catalogue.', `<div class="onboarding-list">${onboardingChoice('diet','none','Je mange de tout','wide')}${onboardingChoice('diet','vegetarian','Végétarien','wide')}${onboardingChoice('diet','vegan','Végan','wide')}</div>`, {eyebrow:'Alimentation'});
-    if (onboardingStep === 2) return onboardingShell('Des allergies ?', 'Elles bloquent strictement les recettes incompatibles ou incertaines.', `<button type="button" class="onboarding-none${draft.allergies.length ? '' : ' selected'}" onclick="onboardingClearAllergies()">Aucune allergie</button><div class="onboarding-chips">${ALLERGY_CHOICES.map(([value,label])=>onboardingChoice('allergies',value,label)).join('')}</div>`, {eyebrow:'Sécurité'});
+    if (onboardingStep === 2) return onboardingShell('Des allergies ?', 'Les 14 familles suivies ici bloquent strictement les recettes incompatibles. Pour un autre aliment ou une sensibilité, utilisez « Ne jamais proposer » à l’étape suivante.', `<button type="button" class="onboarding-none${draft.allergies.length ? '' : ' selected'}" onclick="onboardingClearAllergies()">Aucune allergie</button><div class="onboarding-allergy-grid">${ALLERGY_CHOICES.map(([value,label,detail]) => onboardingAllergyChoice(value,label,detail)).join('')}</div>`, {eyebrow:'Sécurité',effect:'14 familles allergènes disponibles'});
     if (onboardingStep === 3) return onboardingShell('Qu’est-ce qui vous donne envie ?', 'Choisissez tout ce qui vous plaît. Ces goûts guideront vos idées.', `${onboardingSearchField('adored','Rechercher un goût')}${onboardingChoiceGrid('adored',TASTE_CHOICES)}`, {effect:`${draft.adored.length} goût${draft.adored.length>1?'s':''} sélectionné${draft.adored.length>1?'s':''}`});
     if (onboardingStep === 4) return onboardingShell('Pour combien cuisinez-vous ?', 'Définissez les portions habituelles, puis choisissez ce qui doit seulement être évité ou ne jamais être proposé.', `<div class="onboarding-household" data-od-id="household-stepper"><span><strong>Portions habituelles</strong><small>Modifiables dans chaque recette</small></span><div><button type="button" onclick="onboardingHousehold(-1)" aria-label="Retirer une portion">−</button><b data-household-count>${draft.householdSize}</b><button type="button" onclick="onboardingHousehold(1)" aria-label="Ajouter une portion">+</button></div></div><div class="onboarding-avoid-head"><h2>À éviter si possible</h2><button type="button" onclick="onboardingClearAvoid()">Tout effacer</button></div><p class="wizard-copy">La recette peut rester visible si l’aliment est retirable ou si une adaptation validée existe.</p>${onboardingSearchField('avoid','Rechercher un aliment')}${onboardingChoiceGrid('avoid',AVOID_CHOICES)}<div class="onboarding-avoid-head"><h2>Ne jamais proposer</h2></div><p class="wizard-copy">Exclusion stricte dans les rayons et les recherches. Ce réglage ne remplace jamais une allergie.</p>${onboardingChoiceGrid('strictAvoid',AVOID_CHOICES)}`, {effect:`${draft.avoid.length + draft.strictAvoid.length} aliment${draft.avoid.length + draft.strictAvoid.length > 1 ? 's' : ''} classé${draft.avoid.length + draft.strictAvoid.length > 1 ? 's' : ''}`});
     return onboardingShell('Tout est prêt pour commencer.', 'Vos choix restent personnels et modifiables dans Profil.', `<div class="onboarding-summary"><span><b>${onboardingCompatibleCount()}</b> recettes compatibles</span><span><b>${draft.adored.length}</b> goûts choisis</span><span><b>${draft.householdSize}</b> portion${draft.householdSize>1?'s':''}</span></div><div class="onboarding-access"><button class="onboarding-guest" type="button" data-od-id="continue-as-guest" onclick="onboardingFinish('guest')">Continuer</button></div>`, {hideFooter:true,skippable:false});
@@ -3190,8 +3258,7 @@
       return left.name.localeCompare(right.name, 'fr');
     }
     const generated = Object.entries(groups).sort(([left], [right]) => left.localeCompare(right, 'fr')).map(([aisle, items]) => `<section class="group"><h2 class="group-title">${escapeHtml(aisle)}</h2><div class="grocery-groups">${items.sort(sortMealListGroceries).map(mealListGroceryRowHtml).join('')}</div></section>`).join('');
-    const pantryReminder = `<aside class="pantry-reminder" aria-label="Rappel de placard"><strong>À vérifier chez vous</strong><p>huile de cuisson, sel et poivre classiques.</p><small>Ces indispensables ne sont pas ajoutés automatiquement.</small></aside>`;
-    return `<section class="meal-list-screen" data-screen="groceries" data-meal-list-id="${escapeHtml(active.id)}"><div class="meal-list-title"><h2>${escapeHtml(active.name)}</h2></div><div class="meal-list-remaining"><strong>${summary.remaining}</strong> produit${summary.remaining > 1 ? 's' : ''} restant${summary.remaining > 1 ? 's' : ''}</div>${renderMealListRecipes(active)}<section class="meal-list-courses">${pantryReminder}${renderManualAdd()}${summary.complete ? `<div class="done-banner">${icon('check')}<div><strong>Courses terminées</strong><span>Tous les produits sont cochés.</span></div></div>` : ''}${summary.total ? generated : '<div class="empty meal-list-courses-empty"><h2>Vos Courses sont vides</h2><p>Aucun produit à cocher.</p></div>'}</section></section>`;
+    return `<section class="meal-list-screen" data-screen="groceries" data-meal-list-id="${escapeHtml(active.id)}"><div class="meal-list-title"><h2>${escapeHtml(active.name)}</h2></div><div class="meal-list-remaining"><strong>${summary.remaining}</strong> produit${summary.remaining > 1 ? 's' : ''} restant${summary.remaining > 1 ? 's' : ''}</div>${renderMealListRecipes(active)}<section class="meal-list-courses">${renderManualAdd()}${summary.complete ? `<div class="done-banner">${icon('check')}<div><strong>Courses terminées</strong><span>Tous les produits sont cochés.</span></div></div>` : ''}${summary.total ? generated : '<div class="empty meal-list-courses-empty"><h2>Vos Courses sont vides</h2><p>Aucun produit à cocher.</p></div>'}</section></section>`;
   }
 
   renderGroceries = function renderMealLists() {
@@ -3557,9 +3624,7 @@
     const target = mealListById('list-default', collection || undefined);
     if (!target) return false;
     const active = mealListRecipeSelections(target);
-    const prepared = mealListPreparedRecipeSelections(target);
-    return active.some(selection => selection.recipeId === recipeId)
-      || prepared.some(selection => selection.recipeId === recipeId);
+    return active.some(selection => selection.recipeId === recipeId);
   }
 
   function syncPersonalRecipeActionCartControls(recipeId, collection = null) {
@@ -3579,18 +3644,17 @@
     const saved = syncActiveGroceryListFromState();
     const target = mealListById('list-default', saved);
     if (!target) return false;
-    const existing = mealListSelectionForDirectMutation(target, source.id);
-    const mutationCollection = mealListDirectMutationCollection(saved, target);
+    const existing = mealListRecipeSelections(target).find(selection => selection.recipeId === source.id);
     let updated;
     if (existing) {
-      updated = GROCERY_CORE.removeMealListRecipe(mutationCollection, target.id, existing.selectionId);
+      updated = GROCERY_CORE.removeMealListRecipe(saved, target.id, existing.selectionId);
     } else {
       const ingredients = activeIngredientsForRecipe(source);
       if (!hasUsableIngredients(ingredients)) {
         toast('Ajoutez au moins un ingrédient avant de l’ajouter au Panier');
         return false;
       }
-      updated = GROCERY_CORE.addMealListRecipe(mutationCollection, target.id, {
+      updated = GROCERY_CORE.addMealListRecipe(saved, target.id, {
         recipeId: source.id,
         servings: Math.max(1, Number(PROFILE.householdSize) || source.servings || 1),
         baseServings: Math.max(1, Number(source.servings) || 1),
@@ -3694,9 +3758,7 @@
     const list = mealListById('list-default');
     const source = recipe(id);
     if (!source) return false;
-    const selections = mealListRecipeSelections(list).length
-      ? mealListRecipeSelections(list)
-      : mealListPreparedRecipeSelections(list);
+    const selections = mealListRecipeSelections(list);
     return selections.some(selection => selection.recipeId === source.id && !selectionVersionInfo(selection, source).modified);
   }
   function syncDiscoverCartControls(id) {
@@ -3709,18 +3771,15 @@
     const target = mealListById('list-default', saved);
     if (!target) return false;
     const activeSelections = mealListRecipeSelections(target);
-    const preparedSelections = activeSelections.length ? [] : mealListPreparedRecipeSelections(target);
-    const sourceSelections = activeSelections.length ? activeSelections : preparedSelections;
-    const matching = sourceSelections.filter(selection => selection.recipeId === source.id);
+    const matching = activeSelections.filter(selection => selection.recipeId === source.id);
     const originalSelection = matching.find(selection => !selectionVersionInfo(selection, source).modified);
     if (!originalSelection && !hasUsableIngredients(source.ingredients)) {
       toast('Ajoutez au moins un ingrédient avant de l’ajouter au Panier');
       return false;
     }
-    const mutationCollection = mealListDirectMutationCollection(saved, target);
     const updated = originalSelection
-      ? GROCERY_CORE.removeMealListRecipe(mutationCollection, target.id, originalSelection.selectionId)
-      : GROCERY_CORE.addMealListRecipe(mutationCollection, target.id, {
+      ? GROCERY_CORE.removeMealListRecipe(saved, target.id, originalSelection.selectionId)
+      : GROCERY_CORE.addMealListRecipe(saved, target.id, {
           recipeId: source.id,
           servings: Math.max(1, Number(servings) || PROFILE.householdSize || source.servings || 1),
           baseServings: Math.max(1, Number(source.servings) || 1),
@@ -4045,7 +4104,6 @@
   function archiveRecipeSelections(selections) {
     const items = selections.map(selection => [selection.recipeId, selection.servings, selection.selectionId]);
     const signature = items.slice().sort(([leftId, leftServings, leftSelectionId], [rightId, rightServings, rightSelectionId]) => `${leftId}:${leftServings}:${leftSelectionId}`.localeCompare(`${rightId}:${rightServings}:${rightSelectionId}`)).map(([id, servings, selectionId]) => `${id}:${servings}:${selectionId}`).join('|');
-    if (state.archived[0]?.signature === signature) return false;
     state.archived.unshift({
       id: Date.now(),
       date: 'Aujourd’hui',
@@ -4061,6 +4119,51 @@
     state.archived = state.archived.slice(0, 12);
     return true;
   }
+
+  function archiveSelectionsForResume(archive) {
+    const versions = new Map((archive?.versions || []).map(version => [String(version?.selectionId || ''), version]));
+    return (archive?.items || []).map(([recipeId, servings, selectionId], index) => {
+      const source = recipe(recipeId);
+      if (!source) return null;
+      const version = versions.get(String(selectionId || ''));
+      const ingredients = Array.isArray(version?.ingredients) && version.ingredients.length
+        ? version.ingredients
+        : source.ingredients;
+      return {
+        selectionId: String(selectionId || version?.selectionId || `${recipeId}--archive-${index + 1}`),
+        recipeId: source.id,
+        servings: Math.max(1, Number(servings) || source.servings || PROFILE.householdSize || 1),
+        baseServings: Math.max(1, Number(source.servings) || 1),
+        ingredients: (ingredients || []).map(item => ({ ...item })),
+      };
+    }).filter(Boolean);
+  }
+
+  window.askResume = function resumeArchivedCart(archiveId) {
+    const archive = state.archived.find(entry => String(entry?.id) === String(archiveId));
+    if (!archive) return false;
+    const selections = archiveSelectionsForResume(archive);
+    if (!selections.length) {
+      toast('Ce panier ne contient plus de recette disponible');
+      return false;
+    }
+    const saved = syncActiveGroceryListFromState();
+    const restored = GROCERY_CORE.restoreMealListRecipeSelections(saved, 'list-default', selections);
+    const target = mealListById('list-default', restored);
+    if (!target) return false;
+    loadActiveGroceryList({ ...restored, activeListId: target.id });
+    state.mealListTargetId = target.id;
+    state.mealListOrigin = 'archives';
+    state.mealListRecipesExpanded = false;
+    state.tab = 'cart';
+    state.groceryView = 'detail';
+    state.detail = null;
+    persistAppState();
+    render();
+    screen.scrollTop = 0;
+    toast('Panier repris depuis l’historique');
+    return true;
+  };
 
   window.generateGroceries = function mealListOpenCourses() {
     return window.prepareCartGroceries();
