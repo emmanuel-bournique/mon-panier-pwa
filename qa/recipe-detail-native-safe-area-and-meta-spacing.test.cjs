@@ -28,6 +28,16 @@ function alignedDetailHeaderRules() {
   return css.slice(start, end + endMarker.length);
 }
 
+function installedPwaSafeAreaRules() {
+  const startMarker = '/* detail-installed-pwa-safe-area-v2:start */';
+  const endMarker = '/* detail-installed-pwa-safe-area-v2:end */';
+  const start = css.indexOf(startMarker);
+  const end = css.indexOf(endMarker, start);
+  assert.notEqual(start, -1, 'le correctif du viewport PWA installé doit être présent');
+  assert.notEqual(end, -1, 'le correctif du viewport PWA installé doit être borné');
+  return css.slice(start, end + endMarker.length);
+}
+
 function lastClearanceValue(rules) {
   const matches = [...rules.matchAll(/--detail-actions-clearance:\s*(\d+)px/g)];
   assert.ok(matches.length, 'la réserve entre vignettes et actions doit rester explicite');
@@ -49,7 +59,7 @@ test('la photo de détail passe sous la zone haute dans une WKWebView iPhone', (
   );
 });
 
-test('la fiche remplace la bande blanche par le héros et aligne ses contrôles sous la zone système', () => {
+test('le fallback de fiche utilise l’inset exposé par la surface et aligne ses contrôles', () => {
   const rules = alignedDetailHeaderRules();
 
   assert.match(rules, /@media\s*\(max-width:\s*560px\)/);
@@ -67,6 +77,23 @@ test('la fiche remplace la bande blanche par le héros et aligne ses contrôles 
   assert.match(rules, /\.phone:has\(\.detail\) \.app-header\{top:var\(--detail-header-top\)!important\}/);
   assert.match(rules, /\.detail-hero-copy\{top:var\(--detail-copy-top\)\}/);
   assert.doesNotMatch(rules, /safe-area-inset-top\) \+ 24px/, 'aucune marge artificielle de 24 px ne doit repousser le haut de la fiche');
+});
+
+test('la PWA installée ne recompte pas la zone système iPhone dans le haut de fiche', () => {
+  const rules = installedPwaSafeAreaRules();
+
+  assert.match(
+    rules,
+    /@media\s*\(max-width:\s*560px\)\s*and\s*\(display-mode:\s*standalone\)/,
+    'le réglage ne doit cibler que la PWA installée, pas le bundle natif',
+  );
+  assert.match(rules, /--detail-header-top:\s*2px/, 'Retour/Favori doivent commencer juste après la réserve iPhone déjà appliquée');
+  assert.match(
+    rules,
+    /--detail-copy-top:\s*calc\(var\(--detail-header-top\)\s*\+\s*54px\)/,
+    'titre et description doivent suivre immédiatement les contrôles sans second décalage',
+  );
+  assert.doesNotMatch(rules, /safe-area-inset-top/, 'la PWA installée ne doit pas additionner une seconde fois les 59 px système');
 });
 
 test('les vignettes gardent le même espace que les deux boutons du détail', () => {

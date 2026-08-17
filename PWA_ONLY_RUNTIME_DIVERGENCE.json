@@ -1,10 +1,10 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260817-detail-empty-cart-v15",
-  "reason": "PWA-only update explicitly requested; the non-published Xcode bundle remains on its prior runtime.",
+  "runtime_revision": "20260817-detail-standalone-safe-area-v16",
+  "reason": "PWA-only correction after real iPhone validation; the non-published Xcode bundle remains on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "69198fb12c5db44b2a9f934f8caacef3fd2984e6c96ac1335672467b35bdfb66",
+      "candidate_sha256": "2f8501e780409a9ee2b0323234a5b805dc95febe0e31a983c1516b245c778322",
       "canonical_sha256": "24075f33ed51249703983f708ba0b6d36872f39bb36bde65583917b304ffe936"
     },
     "app-v1.js": {
@@ -12,7 +12,7 @@
       "canonical_sha256": "4419d6d80b3c31af3f967418bde37e1d51bb8c6b0cd9d644e04d09b760f053ad"
     },
     "sw.js": {
-      "candidate_sha256": "5fbc30d54cd55fe17f84e2c80fc6bbcaad9aac615136421b36e23f498c852a87",
+      "candidate_sha256": "b5d1f572c6d217cc14e973734f1382bc56ec7f516d43a2bcabf44ce05409f1d8",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }

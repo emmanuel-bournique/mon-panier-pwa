@@ -1516,3 +1516,12 @@ html,body{background:#f8fcf9}
   .detail-hero-copy{top:var(--detail-copy-top)}
 }
 /* detail-safe-area-header-alignment-v1:end */
+
+/* detail-installed-pwa-safe-area-v2:start */
+@media (max-width:560px) and (display-mode:standalone){
+  .phone:has(.detail){
+    --detail-header-top:2px;
+    --detail-copy-top:calc(var(--detail-header-top) + 54px);
+  }
+}
+/* detail-installed-pwa-safe-area-v2:end */
