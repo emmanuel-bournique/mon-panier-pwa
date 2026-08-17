@@ -950,10 +950,10 @@
     const hasLibraryFilter = !mine && collection.length > 0 && state.libraryCollection !== 'all';
     const emptyAction = state.librarySearch || hasLibraryFilter
       ? `<button class="primary" onclick="setLibrarySearch('');setLibraryCollection('all')">${state.librarySearch ? 'Effacer la recherche' : 'Effacer le filtre'}</button>`
-      : mine ? '' : `<button class="primary" onclick="setTab('discover')">Découvrir</button>`;
+      : mine ? '' : `<button class="primary" onclick="setTab('discover')">Accéder à Découvrir</button>`;
     const emptyTitle = state.librarySearch ? 'Aucun résultat' : hasLibraryFilter ? 'Aucune recette dans ce filtre' : mine ? 'Aucune recette personnelle' : 'Aucun favori';
-    const emptyCopy = state.librarySearch ? 'Essayez un autre mot ou retirez le filtre.' : hasLibraryFilter ? 'Essayez « Tout » ou un autre filtre.' : mine ? 'Aucune recette personnelle. Utilisez le bouton + pour en créer une.' : 'Le cœur garde une recette ici.';
-    return `<section data-screen="favorites"><div class="library-tabs"><button class="library-tab ${mine ? '' : 'active'}" onclick="setLibraryView('favorites')">Mes favoris</button><button class="library-tab ${mine ? 'active' : ''}" onclick="setLibraryView('personal')">Mes recettes${personal.length ? ` · ${personal.length}` : ''}</button></div>${libraryTools}${list.length ? `<div class="recipe-grid">${sortedList.map(item => card(item, navigationIds)).join('')}</div>` : `<div class="empty"><div class="empty-mark">${icon(mine ? 'list' : 'heart')}</div><h2>${emptyTitle}</h2><p>${emptyCopy}</p>${emptyAction}</div>`}${mine ? renderDeletedPersonal() : ''}</section>`;
+    const emptyCopy = state.librarySearch ? 'Essayez un autre mot ou retirez le filtre.' : hasLibraryFilter ? 'Essayez « Tout » ou un autre filtre.' : mine ? 'Utilisez le bouton + pour en créer une.' : '';
+    return `<section data-screen="favorites"><div class="library-tabs"><button class="library-tab ${mine ? '' : 'active'}" onclick="setLibraryView('favorites')">Mes favoris</button><button class="library-tab ${mine ? 'active' : ''}" onclick="setLibraryView('personal')">Mes recettes${personal.length ? ` · ${personal.length}` : ''}</button></div>${libraryTools}${list.length ? `<div class="recipe-grid">${sortedList.map(item => card(item, navigationIds)).join('')}</div>` : `<div class="empty"><div class="empty-mark">${icon(mine ? 'list' : 'heart')}</div><h2>${emptyTitle}</h2>${emptyCopy ? `<p>${emptyCopy}</p>` : ''}${emptyAction}</div>`}${mine ? renderDeletedPersonal() : ''}</section>`;
   };
 
   const DEFAULT_DETAIL_FRAMING = Object.freeze({ focalX: 50, focalY: 50, scale: 1, fit: 'cover' });
@@ -3513,13 +3513,18 @@
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 20 4.2-1 10-10a2.2 2.2 0 0 0-3.1-3.1l-10 10L4 20Z"></path><path d="m13.7 7.3 3 3"></path></svg>';
   }
 
+  function recipeActionCartChoiceHtml(safeId, added) {
+    return `<button type="button" class="recipe-action-choice recipe-action-cart-choice" data-in-cart="${added}" onclick="toggleRecipeActionCart('${safeId}')"><span class="recipe-action-choice-icon recipe-action-cart-icon">${icon(added ? 'check' : 'cart')}</span><span><strong>${added ? 'Dans Mon Panier' : 'Ajouter au Panier'}</strong>${added ? '<small>Appuyer pour retirer</small>' : ''}</span><span class="recipe-action-arrow" aria-hidden="true">›</span></button>`;
+  }
+
   card = function mealListCard(source, navigationIds = []) {
     const favorite = state.favorites.has(source.id);
     const manual = isManualPersonalRecipe(source);
     const difficulty = difficultyLabels[source.difficultyKey] || source.difficulty || 'Facile';
     const benefit = cardBenefit(source);
     const safeId = localGroceryInlineKey(source.id);
-    return `<article class="recipe-card" data-recipe-id="${source.id}" tabindex="0" role="button" aria-label="Voir ${escapeHtml(source.title)}" onclick="openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})" onkeydown="if(event.key==='Enter')openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})"><div class="cover">${coverHtml(source, false, false)}<button type="button" class="round-btn recipe-action-btn" data-favorite="${favorite}" aria-label="Actions de la recette ${escapeHtml(source.title)}" title="Actions de la recette" onclick="event.stopPropagation();openRecipeActionMenu('${safeId}',this)">${recipeActionIcon()}</button></div><div class="card-body"><h3>${escapeHtml(source.title)}</h3><div class="card-meta">${manual ? (personalRecipeMetadataForCard(source).length ? `<span class="personal-card-meta" data-personal-metadata="true">${escapeHtml(personalRecipeMetadataForCard(source).join(' · '))}</span>` : '') : `<span class="time">${source.total} min · ${escapeHtml(difficulty)}</span>`}</div><div class="card-bottom">${cardQualityHtml(source, benefit)}</div></div></article>`;
+    const inCart = source.personal ? personalRecipeActionInCart(source.id) : discoverCartContains(source.id);
+    return `<article class="recipe-card" data-recipe-id="${source.id}" tabindex="0" role="button" aria-label="Voir ${escapeHtml(source.title)}" onclick="openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})" onkeydown="if(event.key==='Enter')openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})"><div class="cover">${coverHtml(source, false, false)}<button type="button" class="round-btn recipe-action-btn" data-favorite="${favorite}" data-in-cart="${inCart}" data-action-label="Actions de la recette ${escapeHtml(source.title)}" aria-label="Actions de la recette ${escapeHtml(source.title)}${inCart ? ' — dans Mon Panier' : ''}" title="Actions de la recette" onclick="event.stopPropagation();openRecipeActionMenu('${safeId}',this)">${recipeActionIcon()}<span class="recipe-action-cart-status" aria-hidden="true">${icon('check')}</span></button></div><div class="card-body"><h3>${escapeHtml(source.title)}</h3><div class="card-meta">${manual ? (personalRecipeMetadataForCard(source).length ? `<span class="personal-card-meta" data-personal-metadata="true">${escapeHtml(personalRecipeMetadataForCard(source).join(' · '))}</span>` : '') : `<span class="time">${source.total} min · ${escapeHtml(difficulty)}</span>`}</div><div class="card-bottom">${cardQualityHtml(source, benefit)}</div></div></article>`;
   };
 
   function ensureRecipeActionPanel() {
@@ -3537,11 +3542,11 @@
     const body = document.getElementById('recipeActionPanelBody');
     if (source.personal) {
       const added = personalRecipeActionInCart(source.id);
-      body.innerHTML = `<button type="button" class="recipe-action-choice recipe-action-cart-choice" onclick="toggleRecipeActionCart('${safeId}')"><span class="recipe-action-choice-icon recipe-action-cart-icon">${icon(added ? 'check' : 'cart')}</span><span><strong>${added ? 'Retirer du Panier' : 'Ajouter au Panier'}</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button><button type="button" class="recipe-action-choice recipe-action-lists-choice" onclick="openRecipeActionLists('${safeId}')"><span class="recipe-action-choice-icon recipe-action-list-icon">${icon('list')}</span><span><strong>Ajouter à une liste</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button><button type="button" class="recipe-action-choice recipe-action-edit-choice" onclick="openRecipeActionEditor('${safeId}')"><span class="recipe-action-choice-icon recipe-action-edit-icon">${recipeActionEditIcon()}</span><span><strong>Éditer la recette</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button><button type="button" class="recipe-action-choice recipe-action-delete-choice" onclick="askDeletePersonalRecipeFromAction('${safeId}')"><span class="recipe-action-choice-icon recipe-action-delete-icon">${icon('trash')}</span><span><strong>Supprimer</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button>`;
+      body.innerHTML = `${recipeActionCartChoiceHtml(safeId, added)}<button type="button" class="recipe-action-choice recipe-action-lists-choice" onclick="openRecipeActionLists('${safeId}')"><span class="recipe-action-choice-icon recipe-action-list-icon">${icon('list')}</span><span><strong>Ajouter à une liste</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button><button type="button" class="recipe-action-choice recipe-action-edit-choice" onclick="openRecipeActionEditor('${safeId}')"><span class="recipe-action-choice-icon recipe-action-edit-icon">${recipeActionEditIcon()}</span><span><strong>Éditer la recette</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button><button type="button" class="recipe-action-choice recipe-action-delete-choice" onclick="askDeletePersonalRecipeFromAction('${safeId}')"><span class="recipe-action-choice-icon recipe-action-delete-icon">${icon('trash')}</span><span><strong>Supprimer</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button>`;
       return panel;
     }
     const added = discoverCartContains(source.id);
-    body.innerHTML = `<button type="button" class="recipe-action-choice recipe-action-cart-choice" onclick="toggleRecipeActionCart('${safeId}')"><span class="recipe-action-choice-icon recipe-action-cart-icon">${icon(added ? 'check' : 'cart')}</span><span><strong>${added ? 'Retirer du Panier' : 'Ajouter au Panier'}</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button><button type="button" class="recipe-action-choice recipe-action-favorite-choice" data-favorite="${state.favorites.has(source.id)}" onclick="toggleRecipeActionFavorite('${safeId}')"><span class="recipe-action-choice-icon">${icon('heart')}</span><span><strong>${state.favorites.has(source.id) ? 'Retirer des favoris' : 'Ajouter aux favoris'}</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button><button type="button" class="recipe-action-choice recipe-action-lists-choice" onclick="openRecipeActionLists('${safeId}')"><span class="recipe-action-choice-icon recipe-action-list-icon">${icon('list')}</span><span><strong>Ajouter à une liste</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button>`;
+    body.innerHTML = `${recipeActionCartChoiceHtml(safeId, added)}<button type="button" class="recipe-action-choice recipe-action-favorite-choice" data-favorite="${state.favorites.has(source.id)}" onclick="toggleRecipeActionFavorite('${safeId}')"><span class="recipe-action-choice-icon">${icon('heart')}</span><span><strong>${state.favorites.has(source.id) ? 'Retirer des favoris' : 'Ajouter aux favoris'}</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button><button type="button" class="recipe-action-choice recipe-action-lists-choice" onclick="openRecipeActionLists('${safeId}')"><span class="recipe-action-choice-icon recipe-action-list-icon">${icon('list')}</span><span><strong>Ajouter à une liste</strong></span><span class="recipe-action-arrow" aria-hidden="true">›</span></button>`;
     return panel;
   }
 
@@ -3627,8 +3632,21 @@
     return active.some(selection => selection.recipeId === recipeId);
   }
 
+  function syncRecipeActionCartCards(recipeId, added) {
+    const expectedId = String(recipeId);
+    document.querySelectorAll('.recipe-card[data-recipe-id]').forEach(card => {
+      if (card.dataset.recipeId !== expectedId) return;
+      const button = card.querySelector('.recipe-action-btn');
+      if (!button) return;
+      button.dataset.inCart = String(added);
+      const actionLabel = button.dataset.actionLabel || 'Actions de la recette';
+      button.setAttribute('aria-label', `${actionLabel}${added ? ' — dans Mon Panier' : ''}`);
+    });
+  }
+
   function syncPersonalRecipeActionCartControls(recipeId, collection = null) {
     const added = personalRecipeActionInCart(recipeId, collection);
+    syncRecipeActionCartCards(recipeId, added);
     renderNav();
     return added;
   }
@@ -3762,7 +3780,10 @@
     return selections.some(selection => selection.recipeId === source.id && !selectionVersionInfo(selection, source).modified);
   }
   function syncDiscoverCartControls(id) {
+    const added = discoverCartContains(id);
+    syncRecipeActionCartCards(id, added);
     renderNav();
+    return added;
   }
   function applyMealListMutationForTarget(collection, targetId) {
     if (collection.activeListId === targetId) {

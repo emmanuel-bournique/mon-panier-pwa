@@ -680,6 +680,15 @@ button:active{transform:translateY(1px)}
 @media(max-width:560px){.recipe-action-overlay .sheet{width:min(282px,calc(100% - 24px));max-height:calc(100% - 24px)}}
 /* recipe-action-menu-v1:end */
 
+/* recipe-action-cart-state-v1:start */
+.recipe-action-cart-status{display:none;position:absolute;right:-3px;bottom:-3px;width:17px;height:17px;place-items:center;border:2px solid rgba(255,255,255,.92);border-radius:999px;background:var(--green);color:#fff;box-shadow:0 2px 5px rgba(18,61,44,.26)}
+.recipe-action-cart-status svg{width:10px!important;height:10px!important;margin:0!important;opacity:1!important;filter:none!important}
+.recipe-action-btn[data-in-cart="true"] .recipe-action-cart-status{display:grid}
+.recipe-action-cart-choice[data-in-cart="true"]{border-color:#b8dcc5;background:rgba(227,244,233,.9)}
+.recipe-action-cart-choice[data-in-cart="true"] .recipe-action-choice-icon{background:var(--green);color:#fff}
+.recipe-action-cart-choice small{display:block;margin-top:2px;color:#5d7167;font-size:9.5px;line-height:1.2}
+/* recipe-action-cart-state-v1:end */
+
 /* mobile-readability-and-safe-sheet-v1:start */
 @media (max-width:560px) {
   .overlay {
@@ -1495,3 +1504,15 @@ html,body{background:#f8fcf9}
   .phone:has(.detail) .detail-hero-meta{right:12px;left:12px}
 }
 /* native-edge-to-edge-detail-v1:end */
+
+/* detail-safe-area-header-alignment-v1:start */
+@media(max-width:560px){
+  .phone:has(.detail){
+    --detail-header-top:max(60px,calc(env(safe-area-inset-top) + 2px));
+    --detail-copy-top:calc(var(--detail-header-top) + 54px);
+  }
+  .phone:has(.detail),.phone:has(.detail) .scroll{background:#0d1713}
+  .phone:has(.detail) .app-header{top:var(--detail-header-top)!important}
+  .detail-hero-copy{top:var(--detail-copy-top)}
+}
+/* detail-safe-area-header-alignment-v1:end */

@@ -1,0 +1,19 @@
+{
+  "scope": "pwa_only",
+  "runtime_revision": "20260817-detail-empty-cart-v15",
+  "reason": "PWA-only update explicitly requested; the non-published Xcode bundle remains on its prior runtime.",
+  "runtime_paths": {
+    "app-v1.css": {
+      "candidate_sha256": "69198fb12c5db44b2a9f934f8caacef3fd2984e6c96ac1335672467b35bdfb66",
+      "canonical_sha256": "24075f33ed51249703983f708ba0b6d36872f39bb36bde65583917b304ffe936"
+    },
+    "app-v1.js": {
+      "candidate_sha256": "3a6ee2d54809e8796a3ef6ca769cdb28e399cd704fdb411c01b8b63069140ed8",
+      "canonical_sha256": "4419d6d80b3c31af3f967418bde37e1d51bb8c6b0cd9d644e04d09b760f053ad"
+    },
+    "sw.js": {
+      "candidate_sha256": "5fbc30d54cd55fe17f84e2c80fc6bbcaad9aac615136421b36e23f498c852a87",
+      "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
+    }
+  }
+}

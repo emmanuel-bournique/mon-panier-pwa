@@ -85,16 +85,16 @@ test('PWA shell exposes the install and offline contract', async () => {
     './grocery-cart-core.js?v=20260817-courses-create-v14',
     './personalization-core.js?v=20260808-avoid-v1',
     './card-badge-core.js?v=20260813-pilot-v1',
-    './app-v1.js?v=20260817-courses-create-v14',
-    './app-v1.css?v=20260817-courses-create-v14',
+    './app-v1.js?v=20260817-detail-empty-cart-v15',
+    './app-v1.css?v=20260817-detail-empty-cart-v15',
   ]
   for (const url of criticalShellUrls) {
     assert.ok(index.includes(url.replace(/^\.\//, '')), `entry must version critical runtime: ${url}`)
     assert.ok(serviceWorker.includes(url), `critical offline shell missing: ${url}`)
   }
-  const registrationRuntimeUrl = 'pwa-register.js?v=20260817-courses-create-v14'
+  const registrationRuntimeUrl = 'pwa-register.js?v=20260817-detail-empty-cart-v15'
   assert.ok(index.includes(registrationRuntimeUrl), 'the waiting-worker bootstrap must receive a unique runtime URL')
-  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v14-courses-create['"]/, 'cache name must change when the Courses/create runtime changes')
+  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v15-detail-empty-cart['"]/, 'cache name must change when the PWA-only detail/empty/cart runtime changes')
   assert.match(serviceWorker, /addEventListener\(['"]fetch['"]/)
   assert.match(serviceWorker, /cache/i)
   assert.doesNotMatch(serviceWorker, /https?:\/\//i, 'service worker must not add a remote origin')
@@ -104,9 +104,17 @@ test('PWA shell exposes the install and offline contract', async () => {
   assert.match(registration, /await registration\.update\(\)\s*activateWaitingWorker\(\)/, 'an update discovered after registration must be asked to activate')
 })
 
-test('runtime files remain byte-identical to the canonical iOS bundle', async () => {
+test('runtime files remain byte-identical to the canonical iOS bundle except declared PWA-only overrides', async () => {
   const canonicalFiles = await filesUnder(canonicalRoot)
   assert.ok(canonicalFiles.length > 0, 'canonical bundle must contain runtime files')
+
+  const divergencePath = join(candidateRoot, 'PWA_ONLY_RUNTIME_DIVERGENCE.json')
+  assert.equal(await exists(divergencePath), true, 'a PWA-only release must declare every intentional runtime divergence')
+  const divergence = JSON.parse(await readFile(divergencePath, 'utf8'))
+  assert.equal(divergence.scope, 'pwa_only')
+  assert.equal(divergence.runtime_revision, '20260817-detail-empty-cart-v15')
+  const declaredPaths = divergence.runtime_paths ?? {}
+  assert.deepEqual(Object.keys(declaredPaths).sort(), ['app-v1.css', 'app-v1.js', 'sw.js'])
 
   for (const relativePath of canonicalFiles) {
     const canonicalPath = join(canonicalRoot, relativePath)
@@ -120,13 +128,20 @@ test('runtime files remain byte-identical to the canonical iOS bundle', async ()
         withoutPwaAdditions(canonicalHtml),
         'index.html may differ only by the explicit PWA links/registration and disabled external feedback configuration',
       )
-    } else {
-      assert.equal(
-        await sha256(candidatePath),
-        await sha256(canonicalPath),
-        `canonical runtime drift: ${relativePath}`,
-      )
+      continue
     }
+
+    const candidateHash = await sha256(candidatePath)
+    const canonicalHash = await sha256(canonicalPath)
+    if (Object.hasOwn(declaredPaths, relativePath)) {
+      const declared = declaredPaths[relativePath]
+      assert.equal(declared.candidate_sha256, candidateHash, `declared PWA hash drift: ${relativePath}`)
+      assert.equal(declared.canonical_sha256, canonicalHash, `declared canonical hash drift: ${relativePath}`)
+      assert.notEqual(candidateHash, canonicalHash, `PWA-only override must represent a real divergence: ${relativePath}`)
+      continue
+    }
+
+    assert.equal(candidateHash, canonicalHash, `canonical runtime drift: ${relativePath}`)
   }
 })
 
