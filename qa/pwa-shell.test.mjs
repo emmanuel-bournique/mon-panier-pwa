@@ -46,7 +46,7 @@ function withoutPwaAdditions(html) {
   return html
     .replace(/\n?\s*<link rel="manifest" href="manifest\.webmanifest">/g, '')
     .replace(/\n?\s*<link rel="apple-touch-icon" href="apple-touch-icon\.png">/g, '')
-    .replace(/\n?\s*<script src="pwa-register\.js" defer><\/script>/g, '')
+    .replace(/\n?\s*<script src="pwa-register\.js(?:\?v=[^"]+)?" defer><\/script>/g, '')
     .replace(/\n?\s*<meta name="mon-panier-feedback-endpoint"[^>]*>/g, '')
     .replace(/(app-v1\.css|grocery-cart-core\.js|app-v1\.js)\?v=[^"']+/g, '$1?v=PWA_CACHE_ID')
 }
@@ -85,18 +85,23 @@ test('PWA shell exposes the install and offline contract', async () => {
     './grocery-cart-core.js?v=20260817-cart-coherence-v3',
     './personalization-core.js?v=20260808-avoid-v1',
     './card-badge-core.js?v=20260813-pilot-v1',
-    './app-v1.js?v=20260817-ios-safe-area-meta-v1',
-    './app-v1.css?v=20260817-ios-safe-area-meta-v1',
+    './app-v1.js?v=20260817-worker-activation-v1',
+    './app-v1.css?v=20260817-worker-activation-v1',
   ]
   for (const url of criticalShellUrls) {
     assert.ok(index.includes(url.replace(/^\.\//, '')), `entry must version critical runtime: ${url}`)
     assert.ok(serviceWorker.includes(url), `critical offline shell missing: ${url}`)
   }
-  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v12-ios-safe-area-meta['"]/, 'cache name must change when the iPhone safe-area runtime changes')
-  assert.match(serviceWorker, /addEventListener\(['"]fetch['"]/) 
+  const registrationRuntimeUrl = 'pwa-register.js?v=20260817-worker-activation-v1'
+  assert.ok(index.includes(registrationRuntimeUrl), 'the waiting-worker bootstrap must receive a unique runtime URL')
+  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v13-worker-activation['"]/, 'cache name must change when the waiting-worker activation runtime changes')
+  assert.match(serviceWorker, /addEventListener\(['"]fetch['"]/)
   assert.match(serviceWorker, /cache/i)
   assert.doesNotMatch(serviceWorker, /https?:\/\//i, 'service worker must not add a remote origin')
-  assert.match(await readFile(registrationPath, 'utf8'), /serviceWorker\s*\.register\(['"]\.\/sw\.js['"]/)
+  const registration = await readFile(registrationPath, 'utf8')
+  assert.match(registration, /serviceWorker\s*\.register\(['"]\.\/sw\.js['"]/)
+  assert.match(registration, /const activateWaitingWorker = \(\) => \{[\s\S]*?registration\.waiting[\s\S]*?postMessage\(\{ type: 'SKIP_WAITING' \}\)/, 'an existing waiting worker must be asked to activate')
+  assert.match(registration, /await registration\.update\(\)\s*activateWaitingWorker\(\)/, 'an update discovered after registration must be asked to activate')
 })
 
 test('runtime files remain byte-identical to the canonical iOS bundle', async () => {

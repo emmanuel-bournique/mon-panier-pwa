@@ -67,12 +67,12 @@ test('la couverture de recette conserve la hauteur complète sur les formats iPh
 test('le correctif de cadrage photo reçoit une révision PWA dédiée', () => {
   const index = fs.readFileSync(path.join(candidateRoot, 'index.html'), 'utf8');
   const serviceWorker = fs.readFileSync(path.join(candidateRoot, 'sw.js'), 'utf8');
-  const photoRuntimeUrl = 'app-v1.js?v=20260817-ios-safe-area-meta-v1';
-  const photoStylesUrl = 'app-v1.css?v=20260817-ios-safe-area-meta-v1';
+  const photoRuntimeUrl = 'app-v1.js?v=20260817-worker-activation-v1';
+  const photoStylesUrl = 'app-v1.css?v=20260817-worker-activation-v1';
 
   assert.match(index, new RegExp(photoRuntimeUrl.replace(/[.?]/g, '\\$&')), 'le navigateur doit demander le JavaScript corrigé');
   assert.match(index, new RegExp(photoStylesUrl.replace(/[.?]/g, '\\$&')), 'le navigateur doit demander la feuille de style corrigée');
-  assert.match(serviceWorker, /mon-panier-runtime-v12-ios-safe-area-meta/, 'le worker doit abandonner le cache antérieur');
+  assert.match(serviceWorker, /mon-panier-runtime-v13-worker-activation/, 'le worker doit abandonner le cache antérieur');
   assert.match(serviceWorker, new RegExp(`\\./${photoRuntimeUrl.replace(/[.?]/g, '\\$&')}`), 'le worker doit précacher le JavaScript corrigé');
   assert.match(serviceWorker, new RegExp(`\\./${photoStylesUrl.replace(/[.?]/g, '\\$&')}`), 'le worker doit précacher la feuille de style corrigée');
 });

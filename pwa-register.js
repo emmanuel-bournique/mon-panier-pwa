@@ -13,6 +13,10 @@
 
     try {
       const registration = await navigator.serviceWorker.register('./sw.js', { scope: './' })
+      const activateWaitingWorker = () => {
+        const waitingWorker = registration.waiting
+        if (waitingWorker) waitingWorker.postMessage({ type: 'SKIP_WAITING' })
+      }
       navigator.serviceWorker.addEventListener('controllerchange', reloadAfterUpdate, { once: true })
       registration.addEventListener('updatefound', () => {
         const installing = registration.installing
@@ -23,7 +27,9 @@
           }
         })
       })
+      activateWaitingWorker()
       await registration.update()
+      activateWaitingWorker()
     } catch {
       // The product remains usable online if installation is refused by the browser.
     }
