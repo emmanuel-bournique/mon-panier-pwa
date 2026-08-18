@@ -6,7 +6,10 @@ const path = require('node:path');
 const test = require('node:test');
 
 const candidateRoot = path.join(__dirname, '..');
-const css = fs.readFileSync(path.join(candidateRoot, 'app-v1.css'), 'utf8');
+const cssPath = process.env.MON_PANIER_CSS_PATH
+  ? path.resolve(process.env.MON_PANIER_CSS_PATH)
+  : path.join(candidateRoot, 'app-v1.css');
+const css = fs.readFileSync(cssPath, 'utf8');
 
 function nativeDetailRules() {
   const startMarker = '/* native-edge-to-edge-detail-v1:start */';
@@ -81,17 +84,19 @@ test('le fallback de fiche utilise l’inset exposé par la surface et aligne se
 
 test('la PWA installée ne recompte pas la zone système iPhone dans le haut de fiche', () => {
   const rules = installedPwaSafeAreaRules();
+  const fallbackEnd = css.indexOf('/* detail-safe-area-header-alignment-v1:end */');
+  const standaloneStart = css.indexOf('/* detail-installed-pwa-safe-area-v2:start */');
 
-  assert.match(
-    rules,
-    /@media\s*\(max-width:\s*560px\)\s*and\s*\(display-mode:\s*standalone\)/,
-    'le réglage ne doit cibler que la PWA installée, pas le bundle natif',
+  assert.notEqual(fallbackEnd, -1, 'le fallback mobile doit rester borné pour contrôler la cascade');
+  assert.notEqual(standaloneStart, -1, 'l’override PWA installé doit rester borné pour contrôler la cascade');
+  assert.ok(
+    standaloneStart > fallbackEnd,
+    'l’override standalone doit suivre le fallback v15 afin que ses 2 px remplacent la réserve de 60 px',
   );
-  assert.match(rules, /--detail-header-top:\s*2px/, 'Retour/Favori doivent commencer juste après la réserve iPhone déjà appliquée');
   assert.match(
     rules,
-    /--detail-copy-top:\s*calc\(var\(--detail-header-top\)\s*\+\s*54px\)/,
-    'titre et description doivent suivre immédiatement les contrôles sans second décalage',
+    /@media\s*\(max-width:\s*560px\)\s*and\s*\(display-mode:\s*standalone\)\s*\{\s*\.phone:has\(\.detail\)\s*\{\s*--detail-header-top:\s*2px;\s*--detail-copy-top:\s*calc\(var\(--detail-header-top\)\s*\+\s*54px\)/,
+    'les variables standalone doivent être définies dans le même scope de fiche que le fallback',
   );
   assert.doesNotMatch(rules, /safe-area-inset-top/, 'la PWA installée ne doit pas additionner une seconde fois les 59 px système');
 });

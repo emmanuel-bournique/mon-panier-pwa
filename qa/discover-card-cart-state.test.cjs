@@ -30,7 +30,8 @@ test('les trois points signalent immédiatement une recette déjà dans Mon Pani
 
   assert.match(card, /const inCart = source\.personal \? personalRecipeActionInCart\(source\.id\) : discoverCartContains\(source\.id\);/);
   assert.match(card, /class="round-btn recipe-action-btn"[^>]*data-in-cart="\$\{inCart\}"/);
-  assert.match(card, /data-action-label="Actions de la recette \$\{escapeHtml\(source\.title\)\}"/);
+  assert.match(card, /const actionLabel = `Actions de la recette \$\{escapeHtml\(source\.title\)\}`;/);
+  assert.match(card, /data-action-label="\$\{actionLabel\}"/);
   assert.match(card, /class="recipe-action-cart-status"/);
   assert.match(menu, /data-in-cart="\$\{added\}"/);
   assert.match(menu, /added \? 'Dans Mon Panier' : 'Ajouter au Panier'/);

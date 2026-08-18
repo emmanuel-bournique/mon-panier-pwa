@@ -3509,6 +3509,10 @@
     return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="19" cy="12" r="1.7"></circle></svg>';
   }
 
+  function recipeActionCardLabel(actionLabel, favorite, inCart) {
+    return `${actionLabel}${favorite ? ' — dans les favoris' : ''}${inCart ? ' — dans Mon Panier' : ''}`;
+  }
+
   function recipeActionEditIcon() {
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 20 4.2-1 10-10a2.2 2.2 0 0 0-3.1-3.1l-10 10L4 20Z"></path><path d="m13.7 7.3 3 3"></path></svg>';
   }
@@ -3524,7 +3528,8 @@
     const benefit = cardBenefit(source);
     const safeId = localGroceryInlineKey(source.id);
     const inCart = source.personal ? personalRecipeActionInCart(source.id) : discoverCartContains(source.id);
-    return `<article class="recipe-card" data-recipe-id="${source.id}" tabindex="0" role="button" aria-label="Voir ${escapeHtml(source.title)}" onclick="openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})" onkeydown="if(event.key==='Enter')openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})"><div class="cover">${coverHtml(source, false, false)}<button type="button" class="round-btn recipe-action-btn" data-favorite="${favorite}" data-in-cart="${inCart}" data-action-label="Actions de la recette ${escapeHtml(source.title)}" aria-label="Actions de la recette ${escapeHtml(source.title)}${inCart ? ' — dans Mon Panier' : ''}" title="Actions de la recette" onclick="event.stopPropagation();openRecipeActionMenu('${safeId}',this)">${recipeActionIcon()}<span class="recipe-action-cart-status" aria-hidden="true">${icon('check')}</span></button></div><div class="card-body"><h3>${escapeHtml(source.title)}</h3><div class="card-meta">${manual ? (personalRecipeMetadataForCard(source).length ? `<span class="personal-card-meta" data-personal-metadata="true">${escapeHtml(personalRecipeMetadataForCard(source).join(' · '))}</span>` : '') : `<span class="time">${source.total} min · ${escapeHtml(difficulty)}</span>`}</div><div class="card-bottom">${cardQualityHtml(source, benefit)}</div></div></article>`;
+    const actionLabel = `Actions de la recette ${escapeHtml(source.title)}`;
+    return `<article class="recipe-card" data-recipe-id="${source.id}" tabindex="0" role="button" aria-label="Voir ${escapeHtml(source.title)}" onclick="openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})" onkeydown="if(event.key==='Enter')openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})"><div class="cover">${coverHtml(source, false, false)}<button type="button" class="round-btn recipe-action-btn" data-favorite="${favorite}" data-in-cart="${inCart}" data-action-label="${actionLabel}" aria-label="${recipeActionCardLabel(actionLabel, favorite, inCart)}" title="Actions de la recette" onclick="event.stopPropagation();openRecipeActionMenu('${safeId}',this)">${recipeActionIcon()}<span class="recipe-action-favorite-status" aria-hidden="true">${icon('heart')}</span><span class="recipe-action-cart-status" aria-hidden="true">${icon('check')}</span></button></div><div class="card-body"><h3>${escapeHtml(source.title)}</h3><div class="card-meta">${manual ? (personalRecipeMetadataForCard(source).length ? `<span class="personal-card-meta" data-personal-metadata="true">${escapeHtml(personalRecipeMetadataForCard(source).join(' · '))}</span>` : '') : `<span class="time">${source.total} min · ${escapeHtml(difficulty)}</span>`}</div><div class="card-bottom">${cardQualityHtml(source, benefit)}</div></div></article>`;
   };
 
   function ensureRecipeActionPanel() {
@@ -3640,7 +3645,8 @@
       if (!button) return;
       button.dataset.inCart = String(added);
       const actionLabel = button.dataset.actionLabel || 'Actions de la recette';
-      button.setAttribute('aria-label', `${actionLabel}${added ? ' — dans Mon Panier' : ''}`);
+      const favorite = button.dataset.favorite === 'true';
+      button.setAttribute('aria-label', recipeActionCardLabel(actionLabel, favorite, added));
     });
   }
 
@@ -3745,6 +3751,9 @@
     document.querySelectorAll(`.recipe-card[data-recipe-id="${escapedId}"] .recipe-action-btn`).forEach(button => {
       button.dataset.favorite = String(favorite);
       button.setAttribute('aria-pressed', String(favorite));
+      const actionLabel = button.dataset.actionLabel || 'Actions de la recette';
+      const inCart = button.dataset.inCart === 'true';
+      button.setAttribute('aria-label', recipeActionCardLabel(actionLabel, favorite, inCart));
     });
     document.querySelectorAll('.detail-favorite').forEach(button => {
       button.classList.toggle('on', favorite);

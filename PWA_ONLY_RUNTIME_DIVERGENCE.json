@@ -1,18 +1,18 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260817-detail-standalone-safe-area-v16",
-  "reason": "PWA-only correction after real iPhone validation; the non-published Xcode bundle remains on its prior runtime.",
+  "runtime_revision": "20260817-discover-favorite-indicator-v17",
+  "reason": "PWA-only addition of a discreet Favorite status on Discover cards; the non-published Xcode bundle remains on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "2f8501e780409a9ee2b0323234a5b805dc95febe0e31a983c1516b245c778322",
+      "candidate_sha256": "8e07a8fcdebdfbe78d2e8f249a6edd0e7b71b7844bc5d5fccdbda884423ed89b",
       "canonical_sha256": "24075f33ed51249703983f708ba0b6d36872f39bb36bde65583917b304ffe936"
     },
     "app-v1.js": {
-      "candidate_sha256": "3a6ee2d54809e8796a3ef6ca769cdb28e399cd704fdb411c01b8b63069140ed8",
+      "candidate_sha256": "30d9b5254719e5bf3a79f3ea5d460ed4be2c4dcd9602ee92084c088120a6256b",
       "canonical_sha256": "4419d6d80b3c31af3f967418bde37e1d51bb8c6b0cd9d644e04d09b760f053ad"
     },
     "sw.js": {
-      "candidate_sha256": "b5d1f572c6d217cc14e973734f1382bc56ec7f516d43a2bcabf44ce05409f1d8",
+      "candidate_sha256": "8fcf52f1e7f9482a7498b0932d09c0862dce3706ced168b27e47e76cfb65d895",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }
