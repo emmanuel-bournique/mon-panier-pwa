@@ -38,19 +38,27 @@ test('les cartes Découvrir signalent un favori par un mini-cœur discret sans a
   assert.match(labels, /inCart \? ' — dans Mon Panier' : ''/);
   assert.match(card, /const favorite = state\.favorites\.has\(source\.id\);/);
   assert.match(card, /data-favorite="\$\{favorite\}"/);
-  assert.match(card, /class="recipe-action-favorite-status" aria-hidden="true"/);
+  assert.match(card, /class="recipe-action-favorite-status" data-favorite="\$\{favorite\}" aria-hidden="true"/);
   assert.match(card, /aria-label="\$\{recipeActionCardLabel\(actionLabel, favorite, inCart\)\}"/);
+  const favoriteMarkup = '<span class="recipe-action-favorite-status" data-favorite="${favorite}" aria-hidden="true">';
+  const coverMarkup = '<div class="cover">';
+  const actionMarkup = '<button type="button" class="round-btn recipe-action-btn"';
+  assert.ok(card.indexOf(favoriteMarkup) > card.indexOf(coverMarkup), 'le cœur doit être rendu dans la vignette');
+  assert.ok(card.indexOf(favoriteMarkup) < card.indexOf(actionMarkup), 'le cœur de vignette doit être frère du bouton •••, pas son enfant');
+  assert.doesNotMatch(card, /\$\{recipeActionIcon\(\)\}<span class="recipe-action-favorite-status"/);
 
+  assert.match(favoriteSync, /cardElement\.querySelectorAll\('\.recipe-action-favorite-status'\)/);
+  assert.match(favoriteSync, /status\.dataset\.favorite = String\(favorite\);/);
   assert.match(favoriteSync, /button\.dataset\.favorite = String\(favorite\);/);
   assert.match(favoriteSync, /button\.dataset\.inCart === 'true'/);
   assert.match(favoriteSync, /recipeActionCardLabel\(actionLabel, favorite, inCart\)/);
   assert.match(cartSync, /button\.dataset\.favorite === 'true'/);
   assert.match(cartSync, /recipeActionCardLabel\(actionLabel, favorite, added\)/);
 
-  assert.match(rules, /\.recipe-action-favorite-status\{display:none;position:absolute;left:-3px;top:-3px;width:17px;height:17px;/);
+  assert.match(rules, /\.recipe-action-favorite-status\{display:none;position:absolute;z-index:4;left:6px;top:6px;width:17px;height:17px;/);
   assert.match(rules, /\.recipe-action-favorite-status svg\{width:10px!important;height:10px!important;/);
   assert.match(rules, /fill:currentColor!important;stroke:currentColor!important/);
-  assert.doesNotMatch(rules, /left:-3px;bottom:-3px/);
-  assert.match(rules, /\.recipe-action-btn\[data-favorite="true"\] \.recipe-action-favorite-status\{display:grid/);
+  assert.doesNotMatch(rules, /left:-3px;top:-3px/);
+  assert.match(rules, /\.recipe-action-favorite-status\[data-favorite="true"\]\{display:grid/);
   assert.doesNotMatch(rules, /width:(?:[2-9]\d|\d{3,})px/);
 });

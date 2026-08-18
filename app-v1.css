@@ -690,9 +690,9 @@ button:active{transform:translateY(1px)}
 /* recipe-action-cart-state-v1:end */
 
 /* recipe-action-favorite-state-v1:start */
-.recipe-action-favorite-status{display:none;position:absolute;left:-3px;top:-3px;width:17px;height:17px;place-items:center;border:2px solid rgba(255,255,255,.92);border-radius:999px;background:rgba(255,255,255,.94);color:var(--green);box-shadow:0 2px 5px rgba(18,61,44,.18)}
+.recipe-action-favorite-status{display:none;position:absolute;z-index:4;left:6px;top:6px;width:17px;height:17px;place-items:center;pointer-events:none;border:2px solid rgba(255,255,255,.92);border-radius:999px;background:rgba(255,255,255,.94);color:var(--green);box-shadow:0 2px 5px rgba(18,61,44,.18)}
 .recipe-action-favorite-status svg{width:10px!important;height:10px!important;margin:0!important;opacity:1!important;fill:currentColor!important;stroke:currentColor!important;filter:none!important}
-.recipe-action-btn[data-favorite="true"] .recipe-action-favorite-status{display:grid}
+.recipe-action-favorite-status[data-favorite="true"]{display:grid}
 /* recipe-action-favorite-state-v1:end */
 
 /* mobile-readability-and-safe-sheet-v1:start */
