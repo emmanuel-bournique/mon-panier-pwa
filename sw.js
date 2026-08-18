@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mon-panier-runtime-v17-discover-favorite-indicator'
+const CACHE_NAME = 'mon-panier-runtime-v18-discover-favorite-heart-upper-right'
 const SHELL_URLS = [
   './',
   './manifest.webmanifest',
@@ -9,8 +9,8 @@ const SHELL_URLS = [
   './grocery-cart-core.js?v=20260817-courses-create-v14',
   './personalization-core.js?v=20260808-avoid-v1',
   './card-badge-core.js?v=20260813-pilot-v1',
-  './app-v1.js?v=20260817-discover-favorite-indicator-v17',
-  './app-v1.css?v=20260817-discover-favorite-indicator-v17',
+  './app-v1.js?v=20260818-discover-favorite-heart-upper-right-v18',
+  './app-v1.css?v=20260818-discover-favorite-heart-upper-right-v18',
 ]
 
 self.addEventListener('install', (event) => {
