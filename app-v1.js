@@ -592,7 +592,27 @@
       || MEDIA.alias[`${type}:${normalized}`]
       || MEDIA.names[`${type}:${normalized}`];
     const record = assetId ? MEDIA.assets[assetId] : null;
-    if (!record && type === 'ingredient') return mediaRecord('product', value);
+    if (!record && type === 'ingredient') {
+      const fallback = normalized === 'citron'
+        ? ['product', 'citrons']
+        : normalized === 'oignon'
+          ? ['product', 'oignons']
+          : /^(?:echalote|echalotes)$/.test(normalized)
+            ? ['ingredient', 'echalote']
+            : /^sucre semoule(?: pour .*)?$/.test(normalized)
+              ? ['ingredient', 'sucre en poudre']
+              : /(^| )oeufs?( |$)/.test(normalized)
+                ? ['ingredient', 'oeuf']
+                : /^(?:eau bouillante|eau froide)$/.test(normalized)
+                  ? ['ingredient', 'eau']
+                  : /^(?:beurre|beurre doux)(?: |$)/.test(normalized)
+                    ? ['ingredient', 'beurre doux']
+                    : /^beurre pour /.test(normalized)
+                      ? ['ingredient', 'beurre doux']
+                      : null;
+      if (fallback) return mediaRecord(fallback[0], fallback[1]);
+      return mediaRecord('product', value);
+    }
     return record;
   }
 
@@ -628,6 +648,30 @@
     return src
       ? `<img class="${className}" src="${src}" alt="${escapeHtml(alt || '')}" decoding="async">`
       : `<span class="${className} media-placeholder" aria-hidden="true"></span>`;
+  }
+
+  function detailIngredientsForDisplay(ingredients = []) {
+    const displayed = [];
+    const grouped = new Map();
+    for (const item of Array.isArray(ingredients) ? ingredients : []) {
+      const name = String(item?.name || '').trim();
+      const unit = String(item?.unit || '').trim();
+      const quantity = Number(item?.qty);
+      if (!name || !unit || !Number.isFinite(quantity)) {
+        displayed.push(item);
+        continue;
+      }
+      const key = `${normalizeSearch(name)}|${normalizeSearch(unit)}`;
+      const existing = grouped.get(key);
+      if (existing) {
+        existing.qty += quantity;
+        continue;
+      }
+      const copy = { ...item };
+      displayed.push(copy);
+      grouped.set(key, copy);
+    }
+    return displayed;
   }
 
   function activeSelectionVersionForRecipe(r, selectionId = state.detail?.selectionId || '') {
@@ -973,6 +1017,7 @@
     if (!r) return '<section data-screen="recipe-detail"><div class="empty"><h2>Recette introuvable</h2></div></section>';
     const servings = state.detail.servings;
     const ingredients = activeIngredientsForRecipe(r, state.detail?.selectionId);
+    const displayIngredients = detailIngredientsForDisplay(ingredients);
     const manual = isManualPersonalRecipe(r);
     const personalDetailMetadata = personalRecipeMetadataForDetail(r);
     const allergens = r.allergens.length ? r.allergens.map(x => allergenLabels[x] || x).join(', ') : 'Aucun allergène UE déclaré';
@@ -983,7 +1028,7 @@
     const proposal = preferenceAdaptationHtml(r);
     const equipmentLabel = name => name === 'sauteuse' ? 'poêle ou sauteuse' : name;
     const equipment = r.equipment.length ? `<div class="media-strip">${r.equipment.map(name => `<div class="media-tile">${mediaImage('utensil', name, 'list', name, 'utensil-media')}<span>${escapeHtml(equipmentLabel(name))}</span></div>`).join('')}</div>` : '<p class="detail-lead">Aucun matériel spécifique.</p>';
-    const ingredientRows = ingredients.map((item, index) => `<div class="ingredient">${mediaImage('ingredient', item.name, 'list', item.name, 'ingredient-media')}<span class="ingredient-name">${escapeHtml(item.name)}<small class="ingredient-role ${item.coursesStatus !== 'inclure' ? 'home' : ''}">${item.coursesStatus !== 'inclure' ? 'hors Courses' : roleLabels[item.role] || item.role}</small></span><span class="ingredient-qty" data-detail-ingredient="${index}">${qtyText(item, servings, r.servings)}</span></div>`).join('');
+    const ingredientRows = displayIngredients.map((item, index) => `<div class="ingredient">${mediaImage('ingredient', item.name, 'list', item.name, 'ingredient-media')}<span class="ingredient-name">${escapeHtml(item.name)}<small class="ingredient-role ${item.coursesStatus !== 'inclure' ? 'home' : ''}">${item.coursesStatus !== 'inclure' ? 'hors Courses' : roleLabels[item.role] || item.role}</small></span><span class="ingredient-qty" data-detail-ingredient="${index}">${qtyText(item, servings, r.servings)}</span></div>`).join('');
     const steps = r.steps.length ? r.steps.map(step => `<div class="step"><span class="step-num">${step.number}</span><p>${escapeHtml(step.action)}<small>${step.duration ? `${step.duration} min` : 'Sans durée imposée'}${step.done ? ` · ${escapeHtml(step.done)}` : ''}</small></p></div>`).join('') : '<p class="detail-lead">Aucune étape enregistrée.</p>';
     const detailActions = `<div class="detail-primary-actions detail-hero-actions">${manual ? `<button class="recipe-edit-action" type="button" onclick="openPersonalRecipeEditor('${r.id}')">Modifier la recette</button>` : `<button class="recipe-edit-action" type="button" onclick="openVersionEditor('${r.id}')">Modifier les ingrédients</button>`}<button class="primary ${state.cart.has(r.id) ? 'success' : ''}" data-detail-add onclick="addCart('${r.id}',${servings},true)">Ajouter au Panier</button></div>`;
     return `<section class="detail detail-immersive" data-screen="recipe-detail" data-recipe-detail="${r.id}" style="${detailFramingStyle(r.id)}"><div class="detail-hero"><div class="detail-photo"><div class="cover">${coverHtml(r, false, true)}</div>${personalPhotoEditor}</div><div class="detail-hero-shade"></div><div class="detail-hero-copy">${detailKickerHtml(r)}<h2>${escapeHtml(r.title)}</h2><p class="detail-lead">${escapeHtml(r.description)}</p></div><div class="detail-hero-meta">${manual ? (personalDetailMetadata.length ? `<span class="personal-detail-meta" data-personal-detail-metadata="true"><strong>${escapeHtml(personalDetailMetadata.map(([value,label]) => label === 'préparation' ? `Prépa ${value} min` : label === 'cuisson' ? `Cuisson ${value} min` : value).join(' · '))}</strong><small>Informations renseignées</small></span>` : '') : `<span><strong>${r.total}</strong><small>min</small></span><span><strong>${escapeHtml(difficultyLabels[r.difficultyKey] || r.difficulty)}</strong><small>niveau</small></span><span><strong>${budgetVisual[0]}</strong><small>${budgetVisual[1]}</small></span>`}</div>${detailActions}<div class="detail-scroll-cue" aria-hidden="true"><span>Faire défiler</span><b>↓</b></div></div><div class="detail-content">${proposal}<div class="servings"><span>Portions</span><div class="servings-controls"><button class="qty-btn" aria-label="Retirer une portion" onclick="detailQty(-1)">−</button><strong data-detail-servings>${servings}</strong><button class="qty-btn" aria-label="Ajouter une portion" onclick="detailQty(1)">+</button></div></div>${nutritionBlock}${versionSummaryForRecipe(r)}${allergenBlock}<div class="detail-block"><h3>Matériel</h3>${equipment}</div><div class="detail-block"><h3>Ingrédients</h3><div class="ingredient-list">${ingredientRows}</div></div><div class="detail-block detail-preparation"><div class="detail-block-heading"><h3>Préparation</h3><button class="cooking-mode-button" type="button" onclick="openCooking('${r.id}')">Mode cuisine</button></div><div class="step-list">${steps}</div></div></div></section>`;

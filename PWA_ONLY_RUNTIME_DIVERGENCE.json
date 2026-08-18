@@ -1,18 +1,18 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260818-discover-favorite-heart-thumbnail-upper-left-v20",
-  "reason": "PWA-only repositioning of the existing Favorite status from the action circle to the upper-left corner of each recipe thumbnail; the non-published Xcode bundle remains on its prior runtime.",
+  "runtime_revision": "20260818-recipe-detail-ingredient-media-v21",
+  "reason": "PWA-only ingredient-detail repair: exact duplicate ingredients are merged for display and lexical ingredient media aliases fall back to local assets; the existing Favorite thumbnail positioning remains PWA-only and the non-published Xcode bundle remains on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
       "candidate_sha256": "f824de53caffcca344e65ec8a84632fc15b73cb3f5d3d30bbe4d21ba0d37eeec",
       "canonical_sha256": "24075f33ed51249703983f708ba0b6d36872f39bb36bde65583917b304ffe936"
     },
     "app-v1.js": {
-      "candidate_sha256": "9dddb23bff9079c7190aa7e7637557b3df61d7c72fc7ef53618cf5f6eb4b2c9e",
+      "candidate_sha256": "6a2a1cdb94f99dcfbb5bb475c12dd268df8b52b97fce984238ade1591f9280c2",
       "canonical_sha256": "4419d6d80b3c31af3f967418bde37e1d51bb8c6b0cd9d644e04d09b760f053ad"
     },
     "sw.js": {
-      "candidate_sha256": "08aeea1bf4aafe2ab9ca4f7601fdf2b2f4832ed32b6183b01ead341b830091f0",
+      "candidate_sha256": "3f5207539295cc8080e1579087f210339240458edda122ff4fe2e073dbf55674",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }
