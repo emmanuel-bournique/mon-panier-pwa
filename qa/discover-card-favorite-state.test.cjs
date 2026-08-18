@@ -47,7 +47,7 @@ test('les cartes Découvrir signalent un favori par un mini-cœur discret sans a
   assert.match(cartSync, /button\.dataset\.favorite === 'true'/);
   assert.match(cartSync, /recipeActionCardLabel\(actionLabel, favorite, added\)/);
 
-  assert.match(rules, /\.recipe-action-favorite-status\{display:none;position:absolute;right:-3px;top:-3px;width:17px;height:17px;/);
+  assert.match(rules, /\.recipe-action-favorite-status\{display:none;position:absolute;left:-3px;top:-3px;width:17px;height:17px;/);
   assert.match(rules, /\.recipe-action-favorite-status svg\{width:10px!important;height:10px!important;/);
   assert.match(rules, /fill:currentColor!important;stroke:currentColor!important/);
   assert.doesNotMatch(rules, /left:-3px;bottom:-3px/);

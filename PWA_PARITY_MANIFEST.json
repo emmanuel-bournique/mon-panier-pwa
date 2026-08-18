@@ -1,6 +1,6 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-18T10:18:09Z",
+  "generated_at": "2026-08-18T11:29:29Z",
   "status": "public_pilot_individual_pwa_only",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
   "deployment": {
@@ -23,37 +23,37 @@
   "candidate": {
     "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
     "file_count_excluding_manifest_self": 2550,
-    "bytes_excluding_manifest_self": 796358410,
-    "index_sha256": "cb4e340a6a403880dcaa99f76fb8a7eba939f0bc11ec1abba92a569df107842e",
-    "app_css_sha256": "4e842c3638ad5b7ed0a5177dbd745d1d9c9962bad5611528af707ab4debccc6f",
+    "bytes_excluding_manifest_self": 796358402,
+    "index_sha256": "2255e39e232958365d4f4aa2598da4d229b71566e7088770d0b6650ca71fea9e",
+    "app_css_sha256": "2d97817c42e5c351dd5c55f1f167c076e99f5cb6b6fa16f810ebbb623ac3ea9c",
     "app_js_sha256": "30d9b5254719e5bf3a79f3ea5d460ed4be2c4dcd9602ee92084c088120a6256b",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "741ce300068735329003308d384bfc2bbf2a10b16a37ab26ee997fbd2e112ed4",
+    "service_worker_sha256": "a93dd790c6ea6d5a223a990cf8c37c341f71e712dca33085db1cbb8b70ec8cc8",
     "registration_sha256": "c6ced712ff7247a7b145c321c64d9c29b4cef14f0170cadc046dfc8e85ed5755",
-    "pwa_shell_test_sha256": "0088799e4a02f769f87b8445e77b40e8c84c86942a2706334cb71183b036c698",
+    "pwa_shell_test_sha256": "782d5dfb080d027562cbbdb619750a41cb7baf29b582b5c94a99c7a689b76d0c",
     "shopping_flow_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
     "recipe_create_ui_contract_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a",
-    "recipe_detail_responsive_photo_test_sha256": "2dd0c5fcf0a295fbdcef8a1a4142922a0fca3e03da6d0d4bd3e5bebc7bd379f9",
+    "recipe_detail_responsive_photo_test_sha256": "d47dfb3427310d2f4d05e91a050191f777eabc0d6d558c84ba43ccd224030c19",
     "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "3ca9b117ce59c094c33bdc0ae7295cfbd130d3244ba3919b8d8d65158d61e6a0",
     "favorites_empty_state_test_sha256": "bb4eb74159b96f183bad7539792b66de79269ae6d538c1ecae7140057dc3286f",
     "discover_card_cart_state_test_sha256": "508340728554de23f2e01f16b1ac4b36a62e969feb2128a909cfb4ba2097611f",
-    "discover_card_favorite_state_test_sha256": "3f2e43cb8b8be31e1715d75b2a7ba06f61bc63acf2975f2433949e4361199626",
-    "pwa_only_runtime_divergence_sha256": "be6727c0305d6d89d26f17d436bf0a5caa0a94479f9fa705ec575773e2a23dcc",
-    "cache_name": "mon-panier-runtime-v18-discover-favorite-heart-upper-right",
+    "discover_card_favorite_state_test_sha256": "f6ab78e2d340b2fa3f0fa274fcf56be0cacaa1fccdccbc37ece3a513207aee14",
+    "pwa_only_runtime_divergence_sha256": "08c911a62ba1afda85e60b748c3410dd62295d51db3c66107e00d5022e39e59d",
+    "cache_name": "mon-panier-runtime-v19-discover-favorite-heart-upper-left",
     "versioned_runtime_urls": [
       "grocery-cart-core.js?v=20260817-courses-create-v14",
       "personalization-core.js?v=20260808-avoid-v1",
       "card-badge-core.js?v=20260813-pilot-v1",
-      "pwa-register.js?v=20260818-discover-favorite-heart-upper-right-v18",
-      "app-v1.js?v=20260818-discover-favorite-heart-upper-right-v18",
-      "app-v1.css?v=20260818-discover-favorite-heart-upper-right-v18"
+      "pwa-register.js?v=20260818-discover-favorite-heart-upper-left-v19",
+      "app-v1.js?v=20260818-discover-favorite-heart-upper-left-v19",
+      "app-v1.css?v=20260818-discover-favorite-heart-upper-left-v19"
     ]
   },
   "runtime_sync": {
     "mode": "pwa_only_declared_divergence",
     "declaration": "PWA_ONLY_RUNTIME_DIVERGENCE.json",
     "xcode_runtime_updated": false,
-    "reason": "PWA-only Favorite heart upper-right release; no Xcode build or native publication is part of this release."
+    "reason": "PWA-only Favorite heart upper-left release; no Xcode build or native publication is part of this release."
   },
   "pwa_additions": [
     "manifest.webmanifest",
@@ -66,9 +66,8 @@
   ],
   "local_data_model": "separate browser-local state; no account, backend, or cross-device synchronization",
   "qa_command": "node --test qa/*.test.cjs qa/*.test.mjs",
-  "rollback_backup": "/Volumes/USB/Hermes-External/backups/mon-panier-pwa-before-v18-heart-upper-right-20260818T101552Z",
+  "rollback_backup": "/Volumes/USB/Hermes-External/backups/mon-panier-pwa-before-v19-heart-upper-left-20260818T123500Z",
   "promotion_blockers": [
-    "GitHub currently reports an unresolved Incident with Actions; do not push or dispatch until resolved.",
     "Real iPhone PWA smoke remains a human check.",
     "Xcode/native delivery is intentionally excluded from this PWA-only release."
   ]

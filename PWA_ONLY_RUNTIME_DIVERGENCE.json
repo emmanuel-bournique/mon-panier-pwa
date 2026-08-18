@@ -1,10 +1,10 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260818-discover-favorite-heart-upper-right-v18",
-  "reason": "PWA-only repositioning and fill change of the existing Favorite status on Discover cards; the non-published Xcode bundle remains on its prior runtime.",
+  "runtime_revision": "20260818-discover-favorite-heart-upper-left-v19",
+  "reason": "PWA-only repositioning of the existing Favorite status on Discover cards to the upper-left corner; the non-published Xcode bundle remains on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "4e842c3638ad5b7ed0a5177dbd745d1d9c9962bad5611528af707ab4debccc6f",
+      "candidate_sha256": "2d97817c42e5c351dd5c55f1f167c076e99f5cb6b6fa16f810ebbb623ac3ea9c",
       "canonical_sha256": "24075f33ed51249703983f708ba0b6d36872f39bb36bde65583917b304ffe936"
     },
     "app-v1.js": {
@@ -12,7 +12,7 @@
       "canonical_sha256": "4419d6d80b3c31af3f967418bde37e1d51bb8c6b0cd9d644e04d09b760f053ad"
     },
     "sw.js": {
-      "candidate_sha256": "741ce300068735329003308d384bfc2bbf2a10b16a37ab26ee997fbd2e112ed4",
+      "candidate_sha256": "a93dd790c6ea6d5a223a990cf8c37c341f71e712dca33085db1cbb8b70ec8cc8",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }
