@@ -1,10 +1,10 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260818-recipe-detail-ingredient-media-v21",
-  "reason": "PWA-only ingredient-detail repair: exact duplicate ingredients are merged for display and lexical ingredient media aliases fall back to local assets; the existing Favorite thumbnail positioning remains PWA-only and the non-published Xcode bundle remains on its prior runtime.",
+  "runtime_revision": "20260820-ios-pwa-safe-area-v23",
+  "reason": "PWA-only iPhone safe-area repair: the recipe detail remains edge-to-edge while its header controls follow env(safe-area-inset-top); the installed-PWA fixed 2 px override is removed and the mobile shell/bottom navigation use the dynamic viewport plus safe-area bottom padding. Existing PWA-only runtime divergences remain; the Xcode bundle stays on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "f824de53caffcca344e65ec8a84632fc15b73cb3f5d3d30bbe4d21ba0d37eeec",
+      "candidate_sha256": "11965bc6c02c2ecc4721e2382aafa304f93c05cdc1dfebb08e21c29a81dc832e",
       "canonical_sha256": "24075f33ed51249703983f708ba0b6d36872f39bb36bde65583917b304ffe936"
     },
     "app-v1.js": {
@@ -12,7 +12,7 @@
       "canonical_sha256": "4419d6d80b3c31af3f967418bde37e1d51bb8c6b0cd9d644e04d09b760f053ad"
     },
     "sw.js": {
-      "candidate_sha256": "3f5207539295cc8080e1579087f210339240458edda122ff4fe2e073dbf55674",
+      "candidate_sha256": "47246588ed30513a2964e29bb7e01e40f4b3925ed047b461edf83f4b0c9886ad",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }
