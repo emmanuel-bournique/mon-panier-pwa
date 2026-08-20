@@ -604,6 +604,20 @@ button:active{transform:translateY(1px)}
   /* Keep the selected-state line just above the native iPhone home indicator. */
   .nav-item.active:after{bottom:8px!important;width:18px!important}
   .phone:has(.detail) .app-header{top:clamp(54px,calc(env(safe-area-inset-top) + 0px),66px)!important}
+  body:has(.detail)::after{
+    content:"";
+    position:fixed;
+    z-index:19;
+    right:0;
+    bottom:0;
+    left:0;
+    height:env(safe-area-inset-bottom, 0px);
+    background:linear-gradient(180deg,rgba(255,255,255,.76),rgba(246,251,248,.68));
+    border-top:1px solid rgba(255,255,255,.88);
+    backdrop-filter:blur(18px) saturate(1.12);
+    -webkit-backdrop-filter:blur(18px) saturate(1.12);
+    pointer-events:none;
+  }
   .card-quality{display:inline-flex;align-items:center;justify-content:center;min-height:20px;height:20px;padding:0 7px;line-height:1;vertical-align:middle}
 }
 
@@ -1521,10 +1535,30 @@ html,body{background:#f8fcf9}
 @media(max-width:560px){
   .phone:has(.detail){
     --detail-header-top:max(12px,calc(env(safe-area-inset-top, 0px) + 2px));
-    --detail-copy-top:calc(var(--detail-header-top) + 54px);
+    --detail-copy-top:calc(var(--detail-header-top) + 78px);
   }
   .phone:has(.detail),.phone:has(.detail) .scroll{background:#0d1713}
   .phone:has(.detail) .app-header{top:var(--detail-header-top)!important}
   .detail-hero-copy{top:var(--detail-copy-top)}
 }
 /* detail-safe-area-header-alignment-v1:end */
+
+/* github-web-preview-shell-v1:start */
+.desktop-preview-statusbar{display:none}
+@media(min-width:561px){
+  .desktop-stage{min-height:100svh;padding:32px}
+  .phone{width:min(393px,calc(100vw - 64px));height:min(852px,calc(100svh - 64px));max-height:none;border:7px solid #101713;border-radius:56px;box-shadow:0 32px 96px rgba(16,23,19,.2)}
+  .desktop-preview-statusbar{height:42px;flex:0 0 42px;position:relative;z-index:31;display:flex;align-items:center;justify-content:space-between;padding:0 17px 0 20px;background:#fff;color:#0b110e;font:700 12px/1 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif}
+  .desktop-preview-time{width:48px;padding-top:1px}
+  .desktop-preview-island{position:absolute;top:6px;left:50%;width:116px;height:30px;transform:translateX(-50%);border-radius:999px;background:#070908;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+  .desktop-preview-icons{display:flex;align-items:center;gap:6px;height:16px}
+  .desktop-preview-signal{display:flex;align-items:flex-end;gap:1.5px;width:13px;height:12px}
+  .desktop-preview-signal i{display:block;width:2.5px;border-radius:2px;background:currentColor}
+  .desktop-preview-signal i:nth-child(1){height:4px}.desktop-preview-signal i:nth-child(2){height:6px}.desktop-preview-signal i:nth-child(3){height:8px}.desktop-preview-signal i:nth-child(4){height:10px}
+  .desktop-preview-wifi{width:17px;height:13px}
+  .desktop-preview-battery{position:relative;width:21px;height:11px;border:1.5px solid currentColor;border-radius:3px}
+  .desktop-preview-battery:after{content:"";position:absolute;right:-3.5px;top:3px;width:2px;height:4px;border-radius:0 1px 1px 0;background:currentColor}
+  .desktop-preview-battery i{display:block;width:14px;height:7px;margin:1px 0 0 1px;border-radius:1.5px;background:currentColor}
+}
+@media(max-width:560px){.desktop-preview-statusbar{display:none!important}}
+/* github-web-preview-shell-v1:end */

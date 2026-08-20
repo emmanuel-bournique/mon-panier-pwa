@@ -68,8 +68,8 @@ test('le fallback de fiche utilise l’inset exposé par la surface et aligne se
   );
   assert.match(
     rules,
-    /--detail-copy-top:calc\(var\(--detail-header-top\) \+ 54px\)/,
-    'le titre doit suivre les boutons sans conserver un deuxième grand décalage vertical',
+    /--detail-copy-top:calc\(var\(--detail-header-top\) \+ 78px\)/,
+    'le bloc titre-description doit commencer sous le bas des boutons sans être recouvert',
   );
   assert.match(rules, /\.phone:has\(\.detail\),\.phone:has\(\.detail\) \.scroll\{background:#0d1713\}/);
   assert.match(rules, /\.phone:has\(\.detail\) \.app-header\{top:var\(--detail-header-top\)!important\}/);
@@ -90,7 +90,7 @@ test('la PWA installée ne remplace jamais la zone sûre par une valeur fixe de 
   );
 });
 
-test('la navigation installée ne recompte pas la safe area basse déjà réservée par iOS', () => {
+test('la navigation installée prolonge sa surface sous le bandeau sans déplacer ses contrôles', () => {
   const startMarker = '/* Final mobile geometry — keep controls clear of iOS without adding visual dead space. */';
   const endMarker = '/* local-grocery-cart-v1:start */';
   const start = css.indexOf(startMarker);
@@ -103,12 +103,12 @@ test('la navigation installée ne recompte pas la safe area basse déjà réserv
   assert.match(
     rules,
     /\.bottom-nav\{bottom:0!important;height:60px!important;padding:3px 4px!important\}/,
-    'la navigation doit conserver sa hauteur visuelle de 60 px dans une PWA déjà cadrée par iOS',
+    'la navigation utile doit conserver sa hauteur visuelle de 60 px',
   );
-  assert.doesNotMatch(
+  assert.match(
     rules,
-    /height:calc\(60px \+ env\(safe-area-inset-bottom/,
-    'la navigation ne doit pas additionner une seconde fois la réserve système inférieure',
+    /body:has\(\.detail\)::after\{[\s\S]*?position:fixed[\s\S]*?height:env\(safe-area-inset-bottom,\s*0px\)[\s\S]*?pointer-events:none/,
+    'la surface du bandeau doit couvrir l’inset bas réellement exposé par iOS',
   );
   assert.doesNotMatch(css, /ios-pwa-viewport-and-nav-v3/, 'le bloc v23 qui étirait la coque et la navigation ne doit pas revenir');
 });

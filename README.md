@@ -1,52 +1,62 @@
 ---
 path: 3_FREELANCE/03_TASKS/panier_ia/app_pwa_v0/README.md
 parent: 3_FREELANCE/03_TASKS/panier_ia/_index.md
-destination: garder comme staging PWA exacte publiée pour pilote individuel jusqu’au gate appareils réels
+destination: garder comme source web GitHub Pages pour les itérations PWA rapides ; Xcode reste un livrable séparé
 ---
 
-# Mon Panier — PWA exacte
+# Mon Panier — voie web GitHub Pages
 
-## Objectif
+## Source de vérité
 
-Cette staging PWA reprend directement le bundle runtime canonique de l’app iOS `MonPanierLocalV1/OpenDesignBundle`. Elle ne réimplémente pas les écrans en React et ne crée pas une seconde logique de recettes.
+Pour la phase PWA, ce dépôt `main` est la source de vérité. GitHub Pages publie directement cette version :
 
-Le lien local `app_pwa_v0` dans le workspace pointe vers l’artefact lourd situé sur le volume externe :
+`https://emmanuel-bournique.github.io/mon-panier-pwa/`
 
-`/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1`
+Le serveur local `127.0.0.1:4173` est uniquement un outil de diagnostic ponctuel. Il ne représente pas la version utilisée sur l’iPhone et ne doit pas devenir une deuxième surface produit. Sur un iPhone, `127.0.0.1` désigne l’iPhone lui-même, pas le Mac.
 
-## Parité
+Le projet n’entretient plus de parité automatique avec `OpenDesignBundle`, de copie byte à byte, de manifeste de hashes ou de déclaration de divergence PWA pour chaque itération web. Les anciennes preuves de l’état précédent sont conservées dans les sauvegardes Git/externes de rollback, hors du flux actif.
 
-- 2 532 fichiers runtime canoniques recopiés.
-- 796 253 050 octets de runtime canonique conservés.
-- HTML, CSS, JavaScript, catalogue, médias, navigation, persistance locale et actions proviennent de la même source que l’app iOS.
-- Les seules additions de livraison sont `manifest.webmanifest`, `sw.js`, `pwa-register.js` et les icônes PWA.
-- Le contrat `qa/pwa-shell.test.mjs` compare les fichiers canoniques byte à byte et normalise uniquement les trois ajouts PWA dans `index.html`.
+## Règle d’itération
 
-## Modèle de partage validé
+1. Modifier la voie web dans ce dépôt.
+2. Faire un petit commit Git explicite.
+3. Publier sur GitHub Pages uniquement après validation du smoke test et du rendu attendu.
+4. Tester le lien GitHub Pages sur ordinateur puis sur l’iPhone réel.
+5. En cas de régression, utiliser `git revert` du commit concerné. Aucun répertoire de candidate parallèle n’est nécessaire.
 
-Chaque téléphone dispose de son propre `localStorage`. Aucun compte réel, backend, synchronisation inter-appareils ou panier collaboratif n’a été ajouté dans ce palier. Le partage visé ici est l’accès à la même application par le lien HTTPS public ci-dessous, pas le partage des données d’un panier.
+Le service worker conserve un seul identifiant de runtime court, nécessaire pour éviter un ancien cache. Il ne constitue pas un système de parité avec Xcode.
 
-Le bundle conserve volontairement les écrans et le comportement de la source canonique, y compris les parcours locaux de démonstration. Les boutons Apple/Google/e-mail ne constituent donc pas une authentification réelle pour des testeurs externes. Le pont Google Swift `WKScriptMessageHandler` existe seulement dans l’hôte iOS ; dans Safari, le code canonique suit son fallback local existant. Cela doit être testé et expliqué avant toute invitation externe.
+## Coque desktop et PWA réelle
 
-## Vérification locale
+La prévisualisation desktop possède une coque `.phone` destinée à rendre l’application lisible dans une page GitHub Pages large. Cette coque affiche une Dynamic Island et un faux statut horaire uniquement dans le navigateur desktop.
 
-Depuis l’artefact réel :
+Sur un vrai iPhone, `.desktop-preview-statusbar` est masqué. La PWA utilise alors le viewport et la zone système fournis par iOS ; elle ne dessine pas une fausse Dynamic Island dans un téléphone réel.
+
+## Données et partage
+
+Chaque téléphone dispose de son propre `localStorage`. Aucun compte réel, backend, synchronisation inter-appareils ou panier collaboratif n’est ajouté dans ce palier. Le lien public donne accès à la même application, mais ne partage pas les données locales d’un panier.
+
+## Vérification légère
+
+Depuis le dépôt :
 
 ```bash
-node --test qa/pwa-shell.test.mjs
-python3 -m http.server 4173
+node --test qa/*.test.cjs qa/*.test.mjs
+git diff --check
+node --check app-v1.js
+node --check sw.js
 ```
 
-Lien de pilote HTTPS : `https://emmanuel-bournique.github.io/mon-panier-pwa/`
+Le contrôle web vérifie le shell PWA, le manifeste, le service worker, les URL de runtime et la séparation du faux chrome desktop. Il ne parcourt pas le bundle iOS et ne calcule pas de parité de hashes.
 
-Le pilote reste individuel : chaque téléphone conserve son propre état local. L’iPhone et l’Android réels restent à tester avant invitation large.
+## Xcode
 
-## Backup de rollback
+Le bundle natif Xcode reste gelé pendant les itérations PWA. Il ne doit être resynchronisé qu’après stabilisation visuelle de la voie web et décision explicite de préparer une version native. Les contrôles de livraison Xcode seront alors propres à Xcode, au lieu d’être exécutés à chaque modification web.
 
-L’ancien candidat React complet a été sauvegardé avant remplacement ici :
+## Rollback
 
-`/Volumes/USB/Hermes-External/workspaces/panier_ia/backups/app_pwa_v0-react-20260816T151716Z`
+Avant la migration vers cette voie web, un rollback complet a été créé sur le volume externe. Le rollback Git reste également disponible par l’historique `main`. Toute publication doit conserver un commit identifiable afin de permettre un `git revert` rapide.
 
 ## Gate suivant
 
-Avant une invitation large : tester l’URL déployée sur un iPhone et un Android réels, vérifier le manifest/service worker après fermeture et rechargement, confirmer les droits des médias et fournir une consigne de test sans données personnelles. Statut actuel : `public_pilot_individual`.
+Valider le rendu GitHub Pages sur ordinateur et sur l’iPhone réel, en vérifiant notamment : source affichée, version du service worker, proportions de la coque desktop, absence de faux chrome sur iPhone et position de la fiche recette. Le statut du pilote reste individuel et limité à l’usage de test.

@@ -11,17 +11,26 @@
   <title>Mon Panier — Full App Functional V1</title>
   <meta name="application-name" content="Mon Panier — Éditorial utile V5">
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Mon Panier">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="mon-panier-manifest" content="mobileOnly=true; recipes=360; hiddenReserve=126; mediaIdentities=1007; webpDerivatives=2014; design=full-app-functional-v1; persistence=local; backend=false; externalProviders=false; humanReviewRequired=true">
-  <link rel="stylesheet" href="app-v1.css?v=20260820-safe-area-top-v25">
+  <link rel="stylesheet" href="app-v1.css?v=20260820-github-web-v2">
   <!-- MON_PANIER_FULL_APP_V1 recipes=360 hidden_reserve=126 media_identities=1007 webp_derivatives=2014 backend=false -->
 </head>
 <body>
   <div class="desktop-stage">
     <button class="qa-trigger" id="qaTrigger" aria-haspopup="dialog">QA</button>
     <main class="phone" aria-label="Mon Panier">
-      
+      <div class="desktop-preview-statusbar" aria-hidden="true">
+        <span class="desktop-preview-time">9:41</span>
+        <span class="desktop-preview-island"></span>
+        <span class="desktop-preview-icons">
+          <span class="desktop-preview-signal"><i></i><i></i><i></i><i></i></span>
+          <svg class="desktop-preview-wifi" viewBox="0 0 20 14" fill="none"><path d="M2 4.5a12 12 0 0 1 16 0M5 8a7.5 7.5 0 0 1 10 0M8.5 11.5a2.5 2.5 0 0 1 3 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="12" r="1" fill="currentColor"/></svg>
+          <span class="desktop-preview-battery"><i></i></span>
+        </span>
+      </div>
       <section class="auth-entry-gate" id="authGate" aria-labelledby="authGateTitle"></section>
       <header class="app-header" id="appHeader"></header>
       <div class="scroll" id="screen" tabindex="-1"></div>
@@ -453,6 +462,6 @@
   <script src="personalization-core.js?v=20260808-avoid-v1"></script>
   <script src="card-badge-core.js?v=20260813-pilot-v1"></script>
   <script src="app-v1.js?v=20260818-recipe-detail-ingredient-media-v21"></script>
-  <script src="pwa-register.js?v=20260820-safe-area-top-v25" defer></script>
+  <script src="pwa-register.js?v=20260820-github-web-v2" defer></script>
 </body>
 </html>
