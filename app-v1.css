@@ -1501,7 +1501,13 @@ html,body{background:#f8fcf9}
 
 /* native-edge-to-edge-detail-v1:start */
 @media (max-width:560px) {
-  .phone:has(.detail) .detail-hero{margin-top:calc(-1 * env(safe-area-inset-top));min-height:calc(100svh + env(safe-area-inset-top));height:calc(100svh + env(safe-area-inset-top))}
+  .phone:has(.detail) .detail-hero{
+    margin-top:calc(-1 * env(safe-area-inset-top, 0px));
+    min-height:calc(100svh + env(safe-area-inset-top, 0px));
+    min-height:calc(100dvh + env(safe-area-inset-top, 0px));
+    height:calc(100svh + env(safe-area-inset-top, 0px));
+    height:calc(100dvh + env(safe-area-inset-top, 0px));
+  }
 }
 .phone:has(.detail){--detail-actions-clearance:158px}
 .phone:has(.detail) .detail-hero-meta{right:12px;left:12px}
@@ -1514,7 +1520,7 @@ html,body{background:#f8fcf9}
 /* detail-safe-area-header-alignment-v1:start */
 @media(max-width:560px){
   .phone:has(.detail){
-    --detail-header-top:max(60px,calc(env(safe-area-inset-top) + 2px));
+    --detail-header-top:max(12px,calc(env(safe-area-inset-top, 0px) + 2px));
     --detail-copy-top:calc(var(--detail-header-top) + 54px);
   }
   .phone:has(.detail),.phone:has(.detail) .scroll{background:#0d1713}
@@ -1522,12 +1528,3 @@ html,body{background:#f8fcf9}
   .detail-hero-copy{top:var(--detail-copy-top)}
 }
 /* detail-safe-area-header-alignment-v1:end */
-
-/* detail-installed-pwa-safe-area-v2:start */
-@media (max-width:560px) and (display-mode:standalone){
-  .phone:has(.detail){
-    --detail-header-top:2px;
-    --detail-copy-top:calc(var(--detail-header-top) + 54px);
-  }
-}
-/* detail-installed-pwa-safe-area-v2:end */
