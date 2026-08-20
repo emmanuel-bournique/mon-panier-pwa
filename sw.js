@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mon-panier-runtime-v26-ios-pwa-safe-area'
+const CACHE_NAME = 'mon-panier-runtime-v27-recipe-detail-mobile-geometry'
 const SHELL_URLS = [
   './',
   './manifest.webmanifest',
@@ -10,7 +10,7 @@ const SHELL_URLS = [
   './personalization-core.js?v=20260808-avoid-v1',
   './card-badge-core.js?v=20260813-pilot-v1',
   './app-v1.js?v=20260820-recipe-detail-ingredient-media-v22',
-  './app-v1.css?v=20260820-ios-pwa-safe-area-v26',
+  './app-v1.css?v=20260820-recipe-detail-mobile-geometry-v27',
 ]
 
 self.addEventListener('install', (event) => {
