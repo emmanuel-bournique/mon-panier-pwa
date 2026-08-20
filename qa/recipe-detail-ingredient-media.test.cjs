@@ -12,6 +12,7 @@ const indexSource = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const mediaSource = fs.readFileSync(path.join(root, 'media-v1.js'), 'utf8');
 const recipes = JSON.parse(indexSource.match(/const recipes=(.*?);\n/s)[1]);
 const media = JSON.parse(mediaSource.match(/window\.__MON_PANIER_MEDIA_V1__=(.*);\s*$/s)[1]);
+const groceryCore = require(path.join(root, 'grocery-cart-core.js'));
 
 function normalizeSearch(value) {
   return String(value ?? '')
@@ -47,16 +48,20 @@ function extractFunction(source, name) {
   assert.fail(`Le corps de ${name}() n’est pas fermé`);
 }
 
+const detailIngredientBaseName = vm.runInNewContext(`(${extractFunction(appSource, 'detailIngredientBaseName')})`);
+
 function evaluateFunction(name, context = {}) {
   const functionSource = extractFunction(appSource, name);
   return vm.runInNewContext(`(${functionSource})`, {
     MEDIA: media,
+    GROCERY_CORE: groceryCore,
     normalizeSearch,
+    detailIngredientBaseName,
     ...context,
   });
 }
 
-test('la fiche fusionne les doublons exacts sans modifier les ingrédients source', () => {
+test('la fiche regroupe les produits canoniques sans modifier les ingrédients source', () => {
   const recipe = recipeById('r-v3-434-gateau-moka');
   const sourceSugarRows = recipe.ingredients.filter((item) => normalizeSearch(item.name) === 'sucre semoule');
   assert.equal(sourceSugarRows.length, 2, 'la fixture doit conserver les deux usages éditoriaux du sucre');
@@ -69,9 +74,32 @@ test('la fiche fusionne les doublons exacts sans modifier les ingrédients sourc
 
   assert.equal(displayedSugarRows.length, 1, 'une fiche ne doit pas afficher deux fois le même ingrédient et la même unité');
   assert.equal(displayedSugarRows[0].qty, 162.5, 'les quantités regroupées doivent rester exactes');
-  assert.equal(displayed.length, recipe.ingredients.length - 1, 'seul le doublon exact doit être regroupé');
+  const displayedKeys = displayed.map((item) => `${normalizeSearch(item.name)}|${normalizeSearch(item.unit)}`);
+  assert.equal(new Set(displayedKeys).size, displayed.length, 'la fiche ne doit pas répéter un produit canonique et son unité');
+  assert.equal(displayed.length, 10, 'les variantes canoniques de la fixture doivent être regroupées');
   assert.equal(sourceSugarRows[0].qty + sourceSugarRows[1].qty, 162.5, 'les deux usages source restent disponibles pour les étapes');
   assert.equal(recipe.ingredients.length, 13, 'le regroupement ne doit pas muter la recette catalogue');
+});
+
+test('la fiche affiche un seul beurre doux pour les états de préparation du même produit', () => {
+  const recipe = recipeById('r-v3-434-gateau-moka');
+  const detailIngredientsForDisplay = evaluateFunction('detailIngredientsForDisplay');
+  const displayed = detailIngredientsForDisplay(recipe.ingredients);
+  const butterRows = displayed.filter((item) => normalizeSearch(item.name).startsWith('beurre doux'));
+
+  assert.equal(butterRows.length, 1, 'beurre doux et beurre doux ramolli doivent devenir une seule ligne');
+  assert.equal(butterRows[0].name, 'beurre doux');
+  assert.equal(butterRows[0].qty, 135);
+  assert.equal(recipe.ingredients.length, 13, 'la source catalogue reste inchangée');
+
+  const preparationVariants = detailIngredientsForDisplay([
+    { name: 'beurre doux', qty: 10, unit: 'g' },
+    { name: 'beurre doux fondu', qty: 20, unit: 'g' },
+    { name: 'beurre doux pour le moule', qty: 5, unit: 'g' },
+  ]);
+  assert.equal(preparationVariants.length, 1);
+  assert.equal(preparationVariants[0].name, 'beurre doux');
+  assert.equal(preparationVariants[0].qty, 35);
 });
 
 test('les variantes lexicales de la fiche disposent toutes d’une photo locale', () => {

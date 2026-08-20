@@ -628,6 +628,30 @@
       : `<span class="${className} media-placeholder" aria-hidden="true"></span>`;
   }
 
+  function equipmentMediaRecord(value) {
+    const direct = mediaRecord('utensil', value);
+    if (direct) return direct;
+    const normalized = normalizeSearch(value);
+    const fallback = /^moule rond(?: de \d+ cm)?$/.test(normalized)
+      ? 'moule à gâteau'
+      : /^(?:2|deux) saladiers?$/.test(normalized)
+        ? 'saladier'
+        : /^(?:batteur|fouet) electrique$/.test(normalized)
+          ? 'fouet électrique'
+          : null;
+    return fallback ? mediaRecord('utensil', fallback) : null;
+  }
+
+  function equipmentMediaTile(value) {
+    const label = value === 'sauteuse' ? 'poêle ou sauteuse' : String(value || '');
+    const record = equipmentMediaRecord(value);
+    const src = record?.variants?.list?.path || record?.variants?.detail?.path || '';
+    if (!src) {
+      return `<div class="media-tile no-media"><span class="media-tile-text">${escapeHtml(label)}</span></div>`;
+    }
+    return `<div class="media-tile"><img class="utensil-media" src="${src}" alt="${escapeHtml(label)}" decoding="async"><span>${escapeHtml(label)}</span></div>`;
+  }
+
   function productMediaRecordForGroceryItem(item) {
     const key = String(item?.key || item?.id || '');
     if (key.startsWith('product|')) {
@@ -650,6 +674,16 @@
       : `<span class="${className} media-placeholder" aria-hidden="true"></span>`;
   }
 
+  function detailIngredientBaseName(value) {
+    const original = String(value || '').trim();
+    if (!original) return original;
+    const withoutState = original
+      .replace(/\s+(?:ramolli|fondu|clarifie|clarifié|à température ambiante|a température ambiante)\b.*$/iu, '')
+      .replace(/\s+pour\s+(?:le|la|les|un|une|des)\s+[^,;()]+$/iu, '')
+      .trim();
+    return withoutState || original;
+  }
+
   function detailIngredientsForDisplay(ingredients = []) {
     const displayed = [];
     const grouped = new Map();
@@ -661,13 +695,17 @@
         displayed.push(item);
         continue;
       }
-      const key = `${normalizeSearch(name)}|${normalizeSearch(unit)}`;
+      const purchaseIdentity = typeof GROCERY_CORE?.canonicalPurchaseIdentity === 'function'
+        ? GROCERY_CORE.canonicalPurchaseIdentity(name)
+        : null;
+      const displayName = detailIngredientBaseName(name);
+      const key = `${purchaseIdentity?.key || normalizeSearch(displayName)}|${normalizeSearch(unit)}`;
       const existing = grouped.get(key);
       if (existing) {
         existing.qty += quantity;
         continue;
       }
-      const copy = { ...item };
+      const copy = { ...item, name: displayName };
       displayed.push(copy);
       grouped.set(key, copy);
     }
@@ -981,12 +1019,21 @@
   };
 
 
+  function favoriteItemsMostRecentFirst(items = [], newestFirstIds = []) {
+    const rank = new Map(newestFirstIds.map((id, index) => [String(id), index]));
+    return [...items].sort((left, right) => {
+      const leftRank = rank.has(String(left.id)) ? rank.get(String(left.id)) : Number.MAX_SAFE_INTEGER;
+      const rightRank = rank.has(String(right.id)) ? rank.get(String(right.id)) : Number.MAX_SAFE_INTEGER;
+      return leftRank - rightRank || String(left.title || '').localeCompare(String(right.title || ''), 'fr');
+    });
+  }
+
   renderFavorites = function fullAppFavorites() {
     const mine = state.libraryView === 'personal';
     const personal = recipes.filter(r => r.personal);
     const collection = mine ? personal : recipes.filter(r => state.favorites.has(r.id));
     const list = libraryItems();
-    const sortedList = sortVisual(list);
+    const sortedList = mine ? sortVisual(list) : favoriteItemsMostRecentFirst(list, [...state.favorites].reverse());
     const navigationIds = sortedList.map(item => item.id);
     const libraryTools = collection.length
       ? `<div class="library-tools"><input class="library-search" type="search" value="${escapeHtml(state.librarySearch)}" placeholder="Rechercher dans ${mine ? 'mes recettes' : 'mes favoris'}" oninput="setLibrarySearch(this.value)">${libraryCollectionControls(mine,collection.length)}</div>`
@@ -1026,8 +1073,7 @@
     const nutritionBlock = r.personal ? '' : nutrition360PilotHtml(r);
     const allergenBlock = r.personal ? '' : `<div class="allergen-note"><strong>Allergènes déclarés</strong>${escapeHtml(allergens)}. Vérifiez les produits emballés.</div>`;
     const proposal = preferenceAdaptationHtml(r);
-    const equipmentLabel = name => name === 'sauteuse' ? 'poêle ou sauteuse' : name;
-    const equipment = r.equipment.length ? `<div class="media-strip">${r.equipment.map(name => `<div class="media-tile">${mediaImage('utensil', name, 'list', name, 'utensil-media')}<span>${escapeHtml(equipmentLabel(name))}</span></div>`).join('')}</div>` : '<p class="detail-lead">Aucun matériel spécifique.</p>';
+    const equipment = r.equipment.length ? `<div class="media-strip">${r.equipment.map(equipmentMediaTile).join('')}</div>` : '<p class="detail-lead">Aucun matériel spécifique.</p>';
     const ingredientRows = displayIngredients.map((item, index) => `<div class="ingredient">${mediaImage('ingredient', item.name, 'list', item.name, 'ingredient-media')}<span class="ingredient-name">${escapeHtml(item.name)}<small class="ingredient-role ${item.coursesStatus !== 'inclure' ? 'home' : ''}">${item.coursesStatus !== 'inclure' ? 'hors Courses' : roleLabels[item.role] || item.role}</small></span><span class="ingredient-qty" data-detail-ingredient="${index}">${qtyText(item, servings, r.servings)}</span></div>`).join('');
     const steps = r.steps.length ? r.steps.map(step => `<div class="step"><span class="step-num">${step.number}</span><p>${escapeHtml(step.action)}<small>${step.duration ? `${step.duration} min` : 'Sans durée imposée'}${step.done ? ` · ${escapeHtml(step.done)}` : ''}</small></p></div>`).join('') : '<p class="detail-lead">Aucune étape enregistrée.</p>';
     const detailActions = `<div class="detail-primary-actions detail-hero-actions">${manual ? `<button class="recipe-edit-action" type="button" onclick="openPersonalRecipeEditor('${r.id}')">Modifier la recette</button>` : `<button class="recipe-edit-action" type="button" onclick="openVersionEditor('${r.id}')">Modifier les ingrédients</button>`}<button class="primary ${state.cart.has(r.id) ? 'success' : ''}" data-detail-add onclick="addCart('${r.id}',${servings},true)">Ajouter au Panier</button></div>`;

@@ -1,18 +1,18 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260820-rollback-v24-compact-nav",
-  "reason": "PWA-only containment rollback: v23 stretched the installed-iPhone navigation by recounting safe-area-inset-bottom. v24 restores the prior compact navigation geometry and keeps the non-published Xcode bundle unchanged.",
+  "runtime_revision": "20260820-ios-pwa-safe-area-v25",
+  "reason": "PWA-only iPhone safe-area repair after the v24 remote containment: the recipe detail keeps its edge-to-edge photo below a deliberate top reserve, extends the mobile shell through the former bottom inset, and keeps bottom navigation at the lower edge without recreating a white band underneath. Existing PWA-only runtime divergences remain; the Xcode bundle stays on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "f824de53caffcca344e65ec8a84632fc15b73cb3f5d3d30bbe4d21ba0d37eeec",
+      "candidate_sha256": "ce4f568680084fc7c861633c9179872a43af8e5e06f270567bfbc43a0dbbe877",
       "canonical_sha256": "24075f33ed51249703983f708ba0b6d36872f39bb36bde65583917b304ffe936"
     },
     "app-v1.js": {
-      "candidate_sha256": "6a2a1cdb94f99dcfbb5bb475c12dd268df8b52b97fce984238ade1591f9280c2",
+      "candidate_sha256": "52bb6eaca119e177c05f5c3c32a02e267fbf41466358387b3d8e0aaf4e437616",
       "canonical_sha256": "4419d6d80b3c31af3f967418bde37e1d51bb8c6b0cd9d644e04d09b760f053ad"
     },
     "sw.js": {
-      "candidate_sha256": "b3a1c39e36b042c9ed10d5620950bcbbc613f9f1bd8467e8faa1924c1f0ea9fe",
+      "candidate_sha256": "bd66f8ade3a9eaf80dacbe5b7204f2793dccf41276153ca447dea4c44344f574",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }
