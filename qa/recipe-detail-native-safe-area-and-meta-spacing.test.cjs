@@ -31,6 +31,16 @@ function alignedDetailHeaderRules() {
   return css.slice(start, end + endMarker.length);
 }
 
+function installedPwaSafeAreaRules() {
+  const startMarker = '/* detail-installed-pwa-safe-area-v2:start */';
+  const endMarker = '/* detail-installed-pwa-safe-area-v2:end */';
+  const start = css.indexOf(startMarker);
+  const end = css.indexOf(endMarker, start);
+  assert.notEqual(start, -1, 'le correctif du viewport PWA installé doit être présent');
+  assert.notEqual(end, -1, 'le correctif du viewport PWA installé doit être borné');
+  return css.slice(start, end + endMarker.length);
+}
+
 function lastClearanceValue(rules) {
   const matches = [...rules.matchAll(/--detail-actions-clearance:\s*(\d+)px/g)];
   assert.ok(matches.length, 'la réserve entre vignettes et actions doit rester explicite');
@@ -45,16 +55,11 @@ test('la photo de détail passe sous la zone haute dans une WKWebView iPhone', (
     /@media\s*\(display-mode:\s*(?:standalone|fullscreen)\)/,
     'une WKWebView native ne signale pas ce display-mode : le correctif ne doit pas en dépendre',
   );
-  assert.match(rules, /@media\s*\(max-width:\s*560px\)/);
   assert.match(
     rules,
-    /\.phone:has\(\.detail\)\s+\.detail-hero\s*\{[\s\S]*?margin-top:\s*calc\(-1\s*\*\s*env\(safe-area-inset-top,\s*0px\)\)/,
-    'le héros doit remonter sous l’inset haut lorsqu’il est disponible',
+    /@media\s*\(max-width:\s*560px\)\s*\{[\s\S]*?\.phone:has\(\.detail\)\s+\.detail-hero\s*\{[\s\S]*?margin-top:\s*calc\(-1\s*\*\s*env\(safe-area-inset-top\)\)[\s\S]*?min-height:\s*calc\(100svh\s*\+\s*env\(safe-area-inset-top\)\)[\s\S]*?height:\s*calc\(100svh\s*\+\s*env\(safe-area-inset-top\)\)/,
+    'sur iPhone, le héros doit continuer derrière la zone système au lieu de commencer sous une bande blanche',
   );
-  assert.match(rules, /min-height:\s*calc\(100svh\s*\+\s*env\(safe-area-inset-top,\s*0px\)\)/);
-  assert.match(rules, /min-height:\s*calc\(100dvh\s*\+\s*env\(safe-area-inset-top,\s*0px\)\)/);
-  assert.match(rules, /height:\s*calc\(100svh\s*\+\s*env\(safe-area-inset-top,\s*0px\)\)/);
-  assert.match(rules, /height:\s*calc\(100dvh\s*\+\s*env\(safe-area-inset-top,\s*0px\)\)/);
 });
 
 test('le fallback de fiche utilise l’inset exposé par la surface et aligne ses contrôles', () => {
@@ -63,13 +68,13 @@ test('le fallback de fiche utilise l’inset exposé par la surface et aligne se
   assert.match(rules, /@media\s*\(max-width:\s*560px\)/);
   assert.match(
     rules,
-    /--detail-header-top:\s*max\(12px,\s*calc\(env\(safe-area-inset-top,\s*0px\)\s*\+\s*2px\)\)/,
-    'le retour et le favori doivent suivre l’inset réellement exposé, sans décalage fixe de 60 px',
+    /--detail-header-top:max\(60px,calc\(env\(safe-area-inset-top\) \+ 2px\)\)/,
+    'le retour et le favori doivent démarrer à la hauteur de la barre Découvrir, sans couvrir la Dynamic Island',
   );
   assert.match(
     rules,
-    /--detail-copy-top:calc\(var\(--detail-header-top\) \+ 78px\)/,
-    'le bloc titre-description doit commencer sous le bas des boutons sans être recouvert',
+    /--detail-copy-top:calc\(var\(--detail-header-top\) \+ 54px\)/,
+    'le titre doit suivre les boutons sans conserver un deuxième grand décalage vertical',
   );
   assert.match(rules, /\.phone:has\(\.detail\),\.phone:has\(\.detail\) \.scroll\{background:#0d1713\}/);
   assert.match(rules, /\.phone:has\(\.detail\) \.app-header\{top:var\(--detail-header-top\)!important\}/);
@@ -77,20 +82,26 @@ test('le fallback de fiche utilise l’inset exposé par la surface et aligne se
   assert.doesNotMatch(rules, /safe-area-inset-top\) \+ 24px/, 'aucune marge artificielle de 24 px ne doit repousser le haut de la fiche');
 });
 
-test('la PWA installée ne remplace jamais la zone sûre par une valeur fixe de 2 px', () => {
-  assert.doesNotMatch(
-    css,
-    /--detail-header-top:\s*2px/,
-    'un iPhone bord à bord ne doit jamais placer les contrôles sous l’heure avec une valeur fixe',
+test('la PWA installée ne recompte pas la zone système iPhone dans le haut de fiche', () => {
+  const rules = installedPwaSafeAreaRules();
+  const fallbackEnd = css.indexOf('/* detail-safe-area-header-alignment-v1:end */');
+  const standaloneStart = css.indexOf('/* detail-installed-pwa-safe-area-v2:start */');
+
+  assert.notEqual(fallbackEnd, -1, 'le fallback mobile doit rester borné pour contrôler la cascade');
+  assert.notEqual(standaloneStart, -1, 'l’override PWA installé doit rester borné pour contrôler la cascade');
+  assert.ok(
+    standaloneStart > fallbackEnd,
+    'l’override standalone doit suivre le fallback v15 afin que ses 2 px remplacent la réserve de 60 px',
   );
-  assert.doesNotMatch(
-    css,
-    /@media\s*\(max-width:\s*560px\)\s*and\s*\(display-mode:\s*standalone\)\s*\{[\s\S]*?--detail-header-top/,
-    'la PWA installée doit partager le même contrat de safe area que les autres surfaces iPhone',
+  assert.match(
+    rules,
+    /@media\s*\(max-width:\s*560px\)\s*and\s*\(display-mode:\s*standalone\)\s*\{\s*\.phone:has\(\.detail\)\s*\{\s*--detail-header-top:\s*2px;\s*--detail-copy-top:\s*calc\(var\(--detail-header-top\)\s*\+\s*54px\)/,
+    'les variables standalone doivent être définies dans le même scope de fiche que le fallback',
   );
+  assert.doesNotMatch(rules, /safe-area-inset-top/, 'la PWA installée ne doit pas additionner une seconde fois les 59 px système');
 });
 
-test('la navigation installée prolonge sa surface sous le bandeau sans déplacer ses contrôles', () => {
+test('la navigation installée ne recompte pas la safe area basse déjà réservée par iOS', () => {
   const startMarker = '/* Final mobile geometry — keep controls clear of iOS without adding visual dead space. */';
   const endMarker = '/* local-grocery-cart-v1:start */';
   const start = css.indexOf(startMarker);
@@ -103,12 +114,12 @@ test('la navigation installée prolonge sa surface sous le bandeau sans déplace
   assert.match(
     rules,
     /\.bottom-nav\{bottom:0!important;height:60px!important;padding:3px 4px!important\}/,
-    'la navigation utile doit conserver sa hauteur visuelle de 60 px',
+    'la navigation doit conserver sa hauteur visuelle de 60 px dans une PWA déjà cadrée par iOS',
   );
-  assert.match(
+  assert.doesNotMatch(
     rules,
-    /body:has\(\.detail\)::after\{[\s\S]*?position:fixed[\s\S]*?height:env\(safe-area-inset-bottom,\s*0px\)[\s\S]*?pointer-events:none/,
-    'la surface du bandeau doit couvrir l’inset bas réellement exposé par iOS',
+    /height:calc\(60px \+ env\(safe-area-inset-bottom/,
+    'la navigation ne doit pas additionner une seconde fois la réserve système inférieure',
   );
   assert.doesNotMatch(css, /ios-pwa-viewport-and-nav-v3/, 'le bloc v23 qui étirait la coque et la navigation ne doit pas revenir');
 });
