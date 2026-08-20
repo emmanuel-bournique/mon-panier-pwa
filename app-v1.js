@@ -4213,7 +4213,9 @@
     const count = activeSelections.length;
     const items = [['discover', 'Découvrir', 'discover'], ['favorites', 'Favoris', 'heart'], ['cart', 'Mon panier', 'cart'], ['groceries', 'Listes', 'list'], ['profile', 'Profil', 'user']];
     const active = state.tab === 'archives' ? 'cart' : state.tab;
-    nav.innerHTML = items.map(([id, label, glyph]) => `<button class="nav-item ${active === id ? 'active' : ''}" data-tab="${id}" onclick="setTab('${id}')">${icon(glyph)}<span>${label}</span>${id === 'cart' && count ? `<b class="badge-count">${count}</b>` : ''}</button>`).join('');
+    const activeIndex = Math.max(0, items.findIndex(([id]) => id === active));
+    nav.style.setProperty('--nav-active-offset', `${activeIndex * 20}%`);
+    nav.innerHTML = `<span class="nav-active-bubble" aria-hidden="true"></span>${items.map(([id, label, glyph]) => `<button class="nav-item ${active === id ? 'active' : ''}" data-tab="${id}" onclick="setTab('${id}')">${icon(glyph)}<span>${label}</span>${id === 'cart' && count ? `<b class="badge-count">${count}</b>` : ''}</button>`).join('')}`;
   };
 
   window.prepareCartGroceries = function prepareCartGroceries() {

@@ -1586,3 +1586,77 @@ html,body{background:#f8fcf9}
   .detail-hero-meta strong{font-size:12px}
 }
 /* recipe-detail-mobile-geometry-v2:end */
+
+/* discover-card-action-compact-v2:start */
+[data-screen="discover-shelves"] .recipe-action-btn,
+[data-screen="discover-results"] .recipe-action-btn{
+  width:36px;
+  height:36px;
+  min-width:36px;
+  min-height:36px;
+}
+[data-screen="discover-shelves"] .recipe-action-btn svg,
+[data-screen="discover-results"] .recipe-action-btn svg{
+  width:16px;
+  height:16px;
+  opacity:1;
+}
+/* discover-card-action-compact-v2:end */
+
+/* bottom-nav-whatsapp-glass-v4:start */
+.bottom-nav{
+  --nav-active-offset:0%;
+  position:absolute;
+  left:8px!important;
+  right:8px!important;
+  bottom:max(8px,env(safe-area-inset-bottom,0px))!important;
+  width:auto;
+  height:60px!important;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  padding:4px!important;
+  overflow:visible;
+  border:1px solid rgba(255,255,255,.78);
+  border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.60),rgba(239,249,243,.46));
+  box-shadow:0 8px 22px rgba(20,53,44,.12),inset 0 1px 0 rgba(255,255,255,.86);
+  backdrop-filter:blur(18px) saturate(1.16);
+  -webkit-backdrop-filter:blur(18px) saturate(1.16);
+}
+.bottom-nav .nav-active-bubble{
+  position:absolute;
+  z-index:0;
+  top:4px;
+  bottom:4px;
+  left:4px;
+  width:calc((100% - 8px)/5 - 8px);
+  border:1px solid rgba(255,255,255,.80);
+  border-radius:999px;
+  background:linear-gradient(145deg,rgba(226,250,235,.76),rgba(193,235,214,.56));
+  box-shadow:0 4px 12px rgba(8,127,91,.10),inset 0 1px 0 rgba(255,255,255,.78);
+  transform:translateX(var(--nav-active-offset));
+  transition:transform .38s cubic-bezier(.22,1.28,.36,1);
+  will-change:transform;
+  pointer-events:none;
+}
+.bottom-nav .nav-item{
+  position:relative;
+  z-index:1;
+  min-height:50px;
+  margin:0;
+  padding:3px 2px 4px;
+  border:0!important;
+  border-radius:999px;
+  background:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  transform:none!important;
+  transition:color .20s ease;
+}
+.bottom-nav .nav-item svg{width:19px;height:19px}
+.bottom-nav .nav-item span{font-weight:700}
+.bottom-nav .nav-item.active{color:#07583e;background:transparent!important}
+.bottom-nav .nav-item.active span{font-weight:850}
+.bottom-nav .nav-item.active:after{display:none!important}
+.bottom-nav .badge-count{top:2px;right:7px;z-index:2}
+/* bottom-nav-whatsapp-glass-v4:end */

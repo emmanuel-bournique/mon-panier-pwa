@@ -1,6 +1,6 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-20T17:09:15Z",
+  "generated_at": "2026-08-20T21:04:14Z",
   "status": "public_pilot_individual_pwa_only",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
   "deployment": {
@@ -15,39 +15,39 @@
     "canonical_file_count": 2533,
     "canonical_bytes": 796271695,
     "index_sha256": "03de57da89c30e31e900d9e54bc3eeae4b6d6effa63cd23535867a3bebf8cfa3",
-    "app_css_sha256": "24075f33ed51249703983f708ba0b6d36872f39bb36bde65583917b304ffe936",
-    "app_js_sha256": "4419d6d80b3c31af3f967418bde37e1d51bb8c6b0cd9d644e04d09b760f053ad",
+    "app_css_sha256": "d8bad685fad2a3d29b2df64390d7a983ab8a3e36069fe9aef5350401f2085995",
+    "app_js_sha256": "73482698cdbafe469929cbadce947b64719ec320d7e53d8d9359e2c4c3be4c2b",
     "grocery_cart_core_sha256": "01424ffad4ba117ddb1da8b870b9b4fd3c939f269f5b9da1c95b743fc3d86183",
     "service_worker_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
   },
   "candidate": {
     "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
     "file_count_excluding_manifest_self": 2555,
-    "bytes_excluding_manifest_self": 796388153,
-    "index_sha256": "fc94b4e4832717d82af2a10ad615e7ea5fd8771fedd7f1bc6c6b2995240db06a",
-    "app_css_sha256": "48e9f55e2b49361dd150f4a0f8c446640c0f06e174325aeac2dee272ef4b4d58",
-    "app_js_sha256": "52bb6eaca119e177c05f5c3c32a02e267fbf41466358387b3d8e0aaf4e437616",
+    "bytes_excluding_manifest_self": 796392322,
+    "index_sha256": "8354af0b4e855a9d8e806f0b7cf3761cd1d2e5bb23f635b3b4597b80d7eb0697",
+    "app_css_sha256": "6ac4e07fb2ac37b6c1f2c14d477264e4af30e91a314f84727aa1cbc43b02f1a5",
+    "app_js_sha256": "3bd88fba5a94a12041012e4eded910f274afc4d038a3e3fb0bfba193105c1594",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "8d7eb307bc54a318e6a9e26eafdc39ac4db836110d1c06a540651c215a685a8f",
+    "service_worker_sha256": "fc0f7d96b51e63158e494a51f167741748b15f7f397c8cd4ebeae095c6b06569",
     "registration_sha256": "c6ced712ff7247a7b145c321c64d9c29b4cef14f0170cadc046dfc8e85ed5755",
-    "pwa_shell_test_sha256": "289addb8834dded9f197ef93b7de513ea2d78763c3ba3f10ca5fe10aa274cecb",
+    "pwa_shell_test_sha256": "1c2269933f866bf8211390256168bf7e9dee9a73ed0544ecc866ad81c3863505",
     "shopping_flow_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
     "recipe_create_ui_contract_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a",
-    "recipe_detail_responsive_photo_test_sha256": "6d9c8fd672567c431e516b7c9cda653c71d4c8b40be7a83f41f0cd0083b789d4",
+    "recipe_detail_responsive_photo_test_sha256": "85598a74a9c92c859b79908942c48ce3c634833c045e9788e84a20b1247d293c",
     "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "39f811518f66ef60c9f5aa83afaf41a7b8732bcf91acfcbea43f8c42c93b632d",
     "recipe_detail_top_safe_area_test_sha256": "f267f80892bb31621a92510bdd016e558105f85f9824e94845de2aa241e1e30e",
     "favorites_empty_state_test_sha256": "bb4eb74159b96f183bad7539792b66de79269ae6d538c1ecae7140057dc3286f",
     "discover_card_cart_state_test_sha256": "508340728554de23f2e01f16b1ac4b36a62e969feb2128a909cfb4ba2097611f",
-    "discover_card_favorite_state_test_sha256": "64230f17c4c8f88268fd40b9f9366e0a83b6fe34ae35ccf53129e53a2f08c3a6",
-    "pwa_only_runtime_divergence_sha256": "600e79b8c949a3554f504dfd45e1825afccc82968393d2a522002cda5eb7907d",
-    "cache_name": "mon-panier-runtime-v31-recipe-detail-surface-cleanup",
+    "discover_card_favorite_state_test_sha256": "03de530f20e0a1b5df13fc57ffc020d8733b708f80dd743fe568be8f244d8b0e",
+    "pwa_only_runtime_divergence_sha256": "ac79cd9911c1f7dfd3d357a7cf0bcdd7d6c522d549415914d4043bdf89ef3826",
+    "cache_name": "mon-panier-runtime-v32-discover-glass-nav",
     "versioned_runtime_urls": [
-      "app-v1.css?v=20260820-recipe-detail-surface-cleanup-v31",
+      "app-v1.css?v=20260820-discover-glass-nav-v32",
       "grocery-cart-core.js?v=20260817-courses-create-v14",
       "personalization-core.js?v=20260808-avoid-v1",
       "card-badge-core.js?v=20260813-pilot-v1",
-      "app-v1.js?v=20260820-recipe-detail-ingredient-media-v22",
-      "pwa-register.js?v=20260820-recipe-detail-surface-cleanup-v31"
+      "app-v1.js?v=20260820-discover-glass-nav-v32",
+      "pwa-register.js?v=20260820-discover-glass-nav-v32"
     ],
     "recipe_detail_ingredient_media_test_sha256": "3ed6a919e8a58922bb4f4b7a10ab03ba8396945406c0842e0b5d0554e96a86cb"
   },
@@ -55,7 +55,7 @@
     "mode": "pwa_only_declared_divergence",
     "declaration": "PWA_ONLY_RUNTIME_DIVERGENCE.json",
     "xcode_runtime_updated": false,
-    "reason": "PWA-only mobile recipe-detail surface cleanup v31; no Xcode/native publication."
+    "reason": "PWA-only mobile Découvrir glass-navigation surface v32; no Xcode/native publication."
   },
   "pwa_additions": [
     "manifest.webmanifest",

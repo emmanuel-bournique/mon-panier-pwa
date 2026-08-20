@@ -62,3 +62,28 @@ test('les cartes Découvrir signalent un favori par un mini-cœur discret sans a
   assert.match(rules, /\.recipe-action-favorite-status\[data-favorite="true"\]\{display:grid/);
   assert.doesNotMatch(rules, /width:(?:[2-9]\d|\d{3,})px/);
 });
+
+test('Découvrir utilise un bouton trois-points compact et le ruban vitré anime une bulle active commune', () => {
+  const nav = sourceBlock(app, '  renderNav = function mealListNav()', '  window.prepareCartGroceries');
+  const navRules = sourceBlock(css, '/* bottom-nav-whatsapp-glass-v4:start */', '/* bottom-nav-whatsapp-glass-v4:end */');
+  const discoverRules = sourceBlock(css, '/* discover-card-action-compact-v2:start */', '/* discover-card-action-compact-v2:end */');
+
+  assert.match(nav, /const activeIndex = Math\.max\(0, items\.findIndex\(\(\[id\]\) => id === active\)\);/);
+  assert.match(nav, /nav\.style\.setProperty\('--nav-active-offset', `\$\{activeIndex \* 20\}%`\);/);
+  assert.match(nav, /<span class="nav-active-bubble" aria-hidden="true"><\/span>/);
+  assert.match(nav, /items\.map\(\(\[id, label, glyph\]\)/);
+  assert.match(nav, /\['discover', 'Découvrir', 'discover'\], \['favorites', 'Favoris', 'heart'\], \['cart', 'Mon panier', 'cart'\], \['groceries', 'Listes', 'list'\], \['profile', 'Profil', 'user'\]/);
+
+  assert.match(navRules, /\.bottom-nav\s*\{[\s\S]*border-radius:999px/);
+  assert.match(navRules, /backdrop-filter:blur\(/);
+  assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*position:absolute/);
+  assert.match(navRules, /transform:translateX\(var\(--nav-active-offset\)\)/);
+  assert.match(navRules, /transition:transform\s+\.38s\s+cubic-bezier\(\.22,1\.28,\.36,1\)/);
+  assert.match(navRules, /\.bottom-nav \.nav-item\.active\s*\{[\s\S]*background:transparent!important/);
+  assert.match(navRules, /\.bottom-nav \.nav-item\.active:after\s*\{display:none!important/);
+
+  assert.match(discoverRules, /\[data-screen="discover-shelves"\] \.recipe-action-btn/);
+  assert.match(discoverRules, /\[data-screen="discover-results"\] \.recipe-action-btn/);
+  assert.match(discoverRules, /width:36px;\s*height:36px;\s*min-width:36px;\s*min-height:36px/);
+  assert.match(discoverRules, /\.recipe-action-btn svg\{[\s\S]*?width:16px;\s*height:16px/);
+});
