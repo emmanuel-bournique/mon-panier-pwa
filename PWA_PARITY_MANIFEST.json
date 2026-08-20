@@ -1,6 +1,6 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-20T14:37:15Z",
+  "generated_at": "2026-08-20T15:21:08Z",
   "status": "public_pilot_individual_pwa_only",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
   "deployment": {
@@ -23,31 +23,31 @@
   "candidate": {
     "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
     "file_count_excluding_manifest_self": 2555,
-    "bytes_excluding_manifest_self": 796382400,
-    "index_sha256": "d388e044e49f422e4a7320de2aa9faf23c926bf421c01ce5fb2680da63cdc05c",
-    "app_css_sha256": "fc22b0648370f40c76a0d75df2957298bfecd70addacdc71d84c0a31245c28f1",
+    "bytes_excluding_manifest_self": 796382035,
+    "index_sha256": "e7f8e8eea5f68d9b7e6470a433f7b178ea50a5e6d3b5838c0bc17a598e16b809",
+    "app_css_sha256": "eaea4706b75845c65a658b48eef00fb3440095fff02361b7d705da9c69ad2d89",
     "app_js_sha256": "52bb6eaca119e177c05f5c3c32a02e267fbf41466358387b3d8e0aaf4e437616",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "af69e41baf0387051c965163cd3b8b0c0f8e5d3e1b86934896d9c3930d2deba2",
+    "service_worker_sha256": "852904c73f3cc10d48368b535281a9b5d339366b8d1666821629bab0cdf42c95",
     "registration_sha256": "c6ced712ff7247a7b145c321c64d9c29b4cef14f0170cadc046dfc8e85ed5755",
-    "pwa_shell_test_sha256": "b70a267586a05f3539b34f718cd2da1371c04c1bb4c418bb304e846574ca7798",
+    "pwa_shell_test_sha256": "59292bb6541bb9ef83c30ea02787ca72eced65edf3a9e25b070e53a36f37090b",
     "shopping_flow_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
     "recipe_create_ui_contract_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a",
-    "recipe_detail_responsive_photo_test_sha256": "5072bbe8f8f457e18f3756051f30f634c32bfdaa4247c4d96de2ad9fd96697da",
-    "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "f14a2653f3096d4b28495d46e3d4cadddaf0a2e25807e5bc4ba271442014a1b3",
-    "recipe_detail_top_safe_area_test_sha256": "41faef110e396944e0cf033511e4d95b7c1543e43d5f30f66d74f006e2fbde9c",
+    "recipe_detail_responsive_photo_test_sha256": "c9766852f686062dc5dcde7e804026edd28d86876a3676bdbd5b216eb3e30e46",
+    "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "5cc7b177297e3832d98c6c81fdf079d1e235047d87087023d08368888cc1790e",
+    "recipe_detail_top_safe_area_test_sha256": "1280e0f276a20bb252d709ace962d6cedd850ff5044e5b0ded301bb19b7f9677",
     "favorites_empty_state_test_sha256": "bb4eb74159b96f183bad7539792b66de79269ae6d538c1ecae7140057dc3286f",
     "discover_card_cart_state_test_sha256": "508340728554de23f2e01f16b1ac4b36a62e969feb2128a909cfb4ba2097611f",
     "discover_card_favorite_state_test_sha256": "64230f17c4c8f88268fd40b9f9366e0a83b6fe34ae35ccf53129e53a2f08c3a6",
-    "pwa_only_runtime_divergence_sha256": "a59630d1147c61095035acede1658d4e46ed78e37b7d945c75d9a5b8811e6185",
-    "cache_name": "mon-panier-runtime-v27-recipe-detail-mobile-geometry",
+    "pwa_only_runtime_divergence_sha256": "b57b905a0c9ab995b13984e81f5d1a420b356d27a56e7fc2133b8ed0733e47fd",
+    "cache_name": "mon-panier-runtime-v28-recipe-detail-shared-nav",
     "versioned_runtime_urls": [
       "grocery-cart-core.js?v=20260817-courses-create-v14",
       "personalization-core.js?v=20260808-avoid-v1",
       "card-badge-core.js?v=20260813-pilot-v1",
-      "pwa-register.js?v=20260820-recipe-detail-mobile-geometry-v27",
+      "pwa-register.js?v=20260820-recipe-detail-shared-nav-v28",
       "app-v1.js?v=20260820-recipe-detail-ingredient-media-v22",
-      "app-v1.css?v=20260820-recipe-detail-mobile-geometry-v27"
+      "app-v1.css?v=20260820-recipe-detail-shared-nav-v28"
     ],
     "recipe_detail_ingredient_media_test_sha256": "3ed6a919e8a58922bb4f4b7a10ab03ba8396945406c0842e0b5d0554e96a86cb"
   },
@@ -55,7 +55,7 @@
     "mode": "pwa_only_declared_divergence",
     "declaration": "PWA_ONLY_RUNTIME_DIVERGENCE.json",
     "xcode_runtime_updated": false,
-    "reason": "PWA-only mobile recipe-detail geometry v27; no Xcode/native publication."
+    "reason": "PWA-only mobile recipe-detail shared navigation v28; no Xcode/native publication."
   },
   "pwa_additions": [
     "manifest.webmanifest",
@@ -68,7 +68,7 @@
   ],
   "local_data_model": "separate browser-local state; no account, backend, or cross-device synchronization",
   "qa_command": "node --test qa/*.test.cjs qa/*.test.mjs",
-  "rollback_backup": "/Volumes/USB/Hermes-External/backups/mon-panier-pwa-before-v27-detail-layout-20260820T143034Z-HEAD.tar",
+  "rollback_backup": "/Volumes/USB/Hermes-External/backups/mon-panier-pwa-before-v28-mobile-shell-20260820T150803Z-HEAD.tar",
   "promotion_blockers": [
     "Real iPhone PWA smoke remains a human check."
   ]

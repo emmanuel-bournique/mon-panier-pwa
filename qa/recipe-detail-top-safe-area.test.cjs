@@ -63,26 +63,35 @@ test('retour, favori, titre et description occupent des bandes séparées', () =
   assert.equal(copyTop - controlBottom, 24, 'la marge titre sous les boutons doit rester stable');
 });
 
-test('la navigation basse reste entière et couvre aussi la safe area inférieure', () => {
+test('la fiche réutilise le ruban mobile normal de Découvrir, au bord inférieur', () => {
   const rules = mobileGeometryRules();
 
   assert.match(
     rules,
-    /--detail-nav-height:\s*max\(78px,\s*calc\(72px\s*\+\s*env\(safe-area-inset-bottom,\s*0px\)\)\)/,
-    'la hauteur de navigation doit conserver ses commandes tout en couvrant la zone Home',
+    /--detail-nav-height:\s*60px/,
+    'la fiche doit réserver la même hauteur de ruban que Découvrir',
+  );
+  assert.match(
+    css,
+    /@media\s*\(max-width:\s*560px\)\s*\{[\s\S]*?\.bottom-nav\s*\{[\s\S]*?bottom:\s*0!important[\s\S]*?height:\s*60px!important[\s\S]*?padding:\s*3px\s+4px!important/,
+    'la référence mobile partagée doit rester le ruban compact de 60 px',
   );
   assert.match(rules, /\.phone:has\(\.detail\)::before\s*\{\s*content:\s*none;\s*display:\s*none/);
   assert.match(
     rules,
-    /\.phone:has\(\.detail\)\s+\.bottom-nav\s*\{[\s\S]*?bottom:\s*0!important[\s\S]*?transform:\s*none!important[\s\S]*?pointer-events:\s*auto!important[\s\S]*?height:\s*var\(--detail-nav-height\)!important/,
-    'le ruban doit rester au bord inférieur, utilisable et sans bande blanche séparée',
+    /\.phone:has\(\.detail\)\s+\.bottom-nav\s*\{[\s\S]*?bottom:\s*0!important[\s\S]*?transform:\s*none!important[\s\S]*?pointer-events:\s*auto!important/,
+    'le ruban de la fiche doit rester au bord inférieur et utilisable',
   );
-  assert.match(
+  assert.doesNotMatch(
     rules,
-    /\.phone:has\(\.detail\)\s+\.bottom-nav\s+\.nav-item\s*\{[\s\S]*?min-height:\s*52px!important[\s\S]*?transform:\s*none!important/,
-    'les icônes ne doivent pas être décalées hors du ruban',
+    /\.phone:has\(\.detail\)\s+\.bottom-nav\s*\{[^}]*?(?:height|padding)\s*:/,
+    'la fiche ne doit pas agrandir ni repadder le ruban partagé',
   );
-  assert.doesNotMatch(rules, /height:\s*60px!important/, 'un ruban de 60 px recouperait les icônes sur iPhone');
+  assert.doesNotMatch(
+    rules,
+    /\.phone:has\(\.detail\)\s+\.bottom-nav\s+\.nav-item\s*\{/,
+    'la fiche ne doit pas déplacer les icônes par rapport à Découvrir',
+  );
 });
 
 test('le format iPhone court garde la même hiérarchie sans collision', () => {

@@ -47,7 +47,7 @@ test('vignettes, actions et indication de défilement restent au-dessus du ruban
     { name: 'iPhone standard', height: 844, reserve: 60, copyOffset: 84, clearance: 172 },
     { name: 'iPhone grand format', height: 932, reserve: 60, copyOffset: 84, clearance: 172 },
   ]) {
-    const navHeight = 78;
+    const navHeight = 60;
     const buttonBottom = phone.reserve + 12 + 48;
     const copyTop = phone.reserve + phone.copyOffset;
     const heroHeight = phone.height - phone.reserve;
@@ -71,6 +71,5 @@ test('la photo et le ruban utilisent le viewport dynamique sans extension basse 
   assert.match(rules, /\.desktop-stage:has\(\.detail\)\s*\{[\s\S]*?height:\s*100dvh/);
   assert.match(rules, /\.phone:has\(\.detail\)\s*\{[\s\S]*?height:\s*100dvh/);
   assert.match(rules, /\.phone:has\(\.detail\)\s+\.detail-hero\s*\{[\s\S]*?height:\s*calc\(100dvh\s*-\s*var\(--detail-system-reserve\)\)!important/);
-  assert.doesNotMatch(rules, /100dvh\s*\+\s*env\(safe-area-inset-bottom/, 'la coque ne doit pas créer une bande après la navigation');
-  assert.doesNotMatch(rules, /height:\s*60px!important/, 'le ruban doit garder une hauteur exploitable');
+  assert.doesNotMatch(rules, /100dvh\s*\+\s*env\(safe-area-inset-bottom/, 'la fiche ne doit pas créer une extension basse artificielle');
 });
