@@ -69,18 +69,21 @@ test('Découvrir utilise un bouton trois-points compact et le ruban vitré anime
   const discoverRules = sourceBlock(css, '/* discover-card-action-compact-v2:start */', '/* discover-card-action-compact-v2:end */');
 
   assert.match(nav, /const activeIndex = Math\.max\(0, items\.findIndex\(\(\[id\]\) => id === active\)\);/);
-  assert.match(nav, /nav\.style\.setProperty\('--nav-active-offset', `\$\{activeIndex \* 20\}%`\);/);
+  assert.match(nav, /const previousActiveIndex = Number\(nav\.dataset\.navActiveIndex\);/);
+  assert.match(nav, /nav\.style\.setProperty\('--nav-active-index', String\(activeIndex\)\);/);
+  assert.match(nav, /requestAnimationFrame\(\(\) => \{/);
   assert.match(nav, /<span class="nav-active-bubble" aria-hidden="true"><\/span>/);
   assert.match(nav, /items\.map\(\(\[id, label, glyph\]\)/);
   assert.match(nav, /\['discover', 'Découvrir', 'discover'\], \['favorites', 'Favoris', 'heart'\], \['cart', 'Mon panier', 'cart'\], \['groceries', 'Listes', 'list'\], \['profile', 'Profil', 'user'\]/);
 
-  assert.match(navRules, /\.bottom-nav\s*\{[\s\S]*border-radius:999px/);
+  assert.match(navRules, /\.bottom-nav\s*\{[\s\S]*--nav-active-index:0/);
+  assert.match(navRules, /border-radius:999px/);
   assert.match(navRules, /backdrop-filter:blur\(/);
   assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*position:absolute/);
-  assert.match(navRules, /transform:translateX\(var\(--nav-active-offset\)\)/);
-  assert.match(navRules, /transition:transform\s+\.38s\s+cubic-bezier\(\.22,1\.28,\.36,1\)/);
-  assert.match(navRules, /\.bottom-nav \.nav-item\.active\s*\{[\s\S]*background:transparent!important/);
-  assert.match(navRules, /\.bottom-nav \.nav-item\.active:after\s*\{display:none!important/);
+  assert.match(navRules, /left:calc\(4px \+ var\(--nav-active-index\) \* \(\(100% - 8px\) \/ 5\)\)/);
+  assert.match(navRules, /transform:none/);
+  assert.match(navRules, /transition:left\s+\.38s\s+cubic-bezier\(\.22,1\.28,\.36,1\)/);
+  assert.doesNotMatch(navRules, /transform:translateX\(var\(--nav-active-offset\)\)/);
 
   assert.match(discoverRules, /\[data-screen="discover-shelves"\] \.recipe-action-btn/);
   assert.match(discoverRules, /\[data-screen="discover-results"\] \.recipe-action-btn/);

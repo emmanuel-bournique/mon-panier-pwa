@@ -1,18 +1,18 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260820-discover-glass-nav-v32",
+  "runtime_revision": "20260820-discover-glass-nav-v33-bubble-fix",
   "reason": "PWA-only mobile surface update: the Découvrir action button is visually more compact; the shared bottom navigation keeps its glass treatment while using a WhatsApp-inspired floating capsule and an animated active bubble; the previous recipe-detail geometry cleanup remains active. The Xcode bundle stays on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "6ac4e07fb2ac37b6c1f2c14d477264e4af30e91a314f84727aa1cbc43b02f1a5",
+      "candidate_sha256": "a51f55d9e75f774d7c7b1757193840dbf6a8b63c0395ecaecaf3e55e9d534227",
       "canonical_sha256": "d8bad685fad2a3d29b2df64390d7a983ab8a3e36069fe9aef5350401f2085995"
     },
     "app-v1.js": {
-      "candidate_sha256": "3bd88fba5a94a12041012e4eded910f274afc4d038a3e3fb0bfba193105c1594",
+      "candidate_sha256": "e29a8997d69b289971780680ab34d6374d428057c200866b0792825d3b182c89",
       "canonical_sha256": "73482698cdbafe469929cbadce947b64719ec320d7e53d8d9359e2c4c3be4c2b"
     },
     "sw.js": {
-      "candidate_sha256": "fc0f7d96b51e63158e494a51f167741748b15f7f397c8cd4ebeae095c6b06569",
+      "candidate_sha256": "bc8390e5cfb9024a700a2d9c5db05bdba0c2119ae9b505391bb36674fb096887",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }

@@ -4214,8 +4214,27 @@
     const items = [['discover', 'Découvrir', 'discover'], ['favorites', 'Favoris', 'heart'], ['cart', 'Mon panier', 'cart'], ['groceries', 'Listes', 'list'], ['profile', 'Profil', 'user']];
     const active = state.tab === 'archives' ? 'cart' : state.tab;
     const activeIndex = Math.max(0, items.findIndex(([id]) => id === active));
-    nav.style.setProperty('--nav-active-offset', `${activeIndex * 20}%`);
-    nav.innerHTML = `<span class="nav-active-bubble" aria-hidden="true"></span>${items.map(([id, label, glyph]) => `<button class="nav-item ${active === id ? 'active' : ''}" data-tab="${id}" onclick="setTab('${id}')">${icon(glyph)}<span>${label}</span>${id === 'cart' && count ? `<b class="badge-count">${count}</b>` : ''}</button>`).join('')}`;
+    const previousActiveIndex = Number(nav.dataset.navActiveIndex);
+    const hasPreviousActiveIndex = Number.isFinite(previousActiveIndex);
+    const activeBubble = nav.querySelector('.nav-active-bubble');
+    const navItemsMarkup = items.map(([id, label, glyph]) => `<button class="nav-item ${active === id ? 'active' : ''}" data-tab="${id}" onclick="setTab('${id}')">${icon(glyph)}<span>${label}</span>${id === 'cart' && count ? `<b class="badge-count">${count}</b>` : ''}</button>`).join('');
+    nav.innerHTML = navItemsMarkup;
+    if (activeBubble) {
+      nav.prepend(activeBubble);
+    } else {
+      nav.insertAdjacentHTML('afterbegin', '<span class="nav-active-bubble" aria-hidden="true"></span>');
+    }
+    nav.dataset.navActiveIndex = String(activeIndex);
+    if (!hasPreviousActiveIndex) {
+      nav.style.setProperty('--nav-active-index', String(activeIndex));
+      return;
+    }
+    nav.style.setProperty('--nav-active-index', String(previousActiveIndex));
+    requestAnimationFrame(() => {
+      if (nav.dataset.navActiveIndex === String(activeIndex)) {
+        nav.style.setProperty('--nav-active-index', String(activeIndex));
+      }
+    });
   };
 
   window.prepareCartGroceries = function prepareCartGroceries() {

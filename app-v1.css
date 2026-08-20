@@ -1605,7 +1605,7 @@ html,body{background:#f8fcf9}
 
 /* bottom-nav-whatsapp-glass-v4:start */
 .bottom-nav{
-  --nav-active-offset:0%;
+  --nav-active-index:0;
   position:absolute;
   left:8px!important;
   right:8px!important;
@@ -1627,15 +1627,15 @@ html,body{background:#f8fcf9}
   z-index:0;
   top:4px;
   bottom:4px;
-  left:4px;
+  left:calc(4px + var(--nav-active-index) * ((100% - 8px) / 5));
   width:calc((100% - 8px)/5 - 8px);
   border:1px solid rgba(255,255,255,.80);
   border-radius:999px;
   background:linear-gradient(145deg,rgba(226,250,235,.76),rgba(193,235,214,.56));
   box-shadow:0 4px 12px rgba(8,127,91,.10),inset 0 1px 0 rgba(255,255,255,.78);
-  transform:translateX(var(--nav-active-offset));
-  transition:transform .38s cubic-bezier(.22,1.28,.36,1);
-  will-change:transform;
+  transform:none;
+  transition:left .38s cubic-bezier(.22,1.28,.36,1);
+  will-change:left;
   pointer-events:none;
 }
 .bottom-nav .nav-item{

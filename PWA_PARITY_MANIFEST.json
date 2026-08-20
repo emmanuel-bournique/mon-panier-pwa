@@ -1,6 +1,6 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-20T21:04:14Z",
+  "generated_at": "2026-08-20T21:21:23Z",
   "status": "public_pilot_individual_pwa_only",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
   "deployment": {
@@ -23,31 +23,31 @@
   "candidate": {
     "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
     "file_count_excluding_manifest_self": 2555,
-    "bytes_excluding_manifest_self": 796392322,
-    "index_sha256": "8354af0b4e855a9d8e806f0b7cf3761cd1d2e5bb23f635b3b4597b80d7eb0697",
-    "app_css_sha256": "6ac4e07fb2ac37b6c1f2c14d477264e4af30e91a314f84727aa1cbc43b02f1a5",
-    "app_js_sha256": "3bd88fba5a94a12041012e4eded910f274afc4d038a3e3fb0bfba193105c1594",
+    "bytes_excluding_manifest_self": 796393381,
+    "index_sha256": "1af5fa611664e53b8a4e730bceab8a24573c9503d31081fce48480c31e2b6150",
+    "app_css_sha256": "a51f55d9e75f774d7c7b1757193840dbf6a8b63c0395ecaecaf3e55e9d534227",
+    "app_js_sha256": "e29a8997d69b289971780680ab34d6374d428057c200866b0792825d3b182c89",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "fc0f7d96b51e63158e494a51f167741748b15f7f397c8cd4ebeae095c6b06569",
+    "service_worker_sha256": "bc8390e5cfb9024a700a2d9c5db05bdba0c2119ae9b505391bb36674fb096887",
     "registration_sha256": "c6ced712ff7247a7b145c321c64d9c29b4cef14f0170cadc046dfc8e85ed5755",
-    "pwa_shell_test_sha256": "1c2269933f866bf8211390256168bf7e9dee9a73ed0544ecc866ad81c3863505",
+    "pwa_shell_test_sha256": "3875b104df4704337141fe3b03452139925e350ef23d00c3daadebeda4224011",
     "shopping_flow_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
     "recipe_create_ui_contract_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a",
-    "recipe_detail_responsive_photo_test_sha256": "85598a74a9c92c859b79908942c48ce3c634833c045e9788e84a20b1247d293c",
+    "recipe_detail_responsive_photo_test_sha256": "02567ab4b4f434247a059e3311b7945eb1266dd269d7673ed627d87130f2643a",
     "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "39f811518f66ef60c9f5aa83afaf41a7b8732bcf91acfcbea43f8c42c93b632d",
     "recipe_detail_top_safe_area_test_sha256": "f267f80892bb31621a92510bdd016e558105f85f9824e94845de2aa241e1e30e",
     "favorites_empty_state_test_sha256": "bb4eb74159b96f183bad7539792b66de79269ae6d538c1ecae7140057dc3286f",
     "discover_card_cart_state_test_sha256": "508340728554de23f2e01f16b1ac4b36a62e969feb2128a909cfb4ba2097611f",
-    "discover_card_favorite_state_test_sha256": "03de530f20e0a1b5df13fc57ffc020d8733b708f80dd743fe568be8f244d8b0e",
-    "pwa_only_runtime_divergence_sha256": "ac79cd9911c1f7dfd3d357a7cf0bcdd7d6c522d549415914d4043bdf89ef3826",
-    "cache_name": "mon-panier-runtime-v32-discover-glass-nav",
+    "discover_card_favorite_state_test_sha256": "e74e36f09dbbd3c00d794cb2a96dc278fb8b3fdb658c61ae23398526d1d18f42",
+    "pwa_only_runtime_divergence_sha256": "cc958916e6019b4b8b22302030e979acbcfff5cb1ce8c4c81e2827a5874ef1e6",
+    "cache_name": "mon-panier-runtime-v33-discover-glass-nav-bubble-fix",
     "versioned_runtime_urls": [
-      "app-v1.css?v=20260820-discover-glass-nav-v32",
+      "app-v1.css?v=20260820-discover-glass-nav-v33-bubble-fix",
       "grocery-cart-core.js?v=20260817-courses-create-v14",
       "personalization-core.js?v=20260808-avoid-v1",
       "card-badge-core.js?v=20260813-pilot-v1",
-      "app-v1.js?v=20260820-discover-glass-nav-v32",
-      "pwa-register.js?v=20260820-discover-glass-nav-v32"
+      "app-v1.js?v=20260820-discover-glass-nav-v33-bubble-fix",
+      "pwa-register.js?v=20260820-discover-glass-nav-v33-bubble-fix"
     ],
     "recipe_detail_ingredient_media_test_sha256": "3ed6a919e8a58922bb4f4b7a10ab03ba8396945406c0842e0b5d0554e96a86cb"
   },
@@ -55,7 +55,7 @@
     "mode": "pwa_only_declared_divergence",
     "declaration": "PWA_ONLY_RUNTIME_DIVERGENCE.json",
     "xcode_runtime_updated": false,
-    "reason": "PWA-only mobile Découvrir glass-navigation surface v32; no Xcode/native publication."
+    "reason": "PWA-only mobile Découvrir glass-navigation surface v33 bubble-fix; no Xcode/native publication."
   },
   "pwa_additions": [
     "manifest.webmanifest",
