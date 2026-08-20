@@ -21,7 +21,7 @@ function mobileGeometryRules() {
   return css.slice(start, end + endMarker.length);
 }
 
-test('la fiche réserve une bande blanche haute avant la photo', () => {
+test('la fiche laisse la photo remplir le haut du viewport sans double réserve', () => {
   const rules = mobileGeometryRules();
 
   assert.match(rules, /@media\s*\(max-width:\s*560px\)/);
@@ -32,13 +32,13 @@ test('la fiche réserve une bande blanche haute avant la photo', () => {
   );
   assert.match(
     rules,
-    /\.scroll:has\(\.detail\)\s*\{[\s\S]*?padding:\s*var\(--detail-system-reserve\)\s+0\s+calc\(var\(--detail-nav-height\)\s*\+\s*24px\)!important/,
-    'la photo doit commencer après la réserve blanche plutôt que derrière l’heure et le Wi‑Fi',
+    /\.scroll:has\(\.detail\)\s*\{[\s\S]*?padding:\s*0\s+0\s+calc\(var\(--detail-nav-height\)\s*\+\s*24px\)!important/,
+    'la fiche ne doit pas ajouter une deuxième bande blanche avant la photo',
   );
   assert.match(
     rules,
-    /\.phone:has\(\.detail\)\s+\.detail-hero\s*\{[\s\S]*?margin-top:\s*0!important[\s\S]*?height:\s*calc\(100dvh\s*-\s*var\(--detail-system-reserve\)\)!important/,
-    'le héros doit rester sous la zone système et tenir exactement dans le viewport disponible',
+    /\.phone:has\(\.detail\)\s+\.detail-hero\s*\{[\s\S]*?margin-top:\s*0!important[\s\S]*?height:\s*100dvh!important/,
+    'le héros doit remplir le viewport et laisser iOS gérer sa zone système',
   );
   assert.doesNotMatch(css, /--detail-header-top:\s*2px/, 'aucune PWA installée ne doit remonter les contrôles dans la zone système');
   assert.doesNotMatch(css, /detail-installed-pwa-safe-area-v2/, 'le faux override standalone doit être retiré');
@@ -50,7 +50,7 @@ test('retour, favori, titre et description occupent des bandes séparées', () =
   assert.match(rules, /--detail-controls-top:\s*calc\(var\(--detail-system-reserve\)\s*\+\s*12px\)/);
   assert.match(rules, /\.phone:has\(\.detail\)\s+\.app-header\s*\{\s*top:\s*var\(--detail-controls-top\)!important/);
   assert.match(rules, /--detail-copy-top:\s*84px/);
-  assert.match(rules, /\.detail-hero-copy\s*\{\s*top:\s*var\(--detail-copy-top\)!important/);
+  assert.match(rules, /\.detail-hero-copy\s*\{\s*top:\s*calc\(var\(--detail-copy-top\)\s*\+\s*var\(--detail-system-reserve\)\)!important/);
 
   const reserve = 60;
   const controlTop = reserve + 12;
@@ -84,7 +84,7 @@ test('la fiche réutilise le ruban mobile normal de Découvrir, au bord inférie
   assert.match(rules, /\.phone:has\(\.detail\)::before\s*\{\s*content:\s*none;\s*display:\s*none/);
   assert.match(
     rules,
-    /\.phone:has\(\.detail\)\s+\.bottom-nav\s*\{[\s\S]*?bottom:\s*0!important[\s\S]*?transform:\s*none!important[\s\S]*?pointer-events:\s*auto!important[\s\S]*?display:\s*grid!important[\s\S]*?visibility:\s*visible!important[\s\S]*?opacity:\s*1!important[\s\S]*?z-index:\s*40!important/,
+    /\.phone:has\(\.detail\)\s+\.bottom-nav\s*\{[\s\S]*?bottom:\s*0!important[\s\S]*?transform:\s*none!important[\s\S]*?pointer-events:\s*auto!important[\s\S]*?display:\s*grid!important[\s\S]*?visibility:\s*visible!important[\s\S]*?opacity:\s*1!important[\s\S]*?z-index:\s*20!important/,
     'même avec un ancien style de fiche, le ruban doit rester visible au-dessus du héros',
   );
   assert.doesNotMatch(
@@ -99,27 +99,17 @@ test('la fiche réutilise le ruban mobile normal de Découvrir, au bord inférie
   );
 });
 
-test('la surface de la fiche couvre la réserve basse sans déplacer le ruban', () => {
+test('la fiche ne dessine pas de surface basse concurrente au ruban partagé', () => {
   const rules = mobileGeometryRules();
-  const surfaceRule = rules.match(/body:has\(\.detail\)::after\s*\{([\s\S]*?)\}/)?.[1] ?? '';
-
-  assert.notEqual(surfaceRule, '', 'la fiche doit déclarer une surface basse dédiée');
-  for (const declaration of [
-    /content:\s*["']{2};/,
-    /position:\s*fixed;/,
-    /left:\s*0;/,
-    /right:\s*0;/,
-    /bottom:\s*0;/,
-    /height:\s*env\(safe-area-inset-bottom,\s*0px\);/,
-    /z-index:\s*19;/,
-    /pointer-events:\s*none;/,
-  ]) {
-    assert.match(surfaceRule, declaration);
-  }
+  assert.doesNotMatch(
+    rules,
+    /body:has\(\.detail\)::after\s*\{/,
+    'la fiche ne doit pas peindre une bande fixe sous le ruban ou hors du viewport',
+  );
   assert.match(
-    surfaceRule,
-    /background:\s*linear-gradient\(/,
-    'la réserve basse doit utiliser la même surface vitrée que le ruban',
+    rules,
+    /\.phone:has\(\.detail\)\s+\.bottom-nav\s*\{[\s\S]*?z-index:\s*20!important/,
+    'le ruban partagé doit rester dans sa couche normale',
   );
 });
 

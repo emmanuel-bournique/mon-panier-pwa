@@ -70,6 +70,6 @@ test('la photo et le ruban utilisent le viewport dynamique sans extension basse 
 
   assert.match(rules, /\.desktop-stage:has\(\.detail\)\s*\{[\s\S]*?height:\s*100dvh/);
   assert.match(rules, /\.phone:has\(\.detail\)\s*\{[\s\S]*?height:\s*100dvh/);
-  assert.match(rules, /\.phone:has\(\.detail\)\s+\.detail-hero\s*\{[\s\S]*?height:\s*calc\(100dvh\s*-\s*var\(--detail-system-reserve\)\)!important/);
+  assert.match(rules, /\.phone:has\(\.detail\)\s+\.detail-hero\s*\{[\s\S]*?height:\s*100dvh!important/);
   assert.doesNotMatch(rules, /100dvh\s*\+\s*env\(safe-area-inset-bottom/, 'la fiche ne doit pas créer une extension basse artificielle');
 });
