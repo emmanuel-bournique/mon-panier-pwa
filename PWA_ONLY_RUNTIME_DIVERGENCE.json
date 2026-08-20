@@ -1,18 +1,18 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260820-discover-glass-nav-v33-bubble-fix",
-  "reason": "PWA-only mobile surface update: the Découvrir action button is visually more compact; the shared bottom navigation keeps its glass treatment while using a WhatsApp-inspired floating capsule and an animated active bubble; the previous recipe-detail geometry cleanup remains active. The Xcode bundle stays on its prior runtime.",
+  "runtime_revision": "20260820-discover-glass-nav-v34-iphone14pro-spring",
+  "reason": "PWA-only mobile surface update: the Découvrir action button remains compact; the shared bottom navigation keeps its glass treatment with one shared active bubble, a visible spring motion, and safe-area anchoring; the desktop preview now matches the iPhone 14 Pro 393×852 frame with a simulated Dynamic Island hidden on real mobile viewports. The Xcode bundle stays on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "a51f55d9e75f774d7c7b1757193840dbf6a8b63c0395ecaecaf3e55e9d534227",
+      "candidate_sha256": "6894f15f650f7f8d8dead075e82fb233f529c0729cbdaab2d61ee7cb04cb2ccc",
       "canonical_sha256": "d8bad685fad2a3d29b2df64390d7a983ab8a3e36069fe9aef5350401f2085995"
     },
     "app-v1.js": {
-      "candidate_sha256": "e29a8997d69b289971780680ab34d6374d428057c200866b0792825d3b182c89",
+      "candidate_sha256": "cf1d5672f5ad007eb4fe3c8954a2a03d01e61fba429495447e1b94e56927119b",
       "canonical_sha256": "73482698cdbafe469929cbadce947b64719ec320d7e53d8d9359e2c4c3be4c2b"
     },
     "sw.js": {
-      "candidate_sha256": "bc8390e5cfb9024a700a2d9c5db05bdba0c2119ae9b505391bb36674fb096887",
+      "candidate_sha256": "42ee69977445749cc6aa6b4180374b518e724a6eb6247cb6b772fcf3321c6c2f",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }

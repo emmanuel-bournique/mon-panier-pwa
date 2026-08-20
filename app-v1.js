@@ -15,6 +15,29 @@
   if (!PERSONALIZATION_CORE) throw new Error('Mon Panier personalization core is unavailable');
   const MON_PANIER_CARD_BADGES = window.MonPanierCardBadgeCore;
   if (!MON_PANIER_CARD_BADGES) throw new Error('Mon Panier card badge core is unavailable');
+
+  function ensureIPhone14ProPreviewChrome() {
+    const phone = document.querySelector('.phone');
+    if (!phone || phone.querySelector('.statusbar')) return;
+    phone.insertAdjacentHTML('afterbegin', '<div class="statusbar" aria-hidden="true"><span class="status-time">9:41</span><span class="dynamic-island" aria-hidden="true"></span><span class="status-icons" aria-hidden="true"><svg viewBox="0 0 20 12"><path d="M1 11h2V8H1m4 3h2V6H5m4 5h2V3H9m4 8h2V0h-2m4 11h2V-3h-2"/></svg><svg class="wifi" viewBox="0 0 18 14"><path d="M1 4a13 13 0 0 1 16 0M4 8a8 8 0 0 1 10 0M7 11a4 4 0 0 1 4 0M9 13h.01"/></svg><span class="battery"><span class="battery-level"></span></span></span></div>');
+  }
+
+  function syncIPhone14ProPreviewScale() {
+    const phone = document.querySelector('.phone');
+    if (!phone) return;
+    if (window.matchMedia('(max-width:560px)').matches) {
+      phone.style.removeProperty('--phone-preview-scale');
+      return;
+    }
+    const widthScale = (window.innerWidth - 48) / 393;
+    const heightScale = (window.innerHeight - 48) / 852;
+    const scale = Math.max(0.5, Math.min(1, widthScale, heightScale));
+    phone.style.setProperty('--phone-preview-scale', scale.toFixed(4));
+  }
+  ensureIPhone14ProPreviewChrome();
+  syncIPhone14ProPreviewScale();
+  window.addEventListener('resize', syncIPhone14ProPreviewScale);
+
   // Keep the guided preference flow active for first-run and Profile relaunches.
   const DEV_SKIP_ONBOARDING = false;
   const ONBOARDING_PREVIEW_PARAM = 'onboarding';
@@ -4216,6 +4239,7 @@
     const activeIndex = Math.max(0, items.findIndex(([id]) => id === active));
     const previousActiveIndex = Number(nav.dataset.navActiveIndex);
     const hasPreviousActiveIndex = Number.isFinite(previousActiveIndex);
+    const shouldAnimateBubble = hasPreviousActiveIndex && previousActiveIndex !== activeIndex;
     const activeBubble = nav.querySelector('.nav-active-bubble');
     const navItemsMarkup = items.map(([id, label, glyph]) => `<button class="nav-item ${active === id ? 'active' : ''}" data-tab="${id}" onclick="setTab('${id}')">${icon(glyph)}<span>${label}</span>${id === 'cart' && count ? `<b class="badge-count">${count}</b>` : ''}</button>`).join('');
     nav.innerHTML = navItemsMarkup;
@@ -4230,6 +4254,15 @@
       return;
     }
     nav.style.setProperty('--nav-active-index', String(previousActiveIndex));
+    if (shouldAnimateBubble && activeBubble) {
+      clearTimeout(nav._navBubbleAnimationTimer);
+      activeBubble.classList.remove('is-moving');
+      void activeBubble.offsetWidth;
+      activeBubble.classList.add('is-moving');
+      nav._navBubbleAnimationTimer = window.setTimeout(() => {
+        if (nav.querySelector('.nav-active-bubble') === activeBubble) activeBubble.classList.remove('is-moving');
+      }, 480);
+    }
     requestAnimationFrame(() => {
       if (nav.dataset.navActiveIndex === String(activeIndex)) {
         nav.style.setProperty('--nav-active-index', String(activeIndex));

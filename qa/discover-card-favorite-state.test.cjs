@@ -82,11 +82,43 @@ test('Découvrir utilise un bouton trois-points compact et le ruban vitré anime
   assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*position:absolute/);
   assert.match(navRules, /left:calc\(4px \+ var\(--nav-active-index\) \* \(\(100% - 8px\) \/ 5\)\)/);
   assert.match(navRules, /transform:none/);
-  assert.match(navRules, /transition:left\s+\.38s\s+cubic-bezier\(\.22,1\.28,\.36,1\)/);
+  assert.match(navRules, /transition:left\s+\.46s\s+cubic-bezier\(\.16,1\.65,\.3,1\)/);
+  assert.match(navRules, /\.bottom-nav \.nav-item\.active\s*\{[\s\S]*background:transparent!important/);
+  assert.match(navRules, /\.bottom-nav \.nav-item\.active:after\s*\{display:none!important/);
   assert.doesNotMatch(navRules, /transform:translateX\(var\(--nav-active-offset\)\)/);
 
   assert.match(discoverRules, /\[data-screen="discover-shelves"\] \.recipe-action-btn/);
   assert.match(discoverRules, /\[data-screen="discover-results"\] \.recipe-action-btn/);
   assert.match(discoverRules, /width:36px;\s*height:36px;\s*min-width:36px;\s*min-height:36px/);
   assert.match(discoverRules, /\.recipe-action-btn svg\{[\s\S]*?width:16px;\s*height:16px/);
+});
+
+test('la coque de prévisualisation respecte le viewport iPhone 14 Pro et ne dessine pas de fausse île sur mobile', () => {
+  const previewRules = sourceBlock(css, '/* iphone-14-pro-preview-v1:start */', '/* iphone-14-pro-preview-v1:end */');
+
+  assert.match(app, /ensureIPhone14ProPreviewChrome[\s\S]*class="statusbar"[\s\S]*class="dynamic-island"/);
+  assert.match(app, /syncIPhone14ProPreviewScale[\s\S]*--phone-preview-scale/);
+  assert.match(previewRules, /\.phone\{[\s\S]*width:393px;\s*height:852px/);
+  assert.match(previewRules, /aspect-ratio:393 \/ 852/);
+  assert.match(previewRules, /transform:scale\(var\(--phone-preview-scale,1\)\)/);
+  assert.match(previewRules, /\.statusbar\{[\s\S]*height:59px/);
+  assert.match(previewRules, /\.dynamic-island\{[\s\S]*width:126px;\s*height:37px/);
+  assert.match(previewRules, /@media\(max-width:560px\)\{[\s\S]*\.statusbar\{display:none!important/);
+});
+
+test('le ruban reste au bord bas et la bulle active produit une impulsion élastique visible', () => {
+  const nav = sourceBlock(app, '  renderNav = function mealListNav()', '  window.prepareCartGroceries');
+  const navRules = sourceBlock(css, '/* bottom-nav-whatsapp-glass-v4:start */', '/* bottom-nav-whatsapp-glass-v4:end */');
+
+  assert.match(nav, /const shouldAnimateBubble = hasPreviousActiveIndex && previousActiveIndex !== activeIndex;/);
+  assert.match(nav, /activeBubble\.classList\.add\('is-moving'\)/);
+  assert.match(nav, /nav\._navBubbleAnimationTimer/);
+  assert.match(navRules, /bottom:0!important/);
+  assert.match(navRules, /height:calc\(60px \+ env\(safe-area-inset-bottom,0px\)\)!important/);
+  assert.match(navRules, /padding:4px 4px calc\(4px \+ env\(safe-area-inset-bottom,0px\)\)!important/);
+  assert.match(navRules, /border-radius:24px/);
+  assert.match(navRules, /bottom:calc\(4px \+ env\(safe-area-inset-bottom,0px\)\)/);
+  assert.match(navRules, /transition:left \.46s cubic-bezier\(\.16,1\.65,\.3,1\)/);
+  assert.match(navRules, /@keyframes nav-active-bubble-spring/);
+  assert.match(navRules, /\.nav-active-bubble\.is-moving\{[\s\S]*animation:nav-active-bubble-spring \.46s/);
 });
