@@ -1,6 +1,6 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-20T13:22:00Z",
+  "generated_at": "2026-08-20T13:41:34Z",
   "status": "public_pilot_individual_pwa_only",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
   "deployment": {
@@ -24,31 +24,31 @@
     "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
     "file_count_excluding_manifest_self": 2555,
     "bytes_excluding_manifest_self": 796382039,
-    "index_sha256": "fcacc6be4ae5ac7b3f374a850dc6f1d14db360195009052df4bb2d27965591dc",
+    "index_sha256": "c83ebbf74ba1273ea6d2fe524f024ef1f583c64775aa87118f128562999fd6d1",
     "app_css_sha256": "ce4f568680084fc7c861633c9179872a43af8e5e06f270567bfbc43a0dbbe877",
     "app_js_sha256": "52bb6eaca119e177c05f5c3c32a02e267fbf41466358387b3d8e0aaf4e437616",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "bd66f8ade3a9eaf80dacbe5b7204f2793dccf41276153ca447dea4c44344f574",
+    "service_worker_sha256": "9d268117013db53094be4572ca23d8565ed43426cedb50fd88f217a9a8d2a03e",
     "registration_sha256": "c6ced712ff7247a7b145c321c64d9c29b4cef14f0170cadc046dfc8e85ed5755",
-    "pwa_shell_test_sha256": "1c98f521015cb2f3e5b1fd74b23fff2a9aa08d4ddefa1b01e4a3978a979cd8c9",
+    "pwa_shell_test_sha256": "b867b8e7c339f51a3e8df8dce0a5f3410121d77ab8f97dc685d504d38990247b",
     "shopping_flow_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
     "recipe_create_ui_contract_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a",
-    "recipe_detail_responsive_photo_test_sha256": "2d66c5f7571646698fe0fbfc55f79ce5e8e7c4d0c38ca6057fb05558f5304dc4",
+    "recipe_detail_responsive_photo_test_sha256": "a965bc21403053e5efb4456445cec95a6d5493f8c76887e5ba57c0181e4150e5",
     "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "51214630db7ed50407b3f8d8509960faf7dd3571f53508bb5f27df517f85622d",
     "favorites_empty_state_test_sha256": "bb4eb74159b96f183bad7539792b66de79269ae6d538c1ecae7140057dc3286f",
     "discover_card_cart_state_test_sha256": "508340728554de23f2e01f16b1ac4b36a62e969feb2128a909cfb4ba2097611f",
     "discover_card_favorite_state_test_sha256": "64230f17c4c8f88268fd40b9f9366e0a83b6fe34ae35ccf53129e53a2f08c3a6",
-    "pwa_only_runtime_divergence_sha256": "aa084e9b30432f3132b78877c4e4e1c2eb98f1ed4af9a68805a476d9d452e1ce",
-    "cache_name": "mon-panier-runtime-v25-ios-pwa-safe-area",
+    "pwa_only_runtime_divergence_sha256": "01b8cb1182d5b187d8143f8f3811ecaba253031cd7e81c655b91f2ae0e457863",
+    "cache_name": "mon-panier-runtime-v26-ios-pwa-safe-area",
     "versioned_runtime_urls": [
       "grocery-cart-core.js?v=20260817-courses-create-v14",
       "personalization-core.js?v=20260808-avoid-v1",
       "card-badge-core.js?v=20260813-pilot-v1",
-      "pwa-register.js?v=20260820-ios-pwa-safe-area-v25",
-      "app-v1.js?v=20260818-recipe-detail-ingredient-media-v21",
-      "app-v1.css?v=20260820-ios-pwa-safe-area-v25"
+      "pwa-register.js?v=20260820-ios-pwa-safe-area-v26",
+      "app-v1.js?v=20260820-recipe-detail-ingredient-media-v22",
+      "app-v1.css?v=20260820-ios-pwa-safe-area-v26"
     ],
-    "recipe_detail_ingredient_media_test_sha256": "0efac2b50ac0e25d086cecb481ddf728af1f68a218487c5697206c69a4aa1da2"
+    "recipe_detail_ingredient_media_test_sha256": "3ed6a919e8a58922bb4f4b7a10ab03ba8396945406c0842e0b5d0554e96a86cb"
   },
   "runtime_sync": {
     "mode": "pwa_only_declared_divergence",
