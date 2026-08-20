@@ -42,6 +42,71 @@ async function exists(path) {
   }
 }
 
+const parityHashPaths = {
+  index_sha256: 'index.html',
+  app_css_sha256: 'app-v1.css',
+  app_js_sha256: 'app-v1.js',
+  manifest_sha256: 'manifest.webmanifest',
+  service_worker_sha256: 'sw.js',
+  registration_sha256: 'pwa-register.js',
+  pwa_shell_test_sha256: 'qa/pwa-shell.test.mjs',
+  shopping_flow_test_sha256: 'qa/shopping-flow-regression.test.cjs',
+  recipe_create_ui_contract_test_sha256: 'qa/recipe-create-ui-contract.test.cjs',
+  recipe_detail_responsive_photo_test_sha256: 'qa/recipe-detail-responsive-photo.test.cjs',
+  recipe_detail_native_safe_area_and_meta_spacing_test_sha256: 'qa/recipe-detail-native-safe-area-and-meta-spacing.test.cjs',
+  recipe_detail_top_safe_area_test_sha256: 'qa/recipe-detail-top-safe-area.test.cjs',
+  favorites_empty_state_test_sha256: 'qa/favorites-empty-state.test.cjs',
+  discover_card_cart_state_test_sha256: 'qa/discover-card-cart-state.test.cjs',
+  discover_card_favorite_state_test_sha256: 'qa/discover-card-favorite-state.test.cjs',
+  pwa_only_runtime_divergence_sha256: 'PWA_ONLY_RUNTIME_DIVERGENCE.json',
+  recipe_detail_ingredient_media_test_sha256: 'qa/recipe-detail-ingredient-media.test.cjs',
+}
+
+function versionedUrlsFromIndex(index) {
+  return [...index.matchAll(/(?:href|src)="([^"?#]+\?v=[^"]+)"/g)]
+    .map((match) => match[1])
+    .sort()
+}
+
+function cacheNameFromWorker(serviceWorker) {
+  const match = serviceWorker.match(/const CACHE_NAME = ['"]([^'"]+)['"]/)
+  assert.ok(match, 'le worker doit déclarer un cache explicite')
+  return match[1]
+}
+
+function assertPwaParityContract({ index, serviceWorker, divergence, parity, hashes }) {
+  const candidate = parity.candidate
+  const revision = divergence.runtime_revision
+  const versionedUrls = candidate.versioned_runtime_urls.slice().sort()
+
+  assert.equal(candidate.cache_name, cacheNameFromWorker(serviceWorker), 'le manifeste de parité doit déclarer le cache réellement ouvert par le worker')
+  assert.ok(index.includes(`app-v1.css?v=${revision}`), 'la feuille CSS versionnée doit porter la même révision que la divergence PWA')
+  assert.ok(index.includes(`pwa-register.js?v=${revision}`), 'le bootstrap du worker doit porter la même révision que la divergence PWA')
+  assert.deepEqual(versionedUrlsFromIndex(index), versionedUrls, 'les URLs versionnées du manifeste doivent être exactement celles chargées par index.html')
+
+  for (const url of versionedUrls) {
+    assert.ok(index.includes(url), `index.html doit charger l’URL versionnée déclarée : ${url}`)
+    if (!url.startsWith('pwa-register.js?')) {
+      assert.ok(serviceWorker.includes(`./${url}`), `le shell offline doit précacher l’URL versionnée déclarée : ${url}`)
+    }
+  }
+
+  for (const [field, hash] of Object.entries(hashes)) {
+    assert.equal(candidate[field], hash, `le hash enregistré doit correspondre au fichier courant : ${field}`)
+  }
+  for (const [runtimePath, declared] of Object.entries(divergence.runtime_paths)) {
+    const field = runtimePath === 'app-v1.css'
+      ? 'app_css_sha256'
+      : runtimePath === 'app-v1.js'
+        ? 'app_js_sha256'
+        : runtimePath === 'sw.js'
+          ? 'service_worker_sha256'
+          : null
+    assert.ok(field, `la divergence PWA ne doit pas déclarer un runtime non couvert : ${runtimePath}`)
+    assert.equal(declared.candidate_sha256, hashes[field], `la divergence PWA doit déclarer le hash candidat courant : ${runtimePath}`)
+  }
+}
+
 function withoutPwaAdditions(html) {
   return html
     .replace(/\n?\s*<link rel="manifest" href="manifest\.webmanifest">/g, '')
@@ -102,6 +167,39 @@ test('PWA shell exposes the install and offline contract', async () => {
   assert.match(registration, /serviceWorker\s*\.register\(['"]\.\/sw\.js['"]/)
   assert.match(registration, /const activateWaitingWorker = \(\) => \{[\s\S]*?registration\.waiting[\s\S]*?postMessage\(\{ type: 'SKIP_WAITING' \}\)/, 'an existing waiting worker must be asked to activate')
   assert.match(registration, /await registration\.update\(\)\s*activateWaitingWorker\(\)/, 'an update discovered after registration must be asked to activate')
+})
+
+test('PWA parity manifest binds cache, versioned URLs and recorded hashes to the release files', async () => {
+  const index = await readFile(join(candidateRoot, 'index.html'), 'utf8')
+  const serviceWorker = await readFile(join(candidateRoot, 'sw.js'), 'utf8')
+  const divergence = JSON.parse(await readFile(join(candidateRoot, 'PWA_ONLY_RUNTIME_DIVERGENCE.json'), 'utf8'))
+  const parity = JSON.parse(await readFile(join(candidateRoot, 'PWA_PARITY_MANIFEST.json'), 'utf8'))
+  const hashes = Object.fromEntries(await Promise.all(
+    Object.entries(parityHashPaths).map(async ([field, relativePath]) => [
+      field,
+      await sha256(join(candidateRoot, relativePath)),
+    ]),
+  ))
+
+  assertPwaParityContract({ index, serviceWorker, divergence, parity, hashes })
+
+  const cacheMismatch = structuredClone(parity)
+  cacheMismatch.candidate.cache_name = 'mon-panier-runtime-stale'
+  assert.throws(
+    () => assertPwaParityContract({ index, serviceWorker, divergence, parity: cacheMismatch, hashes }),
+    /cache réellement ouvert par le worker/,
+    'la mutation du cache du manifeste doit faire échouer le contrat',
+  )
+
+  const urlMismatch = structuredClone(parity)
+  urlMismatch.candidate.versioned_runtime_urls = urlMismatch.candidate.versioned_runtime_urls.filter(
+    (url) => !url.startsWith('app-v1.css?'),
+  )
+  assert.throws(
+    () => assertPwaParityContract({ index, serviceWorker, divergence, parity: urlMismatch, hashes }),
+    /URLs versionnées du manifeste/,
+    'la suppression d’une URL runtime du manifeste doit faire échouer le contrat',
+  )
 })
 
 test('runtime files remain byte-identical to the canonical iOS bundle except declared PWA-only overrides', async () => {

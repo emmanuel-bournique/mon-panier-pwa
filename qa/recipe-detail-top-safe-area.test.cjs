@@ -76,6 +76,11 @@ test('la fiche réutilise le ruban mobile normal de Découvrir, au bord inférie
     /@media\s*\(max-width:\s*560px\)\s*\{[\s\S]*?\.bottom-nav\s*\{[\s\S]*?bottom:\s*0!important[\s\S]*?height:\s*60px!important[\s\S]*?padding:\s*3px\s+4px!important/,
     'la référence mobile partagée doit rester le ruban compact de 60 px',
   );
+  assert.match(
+    css,
+    /@media\s*\(max-width:\s*560px\)\s*\{[\s\S]*?\.bottom-nav\s*\{[\s\S]*?bottom:\s*0!important[\s\S]*?height:\s*60px!important[\s\S]*?padding:\s*3px\s+4px!important[\s\S]*?\.nav-item\s*\{[\s\S]*?transform:\s*translateY\(-6px\)!important/,
+    'Découvrir doit conserver le décalage compact des items, partagé par la fiche',
+  );
   assert.match(rules, /\.phone:has\(\.detail\)::before\s*\{\s*content:\s*none;\s*display:\s*none/);
   assert.match(
     rules,
