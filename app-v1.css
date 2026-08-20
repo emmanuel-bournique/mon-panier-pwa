@@ -594,20 +594,18 @@ button:active{transform:translateY(1px)}
 
 @media(max-width:390px){.create-ingredient-fields{grid-template-columns:minmax(0,1fr) 1fr}.create-ingredient-fields .create-repeater-label:first-child{grid-column:1/-1}.ingredient-add-grid{grid-template-columns:1fr 1fr}.ingredient-add-field:first-child{grid-column:1/-1}}
 
-/* ios-pwa-viewport-and-nav-v3:start */
+/* Final mobile geometry — keep controls clear of iOS without adding visual dead space. */
 @media(max-width:560px){
-  .desktop-stage{width:100%;min-height:100vh;min-height:100dvh;height:100vh;height:100dvh}
-  .phone{width:100%;min-height:100vh;min-height:100dvh;height:100vh;height:100dvh;max-height:none}
-  .bottom-nav{bottom:0!important;height:calc(60px + env(safe-area-inset-bottom, 0px))!important;padding:3px 4px calc(3px + env(safe-area-inset-bottom, 0px))!important}
+  .bottom-nav{bottom:0!important;height:60px!important;padding:3px 4px!important}
   .phone:after{display:none!important}
   /* Move the whole interactive cluster, not the white navigation surface. */
   .nav-item{min-height:48px!important;gap:2px!important;font-size:9px!important;transform:translateY(-6px)!important}
   .nav-item svg{width:19px!important;height:19px!important}
   /* Keep the selected-state line just above the native iPhone home indicator. */
   .nav-item.active:after{bottom:8px!important;width:18px!important}
+  .phone:has(.detail) .app-header{top:clamp(54px,calc(env(safe-area-inset-top) + 0px),66px)!important}
   .card-quality{display:inline-flex;align-items:center;justify-content:center;min-height:20px;height:20px;padding:0 7px;line-height:1;vertical-align:middle}
 }
-/* ios-pwa-viewport-and-nav-v3:end */
 
 /* local-grocery-cart-v1:start */
 [data-local-grocery-cart="true"] .screen-intro{margin-bottom:13px}
@@ -1503,7 +1501,7 @@ html,body{background:#f8fcf9}
 
 /* native-edge-to-edge-detail-v1:start */
 @media (max-width:560px) {
-  .phone:has(.detail) .detail-hero{margin-top:calc(-1 * env(safe-area-inset-top, 0px));min-height:calc(100svh + env(safe-area-inset-top, 0px));min-height:calc(100dvh + env(safe-area-inset-top, 0px));height:calc(100svh + env(safe-area-inset-top, 0px));height:calc(100dvh + env(safe-area-inset-top, 0px))}
+  .phone:has(.detail) .detail-hero{margin-top:calc(-1 * env(safe-area-inset-top));min-height:calc(100svh + env(safe-area-inset-top));height:calc(100svh + env(safe-area-inset-top))}
 }
 .phone:has(.detail){--detail-actions-clearance:158px}
 .phone:has(.detail) .detail-hero-meta{right:12px;left:12px}
@@ -1516,7 +1514,7 @@ html,body{background:#f8fcf9}
 /* detail-safe-area-header-alignment-v1:start */
 @media(max-width:560px){
   .phone:has(.detail){
-    --detail-header-top:max(12px,calc(env(safe-area-inset-top, 0px) + 2px));
+    --detail-header-top:max(60px,calc(env(safe-area-inset-top) + 2px));
     --detail-copy-top:calc(var(--detail-header-top) + 54px);
   }
   .phone:has(.detail),.phone:has(.detail) .scroll{background:#0d1713}
@@ -1524,3 +1522,12 @@ html,body{background:#f8fcf9}
   .detail-hero-copy{top:var(--detail-copy-top)}
 }
 /* detail-safe-area-header-alignment-v1:end */
+
+/* detail-installed-pwa-safe-area-v2:start */
+@media (max-width:560px) and (display-mode:standalone){
+  .phone:has(.detail){
+    --detail-header-top:2px;
+    --detail-copy-top:calc(var(--detail-header-top) + 54px);
+  }
+}
+/* detail-installed-pwa-safe-area-v2:end */
