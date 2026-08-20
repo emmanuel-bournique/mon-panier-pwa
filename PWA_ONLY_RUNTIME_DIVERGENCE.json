@@ -1,10 +1,10 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260820-recipe-detail-shared-nav-v28",
-  "reason": "PWA-only iPhone recipe-detail navigation parity: the system strip remains white above the hero photo; Return and Favorite stay below it; the recipe title and description follow the controls; and the detail reuses Découvrir's compact bottom navigation at the viewport edge. Existing PWA-only runtime divergences remain; the Xcode bundle stays on its prior runtime.",
+  "runtime_revision": "20260820-recipe-detail-bottom-surface-v29",
+  "reason": "PWA-only iPhone recipe-detail navigation parity: the system strip remains white above the hero photo; Return and Favorite stay below it; the recipe title and description follow the controls; the detail reuses Découvrir's compact bottom navigation at the viewport edge; and the lower safe-area reserve receives the same visual surface without moving the navigation items. Existing PWA-only runtime divergences remain; the Xcode bundle stays on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "eaea4706b75845c65a658b48eef00fb3440095fff02361b7d705da9c69ad2d89",
+      "candidate_sha256": "0ed343746304fc3329dda9f67ead5c65d66531ff9df5039a10cd178341022a20",
       "canonical_sha256": "24075f33ed51249703983f708ba0b6d36872f39bb36bde65583917b304ffe936"
     },
     "app-v1.js": {
@@ -12,7 +12,7 @@
       "canonical_sha256": "4419d6d80b3c31af3f967418bde37e1d51bb8c6b0cd9d644e04d09b760f053ad"
     },
     "sw.js": {
-      "candidate_sha256": "852904c73f3cc10d48368b535281a9b5d339366b8d1666821629bab0cdf42c95",
+      "candidate_sha256": "55a81276acd7995baa0082c23e2dcd186c11563009620f86390b5e5b83f5083b",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }

@@ -99,6 +99,30 @@ test('la fiche réutilise le ruban mobile normal de Découvrir, au bord inférie
   );
 });
 
+test('la surface de la fiche couvre la réserve basse sans déplacer le ruban', () => {
+  const rules = mobileGeometryRules();
+  const surfaceRule = rules.match(/body:has\(\.detail\)::after\s*\{([\s\S]*?)\}/)?.[1] ?? '';
+
+  assert.notEqual(surfaceRule, '', 'la fiche doit déclarer une surface basse dédiée');
+  for (const declaration of [
+    /content:\s*["']{2};/,
+    /position:\s*fixed;/,
+    /left:\s*0;/,
+    /right:\s*0;/,
+    /bottom:\s*0;/,
+    /height:\s*env\(safe-area-inset-bottom,\s*0px\);/,
+    /z-index:\s*19;/,
+    /pointer-events:\s*none;/,
+  ]) {
+    assert.match(surfaceRule, declaration);
+  }
+  assert.match(
+    surfaceRule,
+    /background:\s*linear-gradient\(/,
+    'la réserve basse doit utiliser la même surface vitrée que le ruban',
+  );
+});
+
 test('le format iPhone court garde la même hiérarchie sans collision', () => {
   const rules = mobileGeometryRules();
 

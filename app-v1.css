@@ -1522,6 +1522,18 @@ html,body{background:#f8fcf9}
  * copy and the full navigation ribbon in three non-overlapping bands.
  */
 @media(max-width:560px){
+  body:has(.detail)::after{
+    content:"";
+    position:fixed;
+    z-index:19;
+    left:0;
+    right:0;
+    bottom:0;
+    height:env(safe-area-inset-bottom,0px);
+    background:linear-gradient(rgba(255,255,255,.4),rgba(246,251,248,.28));
+    backdrop-filter:blur(6px) saturate(1.06);
+    pointer-events:none;
+  }
   .desktop-stage:has(.detail){
     min-height:100dvh;
     height:100dvh;
