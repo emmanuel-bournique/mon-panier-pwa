@@ -84,8 +84,8 @@ test('la fiche réutilise le ruban mobile normal de Découvrir, au bord inférie
   assert.match(rules, /\.phone:has\(\.detail\)::before\s*\{\s*content:\s*none;\s*display:\s*none/);
   assert.match(
     rules,
-    /\.phone:has\(\.detail\)\s+\.bottom-nav\s*\{[\s\S]*?bottom:\s*0!important[\s\S]*?transform:\s*none!important[\s\S]*?pointer-events:\s*auto!important/,
-    'le ruban de la fiche doit rester au bord inférieur et utilisable',
+    /\.phone:has\(\.detail\)\s+\.bottom-nav\s*\{[\s\S]*?bottom:\s*0!important[\s\S]*?transform:\s*none!important[\s\S]*?pointer-events:\s*auto!important[\s\S]*?display:\s*grid!important[\s\S]*?visibility:\s*visible!important[\s\S]*?opacity:\s*1!important[\s\S]*?z-index:\s*40!important/,
+    'même avec un ancien style de fiche, le ruban doit rester visible au-dessus du héros',
   );
   assert.doesNotMatch(
     rules,
