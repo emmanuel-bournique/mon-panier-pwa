@@ -28,7 +28,7 @@ Le service worker conserve un seul identifiant de runtime court, nécessaire pou
 
 ## Coque desktop et PWA réelle
 
-La prévisualisation desktop possède une coque `.phone` destinée à rendre l’application lisible dans une page GitHub Pages large. Cette coque affiche une Dynamic Island et un faux statut horaire uniquement dans le navigateur desktop.
+La prévisualisation desktop possède une coque `.phone` destinée à rendre l’application lisible dans une page GitHub Pages large. Elle affiche une Dynamic Island et un faux statut horaire uniquement avec un viewport large, un pointeur précis et un support du survol (`hover:hover` + `pointer:fine`).
 
 Sur un vrai iPhone, `.desktop-preview-statusbar` est masqué. La PWA utilise alors le viewport et la zone système fournis par iOS ; elle ne dessine pas une fausse Dynamic Island dans un téléphone réel.
 

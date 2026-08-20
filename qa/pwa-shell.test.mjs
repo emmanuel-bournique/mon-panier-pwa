@@ -27,7 +27,7 @@ test('PWA shell exposes the install and offline contract', async () => {
   assert.match(index, /class="desktop-preview-statusbar"/, 'desktop GitHub preview must expose a phone status-bar shell')
   assert.match(index, /class="desktop-preview-island"/, 'desktop GitHub preview must expose a Dynamic Island shell')
   assert.match(styles, /github-web-preview-shell-v1:start/, 'desktop preview shell must be versioned in the web stylesheet')
-  assert.match(styles, /@media\(min-width:561px\)[\s\S]*?\.desktop-preview-statusbar\{[^}]*display:flex/, 'the fake status bar must be desktop-only')
+  assert.match(styles, /@media\(min-width:561px\) and \(hover:hover\) and \(pointer:fine\)[\s\S]*?\.desktop-preview-statusbar\{[^}]*display:flex/, 'the fake status bar must be desktop-pointer-only')
   assert.match(styles, /@media\(max-width:560px\)\{\.desktop-preview-statusbar\{display:none!important\}\}/, 'the PWA must not draw a fake Dynamic Island on a real iPhone')
   assert.doesNotMatch(index, /n8n-server\.tailb4f72c\.ts\.net|https:\/\/[^\s"']*\/v1\/feedback/i, 'PWA must not expose the external feedback endpoint')
 
@@ -53,21 +53,22 @@ test('PWA shell exposes the install and offline contract', async () => {
   )
 
   const serviceWorker = await readFile(serviceWorkerPath, 'utf8')
+  assert.doesNotMatch(`${index}\n${styles}\n${serviceWorker}`, /20260820-safe-area-top-v25|mon-panier-runtime-v25-safe-area-top/, 'the active web lane must not retain the superseded v25 safe-area identity')
   const criticalShellUrls = [
     './media-v1.js',
     './grocery-cart-core.js?v=20260817-courses-create-v14',
     './personalization-core.js?v=20260808-avoid-v1',
     './card-badge-core.js?v=20260813-pilot-v1',
     './app-v1.js?v=20260818-recipe-detail-ingredient-media-v21',
-    './app-v1.css?v=20260820-github-web-v2',
+    './app-v1.css?v=20260820-github-web-v3',
   ]
   for (const url of criticalShellUrls) {
     assert.ok(index.includes(url.replace(/^\.\//, '')), `entry must version critical runtime: ${url}`)
     assert.ok(serviceWorker.includes(url), `critical offline shell missing: ${url}`)
   }
-  const registrationRuntimeUrl = 'pwa-register.js?v=20260820-github-web-v2'
+  const registrationRuntimeUrl = 'pwa-register.js?v=20260820-github-web-v3'
   assert.ok(index.includes(registrationRuntimeUrl), 'the waiting-worker bootstrap must receive a unique runtime URL')
-  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-github-web-v2['"]/, 'cache name must identify the GitHub web lane')
+  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-github-web-v3['"]/, 'cache name must identify the GitHub web lane')
   assert.match(serviceWorker, /addEventListener\(['"]fetch['"]/)
   assert.match(serviceWorker, /cache/i)
   assert.doesNotMatch(serviceWorker, /https?:\/\//i, 'service worker must not add a remote origin')

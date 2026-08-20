@@ -1545,7 +1545,7 @@ html,body{background:#f8fcf9}
 
 /* github-web-preview-shell-v1:start */
 .desktop-preview-statusbar{display:none}
-@media(min-width:561px){
+@media(min-width:561px) and (hover:hover) and (pointer:fine){
   .desktop-stage{min-height:100svh;padding:32px}
   .phone{width:min(393px,calc(100vw - 64px));height:min(852px,calc(100svh - 64px));max-height:none;border:7px solid #101713;border-radius:56px;box-shadow:0 32px 96px rgba(16,23,19,.2)}
   .desktop-preview-statusbar{height:42px;flex:0 0 42px;position:relative;z-index:31;display:flex;align-items:center;justify-content:space-between;padding:0 17px 0 20px;background:#fff;color:#0b110e;font:700 12px/1 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif}
