@@ -1,10 +1,10 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260821-discover-glass-nav-v37-bubble-rail-lift",
-  "reason": "PWA-only mobile surface update: the Découvrir action button remains compact; the shared bottom navigation keeps its glass treatment with one shared active bubble, a visible spring motion, safe-area anchoring, stronger visual contrast, an exactly centered active indicator, and a slight 8px rail lift. The Xcode bundle stays on its prior runtime.",
+  "runtime_revision": "20260821-discover-glass-nav-v38-mobile-rail-lift",
+  "reason": "PWA-only mobile surface update: the Découvrir action button remains compact; the shared bottom navigation keeps its glass treatment with one shared active bubble, visible spring motion, safe-area anchoring, stronger visual contrast, an exactly centered active indicator, and an 8px mobile rail lift. v38 corrects the mobile media-query override that previously forced the rail back to 0px. The Xcode bundle stays on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "b5ce609f123a7f01c83f5da8bd8d4539af00655433cc43918b2fcc3b96c0a053",
+      "candidate_sha256": "6c8e31b60b247650953cd21b4c1c9772e53dd51c72febb829b4dc6ce4d48fedb",
       "canonical_sha256": "d8bad685fad2a3d29b2df64390d7a983ab8a3e36069fe9aef5350401f2085995"
     },
     "app-v1.js": {
@@ -12,7 +12,7 @@
       "canonical_sha256": "73482698cdbafe469929cbadce947b64719ec320d7e53d8d9359e2c4c3be4c2b"
     },
     "sw.js": {
-      "candidate_sha256": "d2d2dc5327d1af97a8deab44c7fb9a11a45b4ebcd459a5ae7eed2bfaa887943d",
+      "candidate_sha256": "16428e3218efaeede39cf383f1a0b7e95549a3c6931f8597080595f15dae0fce",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }

@@ -596,7 +596,7 @@ button:active{transform:translateY(1px)}
 
 /* Final mobile geometry — keep controls clear of iOS without adding visual dead space. */
 @media(max-width:560px){
-  .bottom-nav{bottom:0!important;height:60px!important;padding:3px 4px!important}
+  .bottom-nav{bottom:8px!important;height:60px!important;padding:3px 4px!important}
   .phone:after{display:none!important}
   /* Move the whole interactive cluster, not the white navigation surface. */
   .nav-item{min-height:48px!important;gap:2px!important;font-size:9px!important;transform:translateY(-6px)!important}
@@ -1561,7 +1561,7 @@ html,body{background:#f8fcf9}
   .detail-hero-actions{bottom:calc(var(--detail-nav-height) + 36px)!important}
   .detail-scroll-cue{bottom:calc(var(--detail-nav-height) + 10px)!important}
   .phone:has(.detail) .bottom-nav{
-    bottom:0!important;
+    bottom:8px!important;
     transform:none!important;
     pointer-events:auto!important;
     display:grid!important;
