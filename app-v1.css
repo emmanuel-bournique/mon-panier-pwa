@@ -1609,7 +1609,7 @@ html,body{background:#f8fcf9}
   position:absolute;
   left:8px!important;
   right:8px!important;
-  bottom:4px!important;
+  bottom:8px!important;
   width:auto;
   height:calc(60px + env(safe-area-inset-bottom,0px))!important;
   grid-template-columns:repeat(5,minmax(0,1fr));

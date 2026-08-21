@@ -1,6 +1,6 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-21T08:10:24Z",
+  "generated_at": "2026-08-21T08:26:37Z",
   "status": "public_pilot_individual_pwa_only",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
   "deployment": {
@@ -23,31 +23,31 @@
   "candidate": {
     "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
     "file_count_excluding_manifest_self": 2555,
-    "bytes_excluding_manifest_self": 796399191,
-    "index_sha256": "da5dac436346862ff903b4d1320b17af4210ca676b92573f472e740f16232383",
-    "app_css_sha256": "abe342d0dce46c3d90fa10a01492097e3716b08c24ea117277e69d77a0149463",
+    "bytes_excluding_manifest_self": 796399086,
+    "index_sha256": "5cedab4685013781dd49e10db2b48be266fed62c955ef9c7122d3d84e52d7075",
+    "app_css_sha256": "b5ce609f123a7f01c83f5da8bd8d4539af00655433cc43918b2fcc3b96c0a053",
     "app_js_sha256": "cf1d5672f5ad007eb4fe3c8954a2a03d01e61fba429495447e1b94e56927119b",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "d192bf8d0d2361a46bf5ac978453a0210041451dec8c938d8ac0b6d2eac20957",
+    "service_worker_sha256": "d2d2dc5327d1af97a8deab44c7fb9a11a45b4ebcd459a5ae7eed2bfaa887943d",
     "registration_sha256": "c6ced712ff7247a7b145c321c64d9c29b4cef14f0170cadc046dfc8e85ed5755",
-    "pwa_shell_test_sha256": "46682da59cc8e81b08b79d5fb7880ff5415c207b5ed6c1fdf408fbb21a0d3b94",
+    "pwa_shell_test_sha256": "dd9d571b50885045a0010bf2d997dc63467ec9a8807329088c21d824872526dd",
     "shopping_flow_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
     "recipe_create_ui_contract_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a",
-    "recipe_detail_responsive_photo_test_sha256": "0d173d8748ee3fa65b8da88ee9aa8d7c7dbb2967482da90a41af5a123c2ff43c",
+    "recipe_detail_responsive_photo_test_sha256": "7acefe5d48affa87d9d50c377f51f14e8b1665e2322d839b14c8d471ab4557d1",
     "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "39f811518f66ef60c9f5aa83afaf41a7b8732bcf91acfcbea43f8c42c93b632d",
     "recipe_detail_top_safe_area_test_sha256": "f267f80892bb31621a92510bdd016e558105f85f9824e94845de2aa241e1e30e",
     "favorites_empty_state_test_sha256": "bb4eb74159b96f183bad7539792b66de79269ae6d538c1ecae7140057dc3286f",
     "discover_card_cart_state_test_sha256": "508340728554de23f2e01f16b1ac4b36a62e969feb2128a909cfb4ba2097611f",
-    "discover_card_favorite_state_test_sha256": "0efac926431ec1adeaac491777188f63c40d4cdf0c737985697387f7a3747bbf",
-    "pwa_only_runtime_divergence_sha256": "7c876e4c8f016efb957385007a5679a88aa8e2ebc7b9b170abbecca7d091b289",
-    "cache_name": "mon-panier-runtime-v36-discover-glass-nav-bubble-center-rail-lift",
+    "discover_card_favorite_state_test_sha256": "c5e5a69164e75284a3f2f520f5c97b3c33681d7e5169dd91293aa79ea699a0ac",
+    "pwa_only_runtime_divergence_sha256": "1f7a72b877f43c45636c149b0863044b719b980446411c3a645b56fc451f65d3",
+    "cache_name": "mon-panier-runtime-v37-discover-glass-nav-bubble-rail-lift",
     "versioned_runtime_urls": [
-      "app-v1.css?v=20260820-discover-glass-nav-v36-bubble-center-rail-lift",
-      "app-v1.js?v=20260820-discover-glass-nav-v36-bubble-center-rail-lift",
+      "app-v1.css?v=20260821-discover-glass-nav-v37-bubble-rail-lift",
+      "app-v1.js?v=20260821-discover-glass-nav-v37-bubble-rail-lift",
       "card-badge-core.js?v=20260813-pilot-v1",
       "grocery-cart-core.js?v=20260817-courses-create-v14",
       "personalization-core.js?v=20260808-avoid-v1",
-      "pwa-register.js?v=20260820-discover-glass-nav-v36-bubble-center-rail-lift"
+      "pwa-register.js?v=20260821-discover-glass-nav-v37-bubble-rail-lift"
     ],
     "recipe_detail_ingredient_media_test_sha256": "3ed6a919e8a58922bb4f4b7a10ab03ba8396945406c0842e0b5d0554e96a86cb"
   },
@@ -55,7 +55,7 @@
     "mode": "pwa_only_declared_divergence",
     "declaration": "PWA_ONLY_RUNTIME_DIVERGENCE.json",
     "xcode_runtime_updated": false,
-    "reason": "PWA-only mobile navigation with stronger active-bubble contrast, exact centering, and a 4px rail lift; no Xcode/native publication."
+    "reason": "PWA-only mobile navigation with stronger active-bubble contrast, exact centering, and an 8px rail lift; no Xcode/native publication."
   },
   "pwa_additions": [
     "manifest.webmanifest",
@@ -68,7 +68,7 @@
   ],
   "local_data_model": "separate browser-local state; no account, backend, or cross-device synchronization",
   "qa_command": "node --test qa/*.test.cjs qa/*.test.mjs",
-  "rollback_backup": "/Volumes/USB/Hermes-External/backups/mon-panier-pwa-before-bubble-center-rail-lift-v36-20260820.tar",
+  "rollback_backup": "/Volumes/USB/Hermes-External/backups/mon-panier-pwa-before-rail-lift-v37-20260821.tar",
   "promotion_blockers": [
     "Real iPhone PWA smoke remains a human check."
   ]

@@ -116,7 +116,7 @@ test('le ruban reste au bord bas et la bulle active produit une impulsion élast
   assert.match(nav, /const shouldAnimateBubble = hasPreviousActiveIndex && previousActiveIndex !== activeIndex;/);
   assert.match(nav, /activeBubble\.classList\.add\('is-moving'\)/);
   assert.match(nav, /nav\._navBubbleAnimationTimer/);
-  assert.match(navRules, /bottom:4px!important/);
+  assert.match(navRules, /bottom:8px!important/);
   assert.match(navRules, /height:calc\(60px \+ env\(safe-area-inset-bottom,0px\)\)!important/);
   assert.match(navRules, /padding:4px 4px calc\(4px \+ env\(safe-area-inset-bottom,0px\)\)!important/);
   assert.match(navRules, /border-radius:24px/);
