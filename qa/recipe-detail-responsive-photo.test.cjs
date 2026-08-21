@@ -67,13 +67,13 @@ test('la couverture de recette conserve la hauteur complète sur les formats iPh
 test('le correctif de cadrage photo reste dans une révision PWA active', () => {
   const index = fs.readFileSync(path.join(candidateRoot, 'index.html'), 'utf8');
   const serviceWorker = fs.readFileSync(path.join(candidateRoot, 'sw.js'), 'utf8');
-  const photoRuntimeUrl = 'app-v1.js?v=20260820-discover-glass-nav-v35-bubble-contrast';
-  const photoStylesUrl = 'app-v1.css?v=20260820-discover-glass-nav-v35-bubble-contrast';
+  const photoRuntimeUrl = 'app-v1.js?v=20260820-discover-glass-nav-v36-bubble-center-rail-lift';
+  const photoStylesUrl = 'app-v1.css?v=20260820-discover-glass-nav-v36-bubble-center-rail-lift';
 
   assert.match(index, new RegExp(photoRuntimeUrl.replace(/[.?]/g, '\\$&')), 'le navigateur doit demander le JavaScript corrigé');
   assert.match(index, new RegExp(photoStylesUrl.replace(/[.?]/g, '\\$&')), 'le navigateur doit demander la feuille de style corrigée');
   assert.doesNotMatch(serviceWorker, /mon-panier-runtime-v19-discover-favorite-heart-upper-left/, 'le worker doit abandonner le cache antérieur');
-  assert.match(serviceWorker, /mon-panier-runtime-v35-discover-glass-nav-bubble-contrast/, 'le worker doit déclarer le cache courant');
+  assert.match(serviceWorker, /mon-panier-runtime-v36-discover-glass-nav-bubble-center-rail-lift/, 'le worker doit déclarer le cache courant');
   assert.match(serviceWorker, new RegExp(`\\./${photoRuntimeUrl.replace(/[.?]/g, '\\$&')}`), 'le worker doit précacher le JavaScript corrigé');
   assert.match(serviceWorker, new RegExp(`\\./${photoStylesUrl.replace(/[.?]/g, '\\$&')}`), 'le worker doit précacher la feuille de style corrigée');
 });

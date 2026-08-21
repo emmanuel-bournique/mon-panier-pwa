@@ -81,6 +81,7 @@ test('Découvrir utilise un bouton trois-points compact et le ruban vitré anime
   assert.match(navRules, /backdrop-filter:blur\(/);
   assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*background:linear-gradient\(145deg,rgba\(190,244,211,\.96\),rgba\(104,199,151,\.82\)\)/);
   assert.match(navRules, /box-shadow:0 6px 18px rgba\(8,127,91,\.24\)/);
+  assert.match(navRules, /margin-left:4px/);
   assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*position:absolute/);
   assert.match(navRules, /left:calc\(4px \+ var\(--nav-active-index\) \* \(\(100% - 8px\) \/ 5\)\)/);
   assert.match(navRules, /transform:none/);
@@ -115,7 +116,7 @@ test('le ruban reste au bord bas et la bulle active produit une impulsion élast
   assert.match(nav, /const shouldAnimateBubble = hasPreviousActiveIndex && previousActiveIndex !== activeIndex;/);
   assert.match(nav, /activeBubble\.classList\.add\('is-moving'\)/);
   assert.match(nav, /nav\._navBubbleAnimationTimer/);
-  assert.match(navRules, /bottom:0!important/);
+  assert.match(navRules, /bottom:4px!important/);
   assert.match(navRules, /height:calc\(60px \+ env\(safe-area-inset-bottom,0px\)\)!important/);
   assert.match(navRules, /padding:4px 4px calc\(4px \+ env\(safe-area-inset-bottom,0px\)\)!important/);
   assert.match(navRules, /border-radius:24px/);

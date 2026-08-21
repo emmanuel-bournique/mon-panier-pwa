@@ -1609,7 +1609,7 @@ html,body{background:#f8fcf9}
   position:absolute;
   left:8px!important;
   right:8px!important;
-  bottom:0!important;
+  bottom:4px!important;
   width:auto;
   height:calc(60px + env(safe-area-inset-bottom,0px))!important;
   grid-template-columns:repeat(5,minmax(0,1fr));
@@ -1629,6 +1629,7 @@ html,body{background:#f8fcf9}
   bottom:calc(4px + env(safe-area-inset-bottom,0px));
   left:calc(4px + var(--nav-active-index) * ((100% - 8px) / 5));
   width:calc((100% - 8px)/5 - 8px);
+  margin-left:4px;
   border:1px solid rgba(255,255,255,.80);
   border-radius:999px;
   background:linear-gradient(145deg,rgba(190,244,211,.96),rgba(104,199,151,.82));
