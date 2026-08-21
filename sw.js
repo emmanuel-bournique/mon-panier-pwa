@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mon-panier-runtime-v34-discover-glass-nav-iphone14pro-spring'
+const CACHE_NAME = 'mon-panier-runtime-v35-discover-glass-nav-bubble-contrast'
 const SHELL_URLS = [
   './',
   './manifest.webmanifest',
@@ -9,8 +9,8 @@ const SHELL_URLS = [
   './grocery-cart-core.js?v=20260817-courses-create-v14',
   './personalization-core.js?v=20260808-avoid-v1',
   './card-badge-core.js?v=20260813-pilot-v1',
-  './app-v1.js?v=20260820-discover-glass-nav-v34-iphone14pro-spring',
-  './app-v1.css?v=20260820-discover-glass-nav-v34-iphone14pro-spring',
+  './app-v1.js?v=20260820-discover-glass-nav-v35-bubble-contrast',
+  './app-v1.css?v=20260820-discover-glass-nav-v35-bubble-contrast',
 ]
 
 self.addEventListener('install', (event) => {

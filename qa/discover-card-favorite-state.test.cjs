@@ -79,6 +79,8 @@ test('Découvrir utilise un bouton trois-points compact et le ruban vitré anime
   assert.match(navRules, /\.bottom-nav\s*\{[\s\S]*--nav-active-index:0/);
   assert.match(navRules, /border-radius:999px/);
   assert.match(navRules, /backdrop-filter:blur\(/);
+  assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*background:linear-gradient\(145deg,rgba\(190,244,211,\.96\),rgba\(104,199,151,\.82\)\)/);
+  assert.match(navRules, /box-shadow:0 6px 18px rgba\(8,127,91,\.24\)/);
   assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*position:absolute/);
   assert.match(navRules, /left:calc\(4px \+ var\(--nav-active-index\) \* \(\(100% - 8px\) \/ 5\)\)/);
   assert.match(navRules, /transform:none/);

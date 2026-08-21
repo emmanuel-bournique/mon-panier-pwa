@@ -1631,8 +1631,8 @@ html,body{background:#f8fcf9}
   width:calc((100% - 8px)/5 - 8px);
   border:1px solid rgba(255,255,255,.80);
   border-radius:999px;
-  background:linear-gradient(145deg,rgba(226,250,235,.76),rgba(193,235,214,.56));
-  box-shadow:0 4px 12px rgba(8,127,91,.10),inset 0 1px 0 rgba(255,255,255,.78);
+  background:linear-gradient(145deg,rgba(190,244,211,.96),rgba(104,199,151,.82));
+  box-shadow:0 6px 18px rgba(8,127,91,.24),inset 0 2px 0 rgba(255,255,255,.90);
   transform:none;
   transition:left .46s cubic-bezier(.16,1.65,.3,1);
   will-change:left,transform;
