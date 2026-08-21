@@ -38,29 +38,33 @@ test('la PWA installée utilise la même réserve que le navigateur mobile', () 
 test('vignettes, actions et indication de défilement restent au-dessus du ruban', () => {
   const rules = mobileGeometryRules();
 
-  assert.match(rules, /\.detail-hero-meta\s*\{[\s\S]*?bottom:\s*calc\(var\(--detail-nav-height\)\s*\+\s*var\(--detail-actions-clearance\)\)/);
-  assert.match(rules, /\.detail-hero-actions\s*\{\s*bottom:\s*calc\(var\(--detail-nav-height\)\s*\+\s*36px\)!important/);
-  assert.match(rules, /\.detail-scroll-cue\s*\{\s*bottom:\s*calc\(var\(--detail-nav-height\)\s*\+\s*10px\)!important/);
+  assert.match(rules, /--detail-bottom-reserve:\s*max\(8px,\s*env\(safe-area-inset-bottom,\s*0px\)\)/);
+  assert.match(rules, /\.scroll:has\(\.detail\)\s*\{[\s\S]*?padding:\s*0\s+0\s+calc\(var\(--detail-nav-height\)\s*\+\s*var\(--detail-bottom-reserve\)\s*\+\s*24px\)!important/);
+  assert.match(rules, /\.detail-hero-meta\s*\{[\s\S]*?bottom:\s*calc\(var\(--detail-nav-height\)\s*\+\s*var\(--detail-bottom-reserve\)\s*\+\s*var\(--detail-actions-clearance\)\)/);
+  assert.match(rules, /\.detail-hero-actions\s*\{\s*bottom:\s*calc\(var\(--detail-nav-height\)\s*\+\s*var\(--detail-bottom-reserve\)\s*\+\s*36px\)!important/);
+  assert.match(rules, /\.detail-scroll-cue\s*\{\s*bottom:\s*calc\(var\(--detail-nav-height\)\s*\+\s*var\(--detail-bottom-reserve\)\s*\+\s*10px\)!important/);
 
   for (const phone of [
-    { name: 'iPhone SE', height: 667, reserve: 54, copyOffset: 78, clearance: 180 },
-    { name: 'iPhone standard', height: 844, reserve: 60, copyOffset: 84, clearance: 172 },
-    { name: 'iPhone grand format', height: 932, reserve: 60, copyOffset: 84, clearance: 172 },
+    { name: 'iPhone SE', height: 667, reserve: 54, bottomInset: 0, copyOffset: 78, clearance: 180 },
+    { name: 'iPhone standard', height: 844, reserve: 60, bottomInset: 34, copyOffset: 84, clearance: 172 },
+    { name: 'iPhone grand format', height: 932, reserve: 60, bottomInset: 34, copyOffset: 84, clearance: 172 },
   ]) {
     const navHeight = 60;
+    const bottomReserve = Math.max(8, phone.bottomInset);
     const buttonBottom = phone.reserve + 12 + 48;
     const copyTop = phone.reserve + phone.copyOffset;
     const heroHeight = phone.height - phone.reserve;
-    const actionsBottom = phone.reserve + heroHeight - (navHeight + 36);
+    const actionsBottom = phone.reserve + heroHeight - (navHeight + bottomReserve + 36);
     const actionsTop = actionsBottom - 102;
-    const metaBottom = phone.reserve + heroHeight - (navHeight + phone.clearance);
+    const metaBottom = phone.reserve + heroHeight - (navHeight + bottomReserve + phone.clearance);
     const metaTop = metaBottom - 47;
-    const cueBottom = phone.reserve + heroHeight - (navHeight + 10);
+    const cueBottom = phone.reserve + heroHeight - (navHeight + bottomReserve + 10);
+    const railTop = phone.height - bottomReserve - navHeight;
 
     assert.ok(copyTop > buttonBottom, `${phone.name}: le titre doit être sous les contrôles`);
     assert.ok(actionsTop > metaBottom, `${phone.name}: les actions ne doivent pas recouvrir les vignettes`);
     assert.ok(cueBottom > actionsBottom, `${phone.name}: le repère de défilement doit rester sous les actions`);
-    assert.ok(cueBottom < phone.height - navHeight, `${phone.name}: le repère de défilement doit rester au-dessus du ruban`);
+    assert.ok(cueBottom < railTop, `${phone.name}: le repère de défilement doit rester au-dessus du ruban et de sa safe area`);
     assert.ok(metaTop > copyTop, `${phone.name}: les vignettes doivent rester sous le texte de recette`);
   }
 });

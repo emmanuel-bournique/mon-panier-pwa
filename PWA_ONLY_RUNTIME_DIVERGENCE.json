@@ -1,10 +1,10 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260821-discover-glass-nav-v38-mobile-rail-lift",
-  "reason": "PWA-only mobile surface update: the Découvrir action button remains compact; the shared bottom navigation keeps its glass treatment with one shared active bubble, visible spring motion, safe-area anchoring, stronger visual contrast, an exactly centered active indicator, and an 8px mobile rail lift. v38 corrects the mobile media-query override that previously forced the rail back to 0px. The Xcode bundle stays on its prior runtime.",
+  "runtime_revision": "20260821-discover-glass-nav-v40-compact-safe-area",
+  "reason": "PWA-only mobile surface update: the Découvrir action button remains compact; the shared bottom navigation keeps its glass treatment with one shared active bubble, visible spring motion, safe-area anchoring, stronger visual contrast, an exactly centered active indicator, and a compact 60px visual rail. v40 stops adding the iPhone safe-area inset to the painted rail height and moves that clearance outside the capsule and offsets the recipe-detail actions/cue by the same reserve; the recipe detail reuses the same rail geometry. The Xcode bundle stays on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "6c8e31b60b247650953cd21b4c1c9772e53dd51c72febb829b4dc6ce4d48fedb",
+      "candidate_sha256": "d8897008714b13d0d3ebeeabd847bb7d871d4615dda612c5fcabfe7eba094f90",
       "canonical_sha256": "d8bad685fad2a3d29b2df64390d7a983ab8a3e36069fe9aef5350401f2085995"
     },
     "app-v1.js": {
@@ -12,7 +12,7 @@
       "canonical_sha256": "73482698cdbafe469929cbadce947b64719ec320d7e53d8d9359e2c4c3be4c2b"
     },
     "sw.js": {
-      "candidate_sha256": "16428e3218efaeede39cf383f1a0b7e95549a3c6931f8597080595f15dae0fce",
+      "candidate_sha256": "b2e963539bdf41859aef00f19bc174ac9905c4bc67510f91acae1c7bdb12229a",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }

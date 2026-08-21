@@ -1529,6 +1529,7 @@ html,body{background:#f8fcf9}
   .phone:has(.detail){
     --detail-system-reserve:max(60px,env(safe-area-inset-top,0px));
     --detail-nav-height:60px;
+    --detail-bottom-reserve:max(8px,env(safe-area-inset-bottom,0px));
     --detail-controls-top:calc(var(--detail-system-reserve) + 12px);
     --detail-copy-top:84px;
     --detail-actions-clearance:172px;
@@ -1544,7 +1545,7 @@ html,body{background:#f8fcf9}
   }
   .phone:has(.detail),.phone:has(.detail) .scroll{background:#fff}
   .scroll:has(.detail){
-    padding:0 0 calc(var(--detail-nav-height) + 24px)!important;
+    padding:0 0 calc(var(--detail-nav-height) + var(--detail-bottom-reserve) + 24px)!important;
   }
   .phone:has(.detail) .detail-hero{
     margin-top:0!important;
@@ -1555,13 +1556,13 @@ html,body{background:#f8fcf9}
   .detail-hero-copy{top:calc(var(--detail-copy-top) + var(--detail-system-reserve))!important}
   .detail-hero-meta{
     right:12px;
-    bottom:calc(var(--detail-nav-height) + var(--detail-actions-clearance));
+    bottom:calc(var(--detail-nav-height) + var(--detail-bottom-reserve) + var(--detail-actions-clearance));
     left:12px;
   }
-  .detail-hero-actions{bottom:calc(var(--detail-nav-height) + 36px)!important}
-  .detail-scroll-cue{bottom:calc(var(--detail-nav-height) + 10px)!important}
+  .detail-hero-actions{bottom:calc(var(--detail-nav-height) + var(--detail-bottom-reserve) + 36px)!important}
+  .detail-scroll-cue{bottom:calc(var(--detail-nav-height) + var(--detail-bottom-reserve) + 10px)!important}
   .phone:has(.detail) .bottom-nav{
-    bottom:8px!important;
+    bottom:max(8px,env(safe-area-inset-bottom,0px))!important;
     transform:none!important;
     pointer-events:auto!important;
     display:grid!important;
@@ -1609,11 +1610,11 @@ html,body{background:#f8fcf9}
   position:absolute;
   left:8px!important;
   right:8px!important;
-  bottom:8px!important;
+  bottom:max(8px,env(safe-area-inset-bottom,0px))!important;
   width:auto;
-  height:calc(60px + env(safe-area-inset-bottom,0px))!important;
+  height:60px!important;
   grid-template-columns:repeat(5,minmax(0,1fr));
-  padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px))!important;
+  padding:4px!important;
   overflow:visible;
   border:1px solid rgba(255,255,255,.78);
   border-radius:24px;
@@ -1626,7 +1627,7 @@ html,body{background:#f8fcf9}
   position:absolute;
   z-index:0;
   top:4px;
-  bottom:calc(4px + env(safe-area-inset-bottom,0px));
+  bottom:4px;
   left:calc(4px + var(--nav-active-index) * ((100% - 8px) / 5));
   width:calc((100% - 8px)/5 - 8px);
   margin-left:4px;

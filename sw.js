@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mon-panier-runtime-v38-discover-glass-nav-mobile-rail-lift'
+const CACHE_NAME = 'mon-panier-runtime-v40-discover-glass-nav-compact-safe-area'
 const SHELL_URLS = [
   './',
   './manifest.webmanifest',
@@ -9,8 +9,8 @@ const SHELL_URLS = [
   './grocery-cart-core.js?v=20260817-courses-create-v14',
   './personalization-core.js?v=20260808-avoid-v1',
   './card-badge-core.js?v=20260813-pilot-v1',
-  './app-v1.js?v=20260821-discover-glass-nav-v38-mobile-rail-lift',
-  './app-v1.css?v=20260821-discover-glass-nav-v38-mobile-rail-lift',
+  './app-v1.js?v=20260821-discover-glass-nav-v40-compact-safe-area',
+  './app-v1.css?v=20260821-discover-glass-nav-v40-compact-safe-area',
 ]
 
 self.addEventListener('install', (event) => {

@@ -21,6 +21,16 @@ function mobileGeometryRules() {
   return css.slice(start, end + endMarker.length);
 }
 
+function sharedNavigationRules() {
+  const startMarker = '/* bottom-nav-whatsapp-glass-v4:start */';
+  const endMarker = '/* bottom-nav-whatsapp-glass-v4:end */';
+  const start = css.indexOf(startMarker);
+  const end = css.indexOf(endMarker, start);
+  assert.notEqual(start, -1, 'le contrat du ruban partagé doit être présent');
+  assert.notEqual(end, -1, 'le contrat du ruban partagé doit être borné');
+  return css.slice(start, end + endMarker.length);
+}
+
 test('la fiche laisse la photo remplir le haut du viewport sans double réserve', () => {
   const rules = mobileGeometryRules();
 
@@ -32,7 +42,7 @@ test('la fiche laisse la photo remplir le haut du viewport sans double réserve'
   );
   assert.match(
     rules,
-    /\.scroll:has\(\.detail\)\s*\{[\s\S]*?padding:\s*0\s+0\s+calc\(var\(--detail-nav-height\)\s*\+\s*24px\)!important/,
+    /\.scroll:has\(\.detail\)\s*\{[\s\S]*?padding:\s*0\s+0\s+calc\(var\(--detail-nav-height\)\s*\+\s*var\(--detail-bottom-reserve\)\s*\+\s*24px\)!important/,
     'la fiche ne doit pas ajouter une deuxième bande blanche avant la photo',
   );
   assert.match(
@@ -65,12 +75,24 @@ test('retour, favori, titre et description occupent des bandes séparées', () =
 
 test('la fiche réutilise le ruban mobile normal de Découvrir, au bord inférieur', () => {
   const rules = mobileGeometryRules();
-
+  const sharedNavRules = sharedNavigationRules();
   assert.match(
     rules,
     /--detail-nav-height:\s*60px/,
     'la fiche doit réserver la même hauteur de ruban que Découvrir',
   );
+  assert.match(
+    sharedNavRules,
+    /height:60px!important[\s\S]*padding:4px!important[\s\S]*bottom:4px/,
+    'le ruban partagé doit rester compact sans ajouter la safe area à sa hauteur visuelle',
+  );
+  assert.match(
+    sharedNavRules,
+    /bottom:max\(8px,env\(safe-area-inset-bottom,0px\)\)!important/,
+    'la safe area doit déplacer la capsule, pas l’agrandir',
+  );
+  assert.doesNotMatch(sharedNavRules, /height:calc\(60px \+ env\(safe-area-inset-bottom,0px\)\)!important/);
+  assert.doesNotMatch(sharedNavRules, /padding:4px 4px calc\(4px \+ env\(safe-area-inset-bottom,0px\)\)!important/);
   assert.match(
     css,
     /@media\s*\(max-width:\s*560px\)\s*\{[\s\S]*?\.bottom-nav\s*\{[\s\S]*?bottom:\s*8px!important[\s\S]*?height:\s*60px!important[\s\S]*?padding:\s*3px\s+4px!important/,
@@ -84,7 +106,7 @@ test('la fiche réutilise le ruban mobile normal de Découvrir, au bord inférie
   assert.match(rules, /\.phone:has\(\.detail\)::before\s*\{\s*content:\s*none;\s*display:\s*none/);
   assert.match(
     rules,
-    /\.phone:has\(\.detail\)\s+\.bottom-nav\s*\{[\s\S]*?bottom:\s*8px!important[\s\S]*?transform:\s*none!important[\s\S]*?pointer-events:\s*auto!important[\s\S]*?display:\s*grid!important[\s\S]*?visibility:\s*visible!important[\s\S]*?opacity:\s*1!important[\s\S]*?z-index:\s*20!important/,
+    /\.phone:has\(\.detail\)\s+\.bottom-nav\s*\{[\s\S]*?bottom:\s*max\(8px,env\(safe-area-inset-bottom,0px\)\)!important[\s\S]*?transform:\s*none!important[\s\S]*?pointer-events:\s*auto!important[\s\S]*?display:\s*grid!important[\s\S]*?visibility:\s*visible!important[\s\S]*?opacity:\s*1!important[\s\S]*?z-index:\s*20!important/,
     'même avec un ancien style de fiche, le ruban doit rester visible au-dessus du héros',
   );
   assert.doesNotMatch(
