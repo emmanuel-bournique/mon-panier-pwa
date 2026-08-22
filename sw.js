@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mon-panier-runtime-v46-launch-splash'
+const CACHE_NAME = 'mon-panier-runtime-v47-navigation-glass'
 const SHELL_URLS = [
   './',
   './manifest.webmanifest',
@@ -10,7 +10,7 @@ const SHELL_URLS = [
   './personalization-core.js?v=20260808-avoid-v1',
   './card-badge-core.js?v=20260813-pilot-v1',
   './app-v1.js?v=20260822-discover-single-green-bubble-v45',
-  './app-v1.css?v=20260822-launch-splash-v46',
+  './app-v1.css?v=20260822-navigation-glass-v47',
 ]
 
 self.addEventListener('install', (event) => {

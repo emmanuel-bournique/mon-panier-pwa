@@ -1,10 +1,10 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260822-launch-splash-v46",
-  "reason": "PWA-only standalone launch splash: a short clean off-white Mon Panier opening screen shows the detached basket and product name when the installed home-screen app starts; the existing navigation, recipe-detail geometry and Xcode bundle stay unchanged.",
+  "runtime_revision": "20260822-navigation-glass-v47",
+  "reason": "PWA-only navigation refinement: the active bottom-navigation tile becomes a lighter translucent glass surface without a green outer halo while navigation, launch splash, recipe-detail geometry and the Xcode bundle stay unchanged.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "86491b8432387f2327fcb710c689a5f7d5dd1811b88a4614b5425b6bf28847b7",
+      "candidate_sha256": "3fd6bdd30c08e30a32708065547106b63b3abf315efe76b37c2f681bc48f33eb",
       "canonical_sha256": "d8bad685fad2a3d29b2df64390d7a983ab8a3e36069fe9aef5350401f2085995"
     },
     "app-v1.js": {
@@ -12,7 +12,7 @@
       "canonical_sha256": "73482698cdbafe469929cbadce947b64719ec320d7e53d8d9359e2c4c3be4c2b"
     },
     "sw.js": {
-      "candidate_sha256": "90a85c61b4d43938f9b0b71fb8fa8ecbb022175e0551624ceed98402f30c1ddd",
+      "candidate_sha256": "57dfcd6fd3a3a4e1328eaf1f65da4c29d62ca3a4ae1365836f024a21bc76fd8e",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }

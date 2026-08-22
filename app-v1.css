@@ -1716,6 +1716,18 @@ html,body{background:#f8fcf9}
 }
 /* bottom-nav-whatsapp-glass-v45:end */
 
+/* bottom-nav-whatsapp-glass-v47:start */
+.bottom-nav .nav-active-bubble{
+  border:1px solid rgba(255,255,255,.82);
+  background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(231,244,238,.44));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.88),inset 0 -1px 0 rgba(255,255,255,.22);
+  backdrop-filter:blur(18px) saturate(1.08);
+  -webkit-backdrop-filter:blur(18px) saturate(1.08);
+}
+.bottom-nav .nav-item.active{color:#2f6d59!important;font-weight:850}
+.bottom-nav .nav-item.active:after{display:none!important}
+/* bottom-nav-whatsapp-glass-v47:end */
+
 /* iphone-14-pro-preview-v1:start */
 .phone{
   width:393px;
