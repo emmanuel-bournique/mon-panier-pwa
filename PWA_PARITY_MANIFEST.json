@@ -1,6 +1,6 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-22T13:20:30Z",
+  "generated_at": "2026-08-22T14:03:04Z",
   "status": "public_pilot_individual_pwa_only",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
   "deployment": {
@@ -21,41 +21,42 @@
     "service_worker_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
   },
   "candidate": {
-    "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
-    "file_count_excluding_manifest_self": 2555,
-    "bytes_excluding_manifest_self": 796405914,
-    "index_sha256": "88fb6c43f3dc091a712a819d44fd29335d711e7bda24f145603219f4a55fe0ec",
-    "app_css_sha256": "def1e6b4f953e285ca908156f783465ef82f837e96ae9b81344aa7cfeb669c8b",
+    "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/mon-panier-web-launch-v46",
+    "file_count_excluding_manifest_self": 2556,
+    "bytes_excluding_manifest_self": 796412309,
+    "index_sha256": "61a37ca06e81618ebcc289aafc9ca1449a14d4b1c8e8ed9b38c07c254740bdd2",
+    "app_css_sha256": "86491b8432387f2327fcb710c689a5f7d5dd1811b88a4614b5425b6bf28847b7",
     "app_js_sha256": "acfb121ba02e3a692a7dbe0ce8619e0c7359422936073838b588b231c0eff802",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "74722277ea2f10905637ab38d876b2c88f45af3a77f21717b7daec36f9dbce30",
-    "registration_sha256": "c6ced712ff7247a7b145c321c64d9c29b4cef14f0170cadc046dfc8e85ed5755",
-    "pwa_shell_test_sha256": "0e0eef5f95e9031d069da53848000e2b5e2a873a400b7b2f65647f7f1798da2e",
+    "service_worker_sha256": "90a85c61b4d43938f9b0b71fb8fa8ecbb022175e0551624ceed98402f30c1ddd",
+    "registration_sha256": "ac9a640142f2b362ab9c07ce3e5d8aeac9eb0cea59aa378d00d0292dcd068590",
+    "pwa_shell_test_sha256": "f9390260b04a7c95c6c695067cd7be51ed78fb0c9402fcce448e4b3898ee463d",
     "shopping_flow_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
     "recipe_create_ui_contract_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a",
-    "recipe_detail_responsive_photo_test_sha256": "7818a63b3f9d426d141376191495647d6acdec5d6445e84821f36f822fc57ff0",
+    "recipe_detail_responsive_photo_test_sha256": "34ab06bf5374eca538da092426b63217ed8e33888028387a5eab35a1fdd553f3",
     "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "2e3cff6837f7ec5d49dcf9fa9414a7bf132d0c7be6d7ee8863ae367aa6248062",
     "recipe_detail_top_safe_area_test_sha256": "4a93b7c997ba810c975e71c43467da1dc27085f948be7d91b3858eba99627ba8",
     "favorites_empty_state_test_sha256": "bb4eb74159b96f183bad7539792b66de79269ae6d538c1ecae7140057dc3286f",
     "discover_card_cart_state_test_sha256": "508340728554de23f2e01f16b1ac4b36a62e969feb2128a909cfb4ba2097611f",
     "discover_card_favorite_state_test_sha256": "630667fc4f2557b98849b6f02e74b3e07295fe4376697f6914111ce875441954",
-    "pwa_only_runtime_divergence_sha256": "2dc1f9368d93a9f9cbe90d4aebcaba7f7540611abde59475603dd6ac3a8a52f4",
-    "cache_name": "mon-panier-runtime-v45-discover-single-green-bubble",
+    "pwa_only_runtime_divergence_sha256": "96992951102c60077948125e718449d85794260b2f85eb0f51884940257d308f",
+    "cache_name": "mon-panier-runtime-v46-launch-splash",
     "versioned_runtime_urls": [
-      "app-v1.css?v=20260822-discover-single-green-bubble-v45",
+      "app-v1.css?v=20260822-launch-splash-v46",
       "app-v1.js?v=20260822-discover-single-green-bubble-v45",
       "card-badge-core.js?v=20260813-pilot-v1",
       "grocery-cart-core.js?v=20260817-courses-create-v14",
       "personalization-core.js?v=20260808-avoid-v1",
-      "pwa-register.js?v=20260822-discover-single-green-bubble-v45"
+      "pwa-register.js?v=20260822-launch-splash-v46"
     ],
-    "recipe_detail_ingredient_media_test_sha256": "3ed6a919e8a58922bb4f4b7a10ab03ba8396945406c0842e0b5d0554e96a86cb"
+    "recipe_detail_ingredient_media_test_sha256": "3ed6a919e8a58922bb4f4b7a10ab03ba8396945406c0842e0b5d0554e96a86cb",
+    "launch_splash_test_sha256": "86c492179f89b422050d76c2764b71c217117a574eca4d20465bb9c8605de394"
   },
   "runtime_sync": {
     "mode": "pwa_only_declared_divergence",
     "declaration": "PWA_ONLY_RUNTIME_DIVERGENCE.json",
     "xcode_runtime_updated": false,
-    "reason": "PWA-only shared navigation refinement: subdued glass tray and one organic green active bubble with visible elastic contour motion; native bundle unchanged."
+    "reason": "PWA-only standalone launch splash: off-white full-screen opening layer with detached basket and product name; native bundle unchanged."
   },
   "pwa_additions": [
     "manifest.webmanifest",

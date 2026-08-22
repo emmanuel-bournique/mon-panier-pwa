@@ -50,6 +50,7 @@ const parityHashPaths = {
   service_worker_sha256: 'sw.js',
   registration_sha256: 'pwa-register.js',
   pwa_shell_test_sha256: 'qa/pwa-shell.test.mjs',
+  launch_splash_test_sha256: 'qa/launch-splash.test.mjs',
   shopping_flow_test_sha256: 'qa/shopping-flow-regression.test.cjs',
   recipe_create_ui_contract_test_sha256: 'qa/recipe-create-ui-contract.test.cjs',
   recipe_detail_responsive_photo_test_sha256: 'qa/recipe-detail-responsive-photo.test.cjs',
@@ -113,6 +114,8 @@ function withoutPwaAdditions(html) {
     .replace(/\n?\s*<link rel="apple-touch-icon" href="apple-touch-icon\.png">/g, '')
     .replace(/\n?\s*<script src="pwa-register\.js(?:\?v=[^"]+)?" defer><\/script>/g, '')
     .replace(/\n?\s*<meta name="mon-panier-feedback-endpoint"[^>]*>/g, '')
+    .replace(/\n?\s*<script>\n\s*\(\(\) => \{\n\s*const displayModeStandalone = window\.matchMedia \? window\.matchMedia\('\(display-mode: standalone\)'\)\.matches : false;\n\s*const iosStandalone = window\.navigator\.standalone === true;\n\s*document\.documentElement\.dataset\.pwaStandalone = displayModeStandalone \|\| iosStandalone \? 'true' : 'false';\n\s*\}\)\(\);\n\s*<\/script>/g, '')
+    .replace(/\n?\s*<div class="launch-splash" id="launchSplash" aria-hidden="true">[\s\S]*?<\/div>\s*(?=<div class="desktop-stage">)/g, '\n  ')
     .replace(/(app-v1\.css|grocery-cart-core\.js|app-v1\.js)\?v=[^"']+/g, '$1?v=PWA_CACHE_ID')
 }
 
@@ -151,15 +154,15 @@ test('PWA shell exposes the install and offline contract', async () => {
     './personalization-core.js?v=20260808-avoid-v1',
     './card-badge-core.js?v=20260813-pilot-v1',
     './app-v1.js?v=20260822-discover-single-green-bubble-v45',
-    './app-v1.css?v=20260822-discover-single-green-bubble-v45',
+    './app-v1.css?v=20260822-launch-splash-v46',
   ]
   for (const url of criticalShellUrls) {
     assert.ok(index.includes(url.replace(/^\.\//, '')), `entry must version critical runtime: ${url}`)
     assert.ok(serviceWorker.includes(url), `critical offline shell missing: ${url}`)
   }
-  const registrationRuntimeUrl = 'pwa-register.js?v=20260822-discover-single-green-bubble-v45'
+  const registrationRuntimeUrl = 'pwa-register.js?v=20260822-launch-splash-v46'
   assert.ok(index.includes(registrationRuntimeUrl), 'the waiting-worker bootstrap must receive a unique runtime URL')
-  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v45-discover-single-green-bubble['"]/, 'cache name must change when the installed-PWA runtime changes')
+  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v46-launch-splash['"]/, 'cache name must change when the installed-PWA runtime changes')
   assert.match(serviceWorker, /addEventListener\(['"]fetch['"]/)
   assert.match(serviceWorker, /cache/i)
   assert.doesNotMatch(serviceWorker, /https?:\/\//i, 'service worker must not add a remote origin')
@@ -210,7 +213,7 @@ test('runtime files remain byte-identical to the canonical iOS bundle except dec
   assert.equal(await exists(divergencePath), true, 'a PWA-only release must declare every intentional runtime divergence')
   const divergence = JSON.parse(await readFile(divergencePath, 'utf8'))
   assert.equal(divergence.scope, 'pwa_only')
-  assert.equal(divergence.runtime_revision, '20260822-discover-single-green-bubble-v45')
+  assert.equal(divergence.runtime_revision, '20260822-launch-splash-v46')
   const declaredPaths = divergence.runtime_paths ?? {}
   assert.deepEqual(Object.keys(declaredPaths).sort(), ['app-v1.css', 'app-v1.js', 'sw.js'])
 
@@ -224,7 +227,7 @@ test('runtime files remain byte-identical to the canonical iOS bundle except dec
       assert.equal(
         withoutPwaAdditions(candidateHtml),
         withoutPwaAdditions(canonicalHtml),
-        'index.html may differ only by the explicit PWA links/registration and disabled external feedback configuration',
+        'index.html may differ only by the explicit PWA links, launch shell and disabled external feedback configuration',
       )
       continue
     }

@@ -14,10 +14,27 @@
   <meta name="apple-mobile-web-app-title" content="Mon Panier">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="mon-panier-manifest" content="mobileOnly=true; recipes=360; hiddenReserve=126; mediaIdentities=1007; webpDerivatives=2014; design=full-app-functional-v1; persistence=local; backend=false; externalProviders=false; humanReviewRequired=true">
-  <link rel="stylesheet" href="app-v1.css?v=20260822-discover-single-green-bubble-v45">
+  <script>
+    (() => {
+      const displayModeStandalone = window.matchMedia ? window.matchMedia('(display-mode: standalone)').matches : false;
+      const iosStandalone = window.navigator.standalone === true;
+      document.documentElement.dataset.pwaStandalone = displayModeStandalone || iosStandalone ? 'true' : 'false';
+    })();
+  </script>
+  <link rel="stylesheet" href="app-v1.css?v=20260822-launch-splash-v46">
   <!-- MON_PANIER_FULL_APP_V1 recipes=360 hidden_reserve=126 media_identities=1007 webp_derivatives=2014 backend=false -->
 </head>
 <body>
+  <div class="launch-splash" id="launchSplash" aria-hidden="true">
+    <div class="launch-splash-content">
+      <svg class="launch-splash-basket" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <path d="M15 27h34l-3 22H18L15 27Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M22 27c1.5-6.8 4.8-10 10-10s8.5 3.2 10 10" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <path d="M23 34v8M32 34v8M41 34v8" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <p class="launch-splash-title">Mon Panier</p>
+    </div>
+  </div>
   <div class="desktop-stage">
     <button class="qa-trigger" id="qaTrigger" aria-haspopup="dialog">QA</button>
     <main class="phone" aria-label="Mon Panier">
@@ -453,6 +470,6 @@
   <script src="personalization-core.js?v=20260808-avoid-v1"></script>
   <script src="card-badge-core.js?v=20260813-pilot-v1"></script>
   <script src="app-v1.js?v=20260822-discover-single-green-bubble-v45"></script>
-  <script src="pwa-register.js?v=20260822-discover-single-green-bubble-v45" defer></script>
+  <script src="pwa-register.js?v=20260822-launch-splash-v46" defer></script>
 </body>
 </html>

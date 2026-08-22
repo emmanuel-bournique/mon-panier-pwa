@@ -246,6 +246,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   #versionPanel .sheet-head,#cookPanel .sheet-head,#createRecipePanel .sheet-head,#sharePanel .sheet-head,#preferencesPanel .sheet-head{padding-top:calc(16px + env(safe-area-inset-top))}
 }
 
+/* Mon Panier — standalone launch splash, variant 02 */
+html:not([data-pwa-standalone="true"]) .launch-splash{display:none}
+.launch-splash{position:fixed;z-index:100;inset:0;display:grid;place-items:center;overflow:hidden;background:#fbfaf6;color:#2b6d57;pointer-events:none;isolation:isolate;opacity:1}
+.launch-splash-content{display:grid;justify-items:center;gap:20px}
+.launch-splash-basket{width:88px;height:88px;opacity:0;transform:scale(.9);animation:launch-splash-basket .65s cubic-bezier(.16,1,.3,1) both}
+.launch-splash-title{margin:0;text-align:center;font:800 27px/1.1 var(--display);letter-spacing:-.055em;opacity:0;animation:launch-splash-title .72s ease-out .24s both}
+.launch-splash.is-exiting{opacity:0;transition:opacity .24s ease}
+@keyframes launch-splash-basket{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes launch-splash-title{from{opacity:0;letter-spacing:-.1em}to{opacity:1;letter-spacing:-.055em}}
+@media(prefers-reduced-motion:reduce){
+  .launch-splash-basket,.launch-splash-title{animation-duration:.01ms!important;animation-delay:0ms!important}
+  .launch-splash.is-exiting{transition-duration:.01ms}
+}
+
 /* Recipe detail — photo-first reference approved 2026-07-31 */
 .phone:has(.detail) .app-header{position:absolute;z-index:12;top:clamp(64px,calc(env(safe-area-inset-top) + 20px),86px);left:0;right:0;height:64px;min-height:64px;padding:10px 16px;background:transparent;border:0;backdrop-filter:none}
 .phone:has(.detail) .header-center{display:none}

@@ -1,4 +1,21 @@
 (() => {
+  const launchSplash = document.getElementById('launchSplash')
+  const isStandalone = document.documentElement.dataset.pwaStandalone === 'true'
+  if (launchSplash && isStandalone) {
+    const reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false
+    const exitDelay = reducedMotion ? 90 : 780
+    let dismissed = false
+    const dismissLaunchSplash = () => {
+      if (dismissed) return
+      dismissed = true
+      launchSplash.classList.add('is-exiting')
+      window.setTimeout(() => launchSplash.remove(), reducedMotion ? 10 : 260)
+    }
+    window.setTimeout(dismissLaunchSplash, exitDelay)
+  } else {
+    launchSplash?.remove()
+  }
+
   if (!('serviceWorker' in navigator)) return
   if (!/^https?:$/.test(window.location.protocol)) return
 
