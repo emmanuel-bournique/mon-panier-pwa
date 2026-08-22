@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mon-panier-runtime-v41-discover-favorite-heart'
+const CACHE_NAME = 'mon-panier-runtime-v42-discover-single-green-bubble'
 const SHELL_URLS = [
   './',
   './manifest.webmanifest',
@@ -9,8 +9,8 @@ const SHELL_URLS = [
   './grocery-cart-core.js?v=20260817-courses-create-v14',
   './personalization-core.js?v=20260808-avoid-v1',
   './card-badge-core.js?v=20260813-pilot-v1',
-  './app-v1.js?v=20260822-discover-favorite-heart-v41',
-  './app-v1.css?v=20260822-discover-favorite-heart-v41',
+  './app-v1.js?v=20260822-discover-single-green-bubble-v42',
+  './app-v1.css?v=20260822-discover-single-green-bubble-v42',
 ]
 
 self.addEventListener('install', (event) => {

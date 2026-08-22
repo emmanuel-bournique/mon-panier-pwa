@@ -82,9 +82,13 @@ test('Découvrir utilise un bouton trois-points compact et le ruban vitré anime
 
   assert.match(navRules, /\.bottom-nav\s*\{[\s\S]*--nav-active-index:0/);
   assert.match(navRules, /border-radius:999px/);
+  assert.match(navRules, /background:rgba\(255,255,255,\.38\)/, 'la capsule doit rester transparente et discrète');
+  assert.match(navRules, /box-shadow:0 6px 16px rgba\(20,53,44,\.08\)/, 'la capsule ne doit pas créer une seconde bulle visuelle');
   assert.match(navRules, /backdrop-filter:blur\(/);
-  assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*background:linear-gradient\(145deg,rgba\(190,244,211,\.96\),rgba\(104,199,151,\.82\)\)/);
-  assert.match(navRules, /box-shadow:0 6px 18px rgba\(8,127,91,\.24\)/);
+  assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*background:linear-gradient\(145deg,rgba\(8,127,91,\.22\),rgba\(47,158,114,\.34\)\)/, 'la seule bulle active doit conserver le vert Mon Panier');
+  assert.match(navRules, /box-shadow:0 4px 12px rgba\(8,127,91,\.14\)/, 'la bulle verte doit rester légère');
+  assert.doesNotMatch(navRules, /background:linear-gradient\(180deg,rgba\(255,255,255,\.60\),rgba\(239,249,243,\.46\)\)/);
+  assert.doesNotMatch(navRules, /box-shadow:0 6px 18px rgba\(8,127,91,\.24\)/);
   assert.match(navRules, /margin-left:4px/);
   assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*position:absolute/);
   assert.match(navRules, /left:calc\(4px \+ var\(--nav-active-index\) \* \(\(100% - 8px\) \/ 5\)\)/);
