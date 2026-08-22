@@ -4254,11 +4254,15 @@
     if (shouldAnimateBubble && activeBubble) {
       clearTimeout(nav._navBubbleAnimationTimer);
       activeBubble.classList.remove('is-moving');
+      nav.classList.remove('nav-is-moving');
       void activeBubble.offsetWidth;
+      void nav.offsetWidth;
       activeBubble.classList.add('is-moving');
+      nav.classList.add('nav-is-moving');
       nav._navBubbleAnimationTimer = window.setTimeout(() => {
         if (nav.querySelector('.nav-active-bubble') === activeBubble) activeBubble.classList.remove('is-moving');
-      }, 480);
+        nav.classList.remove('nav-is-moving');
+      }, 580);
     }
     requestAnimationFrame(() => {
       if (nav.dataset.navActiveIndex === String(activeIndex)) {

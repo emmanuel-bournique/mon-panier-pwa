@@ -153,16 +153,16 @@ test('PWA shell exposes the install and offline contract', async () => {
     './grocery-cart-core.js?v=20260817-courses-create-v14',
     './personalization-core.js?v=20260808-avoid-v1',
     './card-badge-core.js?v=20260813-pilot-v1',
-    './app-v1.js?v=20260822-discover-single-green-bubble-v45',
-    './app-v1.css?v=20260822-navigation-glass-v47',
+    './app-v1.js?v=20260822-navigation-glass-v48',
+    './app-v1.css?v=20260822-navigation-glass-v48',
   ]
   for (const url of criticalShellUrls) {
     assert.ok(index.includes(url.replace(/^\.\//, '')), `entry must version critical runtime: ${url}`)
     assert.ok(serviceWorker.includes(url), `critical offline shell missing: ${url}`)
   }
-  const registrationRuntimeUrl = 'pwa-register.js?v=20260822-navigation-glass-v47'
+  const registrationRuntimeUrl = 'pwa-register.js?v=20260822-navigation-glass-v48'
   assert.ok(index.includes(registrationRuntimeUrl), 'the waiting-worker bootstrap must receive a unique runtime URL')
-  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v47-navigation-glass['"]/, 'cache name must change when the installed-PWA runtime changes')
+  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v48-navigation-glass['"]/, 'cache name must change when the installed-PWA runtime changes')
   assert.match(serviceWorker, /addEventListener\(['"]fetch['"]/)
   assert.match(serviceWorker, /cache/i)
   assert.doesNotMatch(serviceWorker, /https?:\/\//i, 'service worker must not add a remote origin')
@@ -172,20 +172,31 @@ test('PWA shell exposes the install and offline contract', async () => {
   assert.match(registration, /await registration\.update\(\)\s*activateWaitingWorker\(\)/, 'an update discovered after registration must be asked to activate')
 })
 
-test('active navigation uses a light translucent glass tile instead of a solid green bubble', async () => {
+test('v48 navigation uses a light glass tile, stronger organic motion and a gentle rail movement', async () => {
   const css = await readFile(join(candidateRoot, 'app-v1.css'), 'utf8')
-  const start = css.indexOf('/* bottom-nav-whatsapp-glass-v47:start */')
-  const end = css.indexOf('/* bottom-nav-whatsapp-glass-v47:end */', start)
-  assert.ok(start >= 0 && end > start, 'the v47 glass navigation override must be explicit and bounded')
+  const appRuntime = await readFile(join(candidateRoot, 'app-v1.js'), 'utf8')
+  const start = css.indexOf('/* bottom-nav-whatsapp-glass-v48:start */')
+  const end = css.indexOf('/* bottom-nav-whatsapp-glass-v48:end */', start)
+  assert.ok(start >= 0 && end > start, 'the v48 glass navigation override must be explicit and bounded')
   const glass = css.slice(start, end)
-  assert.equal(glass.includes('background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(231,244,238,.44))'), true, 'the active tile must use a pale translucent gradient')
-  assert.equal(glass.includes('backdrop-filter:blur(18px) saturate(1.08)'), true, 'the active tile must render as glass')
-  assert.equal(glass.includes('-webkit-backdrop-filter:blur(18px) saturate(1.08)'), true, 'Safari must receive the glass blur')
-  assert.equal(glass.includes('border:1px solid rgba(255,255,255,.82)'), true, 'the glass tile must have a light edge')
+  assert.equal(glass.includes('background:linear-gradient(145deg,rgba(255,255,255,.84),rgba(226,244,233,.58))'), true, 'the active tile must use a slightly more visible pale glass gradient')
+  assert.equal(glass.includes('backdrop-filter:blur(18px) saturate(1.12)'), true, 'the active tile must render as glass')
+  assert.equal(glass.includes('-webkit-backdrop-filter:blur(18px) saturate(1.12)'), true, 'Safari must receive the glass blur')
+  assert.equal(glass.includes('border:1px solid rgba(72,145,105,.42)'), true, 'the glass tile must have a visible but light green contour')
   assert.equal(['rgba(27,101,80', 'rgba(44,113,88', 'rgba(11,138,98', 'rgba(8,127,91'].some((token) => glass.includes(token)), false, 'the active tile must not restore the solid green treatment')
   const shadowDeclarations = [...glass.matchAll(/box-shadow:([^;]+)/g)].map(([, value]) => value)
   assert.equal(shadowDeclarations.some((shadow) => ['rgba(20,76,60', 'rgba(27,101,80', 'rgba(44,113,88', 'rgba(11,138,98', 'rgba(8,127,91'].some((token) => shadow.includes(token))), false, 'the active tile must not carry a green outer halo')
   assert.equal(glass.includes('.bottom-nav .nav-item.active{color:#2f6d59!important;'), true, 'active icon and label must remain readable on the pale tile')
+  assert.equal(glass.includes('transition:left .52s cubic-bezier(.22,.84,.32,1)'), true, 'the bubble must move with a non-overshooting trajectory')
+  assert.equal(glass.includes('cubic-bezier(.16,1.65,.3,1)'), false, 'the old lateral overshoot easing must be gone')
+  assert.match(glass, /@keyframes nav-active-bubble-spring-v48\{[\s\S]*?transform:scale\(1\.14,\.86\)/, 'the v48 bubble spring must visibly intensify the deformation')
+  assert.equal(glass.includes('animation:nav-active-bubble-spring-v48 .56s cubic-bezier(.22,1.18,.36,1);'), true, 'the stronger bubble spring must be bounded')
+  assert.match(glass, /@keyframes nav-rail-tap-v48\{[\s\S]*?translate3d\(0,-\.8px,0\)/, 'the rail must have a very light click movement')
+  assert.match(glass, /\.bottom-nav\.nav-is-moving\{\s*animation:nav-rail-tap-v48 \.56s cubic-bezier\(\.22,\.84,\.32,1\);\s*transform-origin:center bottom;\s*\}/, 'the rail movement must be attached to the navigation only during a click transition')
+  assert.match(glass, /@media\(prefers-reduced-motion:reduce\)\{[\s\S]*?\.bottom-nav\.nav-is-moving\{animation:none!important\}/, 'reduced motion must disable the rail movement')
+  assert.match(appRuntime, /nav\.classList\.add\('nav-is-moving'\)/, 'navigation clicks must trigger the light rail movement')
+  assert.match(appRuntime, /nav\.classList\.remove\('nav-is-moving'\)/, 'the light rail movement must be cleaned up')
+  assert.match(appRuntime, /nav\._navBubbleAnimationTimer = window\.setTimeout\([\s\S]*?\}, 580\)/, 'the bubble and rail movement timer must cover the stronger spring')
 })
 
 test('PWA parity manifest binds cache, versioned URLs and recorded hashes to the release files', async () => {
@@ -229,7 +240,7 @@ test('runtime files remain byte-identical to the canonical iOS bundle except dec
   assert.equal(await exists(divergencePath), true, 'a PWA-only release must declare every intentional runtime divergence')
   const divergence = JSON.parse(await readFile(divergencePath, 'utf8'))
   assert.equal(divergence.scope, 'pwa_only')
-  assert.equal(divergence.runtime_revision, '20260822-navigation-glass-v47')
+  assert.equal(divergence.runtime_revision, '20260822-navigation-glass-v48')
   const declaredPaths = divergence.runtime_paths ?? {}
   assert.deepEqual(Object.keys(declaredPaths).sort(), ['app-v1.css', 'app-v1.js', 'sw.js'])
 

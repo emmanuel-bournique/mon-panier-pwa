@@ -1,18 +1,18 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260822-navigation-glass-v47",
-  "reason": "PWA-only navigation refinement: the active bottom-navigation tile becomes a lighter translucent glass surface without a green outer halo while navigation, launch splash, recipe-detail geometry and the Xcode bundle stay unchanged.",
+  "runtime_revision": "20260822-navigation-glass-v48",
+  "reason": "PWA-only navigation refinement: the active bottom-navigation tile gains a slightly clearer pale glass contour, a stronger organic spring and a barely perceptible rail movement while navigation, launch splash, recipe-detail geometry and the Xcode bundle stay unchanged.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "3fd6bdd30c08e30a32708065547106b63b3abf315efe76b37c2f681bc48f33eb",
+      "candidate_sha256": "9720b5f7457faa1f436b1e2ac9cd831a2f56a055b2b5378ba8eed879d683fd1d",
       "canonical_sha256": "d8bad685fad2a3d29b2df64390d7a983ab8a3e36069fe9aef5350401f2085995"
     },
     "app-v1.js": {
-      "candidate_sha256": "acfb121ba02e3a692a7dbe0ce8619e0c7359422936073838b588b231c0eff802",
+      "candidate_sha256": "141f2586823e34f8d809bca9af81c38d1a5b5ca05612e0513217460417ec950e",
       "canonical_sha256": "73482698cdbafe469929cbadce947b64719ec320d7e53d8d9359e2c4c3be4c2b"
     },
     "sw.js": {
-      "candidate_sha256": "57dfcd6fd3a3a4e1328eaf1f65da4c29d62ca3a4ae1365836f024a21bc76fd8e",
+      "candidate_sha256": "32d58056c91d71fb855e74e570b1022879691619b1dd8da37f5efa445bff7fd2",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }
