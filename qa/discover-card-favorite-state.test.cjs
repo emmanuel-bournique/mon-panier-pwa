@@ -115,6 +115,18 @@ test('Découvrir utilise un bouton trois-points compact et le ruban vitré anime
   assert.match(discoverRules, /\.recipe-action-btn svg\{[\s\S]*?width:16px;\s*height:16px/);
 });
 
+test('v45 élargit la bulle et adoucit le vert sans changer la géométrie du rail', () => {
+  const v45Rules = sourceBlock(css, '/* bottom-nav-whatsapp-glass-v45:start */', '/* bottom-nav-whatsapp-glass-v45:end */');
+
+  assert.match(v45Rules, /\.bottom-nav \.nav-active-bubble\s*\{[\s\S]*width:calc\(\(100% - 8px\)\/5 - 3px\)/);
+  assert.match(v45Rules, /margin-left:1\.5px/);
+  assert.match(v45Rules, /background:linear-gradient\(145deg,rgba\(27,101,80,\.84\),rgba\(44,113,88,\.82\)\)/, 'le vert v45 doit être plus sourd et moins agressif');
+  assert.match(v45Rules, /box-shadow:0 2px 6px rgba\(20,76,60,\.10\),inset 0 1px 0 rgba\(255,255,255,\.20\)/);
+  assert.doesNotMatch(v45Rules, /rgba\(11,138,98,\.92\)/);
+  assert.doesNotMatch(v45Rules, /height:calc\(60px/);
+  assert.doesNotMatch(v45Rules, /padding:.*safe-area-inset-bottom/);
+});
+
 test('la coque de prévisualisation respecte le viewport iPhone 14 Pro et ne dessine pas de fausse île sur mobile', () => {
   const previewRules = sourceBlock(css, '/* iphone-14-pro-preview-v1:start */', '/* iphone-14-pro-preview-v1:end */');
 

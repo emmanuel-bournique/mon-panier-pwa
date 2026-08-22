@@ -1,10 +1,10 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260822-discover-single-green-bubble-v44",
-  "reason": "PWA-only mobile surface update: the shared bottom navigation now uses a subdued glass tray and one organic green active bubble with a visible elastic contour motion; the clickable upper-left favorite heart, the compact three-dot action button, recipe-detail geometry and the Xcode bundle stay unchanged.",
+  "runtime_revision": "20260822-discover-single-green-bubble-v45",
+  "reason": "PWA-only mobile surface update: the shared bottom navigation keeps a subdued glass tray and one organic active bubble; v45 widens the bubble and softens the green/halo while keeping the visible elastic contour motion; the clickable upper-left favorite heart, the compact three-dot action button, recipe-detail geometry and the Xcode bundle stay unchanged.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "13d4468bbf48ff512e1898836ed188cba4facadf0597a4a7afb21d2824b96aba",
+      "candidate_sha256": "def1e6b4f953e285ca908156f783465ef82f837e96ae9b81344aa7cfeb669c8b",
       "canonical_sha256": "d8bad685fad2a3d29b2df64390d7a983ab8a3e36069fe9aef5350401f2085995"
     },
     "app-v1.js": {
@@ -12,7 +12,7 @@
       "canonical_sha256": "73482698cdbafe469929cbadce947b64719ec320d7e53d8d9359e2c4c3be4c2b"
     },
     "sw.js": {
-      "candidate_sha256": "97174080ccd12159d53fe42873fef5c12f1ef2063da62cccb5b703203f37cffe",
+      "candidate_sha256": "74722277ea2f10905637ab38d876b2c88f45af3a77f21717b7daec36f9dbce30",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }
