@@ -1,18 +1,18 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260822-navigation-glass-v49",
-  "reason": "PWA-only navigation refinement: the active bottom-navigation tile remains unchanged; the Découvrir screen now reuses its rendered DOM between unchanged tab switches, while navigation, launch splash, recipe-detail geometry and the Xcode bundle stay unchanged.",
+  "runtime_revision": "20260822-navigation-glass-v50",
+  "reason": "PWA-only navigation refinement: the active bottom-navigation tile remains unchanged; the Découvrir screen reuses its rendered DOM between unchanged tab switches without recalculating the cache key after restoration, while navigation, launch splash, recipe-detail geometry and the Xcode bundle stay unchanged.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "9720b5f7457faa1f436b1e2ac9cd831a2f56a055b2b5378ba8eed879d683fd1d",
+      "candidate_sha256": "a216cd670cbc9882e16effbd2e5085fc477e8547cf0998093d9900b5b80d43bc",
       "canonical_sha256": "d8bad685fad2a3d29b2df64390d7a983ab8a3e36069fe9aef5350401f2085995"
     },
     "app-v1.js": {
-      "candidate_sha256": "f45ce6fb0d925f8c7442de32b6969d3f9f2552353446f62439e4efebb439c50b",
+      "candidate_sha256": "6e1f3e71564e12baabc42e97327ec4b0ffef0cde35c24ea14ef37c137ecb9443",
       "canonical_sha256": "73482698cdbafe469929cbadce947b64719ec320d7e53d8d9359e2c4c3be4c2b"
     },
     "sw.js": {
-      "candidate_sha256": "d3bd57432dbe3c436a3db619d01c9acead16dfef0c70bd310f915be73e497c5a",
+      "candidate_sha256": "b98a82a819d5217a123192871daa515df8283e79631e43676ecfe3eb42930811",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }

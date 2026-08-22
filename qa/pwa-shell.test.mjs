@@ -153,16 +153,16 @@ test('PWA shell exposes the install and offline contract', async () => {
     './grocery-cart-core.js?v=20260817-courses-create-v14',
     './personalization-core.js?v=20260808-avoid-v1',
     './card-badge-core.js?v=20260813-pilot-v1',
-    './app-v1.js?v=20260822-navigation-glass-v49',
-    './app-v1.css?v=20260822-navigation-glass-v49',
+    './app-v1.js?v=20260822-navigation-glass-v50',
+    './app-v1.css?v=20260822-navigation-glass-v50',
   ]
   for (const url of criticalShellUrls) {
     assert.ok(index.includes(url.replace(/^\.\//, '')), `entry must version critical runtime: ${url}`)
     assert.ok(serviceWorker.includes(url), `critical offline shell missing: ${url}`)
   }
-  const registrationRuntimeUrl = 'pwa-register.js?v=20260822-navigation-glass-v49'
+  const registrationRuntimeUrl = 'pwa-register.js?v=20260822-navigation-glass-v50'
   assert.ok(index.includes(registrationRuntimeUrl), 'the waiting-worker bootstrap must receive a unique runtime URL')
-  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v49-navigation-glass['"]/, 'cache name must change when the installed-PWA runtime changes')
+  assert.match(serviceWorker, /const CACHE_NAME = ['"]mon-panier-runtime-v50-navigation-glass['"]/, 'cache name must change when the installed-PWA runtime changes')
   assert.match(serviceWorker, /addEventListener\(['"]fetch['"]/)
   assert.match(serviceWorker, /cache/i)
   assert.doesNotMatch(serviceWorker, /https?:\/\//i, 'service worker must not add a remote origin')
@@ -172,7 +172,7 @@ test('PWA shell exposes the install and offline contract', async () => {
   assert.match(registration, /await registration\.update\(\)\s*activateWaitingWorker\(\)/, 'an update discovered after registration must be asked to activate')
 })
 
-test('v49 navigation uses a light glass tile, stronger organic motion and a gentle rail movement', async () => {
+test('v50 navigation uses a light glass tile, stronger organic motion and a gentle rail movement', async () => {
   const css = await readFile(join(candidateRoot, 'app-v1.css'), 'utf8')
   const appRuntime = await readFile(join(candidateRoot, 'app-v1.js'), 'utf8')
   const start = css.indexOf('/* bottom-nav-whatsapp-glass-v48:start */')
@@ -208,7 +208,21 @@ test('Découvrir réutilise l’écran déjà rendu quand son état n’a pas ch
   assert.match(appRuntime, /discoverScreenCacheRenderer\s*===\s*renderDiscover/, 'le cache doit suivre la version du renderer Découvrir')
   assert.match(appRuntime, /discoverScreenCacheRows\s*===\s*homeShelfRows/, 'le cache doit suivre la sélection courante des rayons')
   assert.match(appRuntime, /screen\.replaceChildren\(discoverScreenCache\)/, 'le retour à Découvrir doit rattacher le même nœud DOM')
-  assert.match(appRuntime, /const result = isDiscover[\s\S]*?if \(isDiscover && !state\.detail\) \{[\s\S]*?discoverScreenCache = screen\.firstElementChild/, 'le premier rendu Découvrir doit amorcer le cache')
+  assert.match(appRuntime, /const result = isDiscover[\s\S]*?if \(isDiscover && !discoverScreenCache\) \{[\s\S]*?discoverScreenCache = screen\.firstElementChild/, 'le premier rendu Découvrir doit amorcer le cache')
+})
+
+test('Découvrir ne recalcule pas sa clé après avoir restauré le cache', async () => {
+  const appRuntime = await readFile(join(candidateRoot, 'app-v1.js'), 'utf8')
+  const wrapperStart = appRuntime.indexOf('const coreRender = render;')
+  const wrapperEnd = appRuntime.indexOf('function normalizeRecipeNavigationIds', wrapperStart)
+  const wrapper = appRuntime.slice(wrapperStart, wrapperEnd)
+  assert.match(wrapper, /if \(isDiscover && !discoverScreenCache\)/, 'la clé doit être initialisée seulement à la création du cache')
+  assert.doesNotMatch(wrapper, /if \(isDiscover && !state\.detail\)/, 'un retour vers Découvrir ne doit pas recalculer la clé après chaque restauration')
+})
+
+test('les rayons Découvrir hors écran évitent un layout complet au retour', async () => {
+  const css = await readFile(join(candidateRoot, 'app-v1.css'), 'utf8')
+  assert.match(css, /\.shelf\{[^}]*content-visibility:auto[^}]*contain-intrinsic-size:250px 250px/, 'les rayons Découvrir doivent limiter le layout hors écran')
 })
 
 test('PWA parity manifest binds cache, versioned URLs and recorded hashes to the release files', async () => {
@@ -252,7 +266,7 @@ test('runtime files remain byte-identical to the canonical iOS bundle except dec
   assert.equal(await exists(divergencePath), true, 'a PWA-only release must declare every intentional runtime divergence')
   const divergence = JSON.parse(await readFile(divergencePath, 'utf8'))
   assert.equal(divergence.scope, 'pwa_only')
-  assert.equal(divergence.runtime_revision, '20260822-navigation-glass-v49')
+  assert.equal(divergence.runtime_revision, '20260822-navigation-glass-v50')
   const declaredPaths = divergence.runtime_paths ?? {}
   assert.deepEqual(Object.keys(declaredPaths).sort(), ['app-v1.css', 'app-v1.js', 'sw.js'])
 

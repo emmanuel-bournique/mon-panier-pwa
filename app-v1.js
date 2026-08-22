@@ -1734,7 +1734,7 @@
     const result = isDiscover && discoverScreenCache
       ? (renderAuthGate(), renderHeader(), renderNav(), renderDiscoverScreen(), undefined)
       : coreRender();
-    if (isDiscover && !state.detail) {
+    if (isDiscover && !discoverScreenCache) {
       discoverScreenCache = screen.firstElementChild;
       discoverScreenCacheKey = buildDiscoverScreenCacheKey();
       discoverScreenCacheRenderer = renderDiscover;
