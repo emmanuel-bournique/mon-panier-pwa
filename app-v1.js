@@ -3643,7 +3643,7 @@
     const safeId = localGroceryInlineKey(source.id);
     const inCart = source.personal ? personalRecipeActionInCart(source.id) : discoverCartContains(source.id);
     const actionLabel = `Actions de la recette ${escapeHtml(source.title)}`;
-    return `<article class="recipe-card" data-recipe-id="${source.id}" tabindex="0" role="button" aria-label="Voir ${escapeHtml(source.title)}" onclick="openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})" onkeydown="if(event.key==='Enter')openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})"><div class="cover">${coverHtml(source, false, false)}<span class="recipe-action-favorite-status" data-favorite="${favorite}" aria-hidden="true">${icon('heart')}</span><button type="button" class="round-btn recipe-action-btn" data-favorite="${favorite}" data-in-cart="${inCart}" data-action-label="${actionLabel}" aria-label="${recipeActionCardLabel(actionLabel, favorite, inCart)}" title="Actions de la recette" onclick="event.stopPropagation();openRecipeActionMenu('${safeId}',this)">${recipeActionIcon()}<span class="recipe-action-cart-status" aria-hidden="true">${icon('check')}</span></button></div><div class="card-body"><h3>${escapeHtml(source.title)}</h3><div class="card-meta">${manual ? (personalRecipeMetadataForCard(source).length ? `<span class="personal-card-meta" data-personal-metadata="true">${escapeHtml(personalRecipeMetadataForCard(source).join(' · '))}</span>` : '') : `<span class="time">${source.total} min · ${escapeHtml(difficulty)}</span>`}</div><div class="card-bottom">${cardQualityHtml(source, benefit)}</div></div></article>`;
+    return `<article class="recipe-card" data-recipe-id="${source.id}" tabindex="0" role="button" aria-label="Voir ${escapeHtml(source.title)}" onclick="openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})" onkeydown="if(event.key==='Enter')openDetail('${safeId}',state.tab,${recipeNavigationLiteral(navigationIds)})"><div class="cover">${coverHtml(source, false, false)}<button type="button" class="round-btn recipe-favorite-btn ${favorite ? 'on' : ''}" data-favorite="${favorite}" aria-pressed="${favorite}" aria-label="${favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}" title="${favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}" onclick="event.stopPropagation();toggleFavorite('${safeId}')">${icon('heart')}</button><button type="button" class="round-btn recipe-action-btn" data-favorite="${favorite}" data-in-cart="${inCart}" data-action-label="${actionLabel}" aria-label="${recipeActionCardLabel(actionLabel, favorite, inCart)}" title="Actions de la recette" onclick="event.stopPropagation();openRecipeActionMenu('${safeId}',this)">${recipeActionIcon()}<span class="recipe-action-cart-status" aria-hidden="true">${icon('check')}</span></button></div><div class="card-body"><h3>${escapeHtml(source.title)}</h3><div class="card-meta">${manual ? (personalRecipeMetadataForCard(source).length ? `<span class="personal-card-meta" data-personal-metadata="true">${escapeHtml(personalRecipeMetadataForCard(source).join(' · '))}</span>` : '') : `<span class="time">${source.total} min · ${escapeHtml(difficulty)}</span>`}</div><div class="card-bottom">${cardQualityHtml(source, benefit)}</div></div></article>`;
   };
 
   function ensureRecipeActionPanel() {
@@ -3858,14 +3858,11 @@
     const favorite = state.favorites.has(id);
     const escapedId = String(id).replace(/(["\\])/g, '\\$1');
     const cards = [...document.querySelectorAll(`.recipe-card[data-recipe-id="${escapedId}"]`)];
-    document.querySelectorAll(`.recipe-card[data-recipe-id="${escapedId}"] .favorite-btn`).forEach(button => {
+    document.querySelectorAll(`.recipe-card[data-recipe-id="${escapedId}"] .recipe-favorite-btn`).forEach(button => {
       button.classList.toggle('on', favorite);
+      button.dataset.favorite = String(favorite);
+      button.setAttribute('aria-pressed', String(favorite));
       button.setAttribute('aria-label', favorite ? 'Retirer des favoris' : 'Ajouter aux favoris');
-    });
-    cards.forEach(cardElement => {
-      cardElement.querySelectorAll('.recipe-action-favorite-status').forEach(status => {
-        status.dataset.favorite = String(favorite);
-      });
     });
     document.querySelectorAll(`.recipe-card[data-recipe-id="${escapedId}"] .recipe-action-btn`).forEach(button => {
       button.dataset.favorite = String(favorite);

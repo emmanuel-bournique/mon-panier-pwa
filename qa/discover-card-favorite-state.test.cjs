@@ -27,7 +27,7 @@ function favoriteStatusRules() {
   return css.slice(start, end);
 }
 
-test('les cartes Découvrir signalent un favori par un mini-cœur discret sans agrandir la photo', () => {
+test('les cartes Découvrir offrent un cœur cliquable en haut à gauche sans agrandir la photo', () => {
   const labels = sourceBlock(app, '  function recipeActionCardLabel', '  function recipeActionEditIcon');
   const card = sourceBlock(app, '  card = function mealListCard', '  function ensureRecipeActionPanel');
   const favoriteSync = sourceBlock(app, '  function syncFavoriteControls', '  window.toggleFavorite');
@@ -37,30 +37,34 @@ test('les cartes Découvrir signalent un favori par un mini-cœur discret sans a
   assert.match(labels, /favorite \? ' — dans les favoris' : ''/);
   assert.match(labels, /inCart \? ' — dans Mon Panier' : ''/);
   assert.match(card, /const favorite = state\.favorites\.has\(source\.id\);/);
-  assert.match(card, /data-favorite="\$\{favorite\}"/);
-  assert.match(card, /class="recipe-action-favorite-status" data-favorite="\$\{favorite\}" aria-hidden="true"/);
+  assert.match(card, /<button type="button" class="round-btn recipe-favorite-btn \$\{favorite \? 'on' : ''\}" data-favorite="\$\{favorite\}" aria-pressed="\$\{favorite\}"/);
+  assert.match(card, /aria-label="\$\{favorite \? 'Retirer des favoris' : 'Ajouter aux favoris'\}"/);
+  assert.match(card, /onclick="event\.stopPropagation\(\);toggleFavorite\('\$\{safeId\}'\)"/);
   assert.match(card, /aria-label="\$\{recipeActionCardLabel\(actionLabel, favorite, inCart\)\}"/);
-  const favoriteMarkup = '<span class="recipe-action-favorite-status" data-favorite="${favorite}" aria-hidden="true">';
+  const favoriteMarkup = '<button type="button" class="round-btn recipe-favorite-btn ${favorite ? \'on\' : \'\'}"';
   const coverMarkup = '<div class="cover">';
   const actionMarkup = '<button type="button" class="round-btn recipe-action-btn"';
   assert.ok(card.indexOf(favoriteMarkup) > card.indexOf(coverMarkup), 'le cœur doit être rendu dans la vignette');
-  assert.ok(card.indexOf(favoriteMarkup) < card.indexOf(actionMarkup), 'le cœur de vignette doit être frère du bouton •••, pas son enfant');
-  assert.doesNotMatch(card, /\$\{recipeActionIcon\(\)\}<span class="recipe-action-favorite-status"/);
+  assert.ok(card.indexOf(favoriteMarkup) < card.indexOf(actionMarkup), 'le cœur doit rester frère du bouton •••');
+  assert.doesNotMatch(card, /recipe-action-favorite-status/);
 
-  assert.match(favoriteSync, /cardElement\.querySelectorAll\('\.recipe-action-favorite-status'\)/);
-  assert.match(favoriteSync, /status\.dataset\.favorite = String\(favorite\);/);
+  assert.match(favoriteSync, /\.recipe-favorite-btn/);
+  assert.match(favoriteSync, /button\.classList\.toggle\('on', favorite\);/);
   assert.match(favoriteSync, /button\.dataset\.favorite = String\(favorite\);/);
+  assert.match(favoriteSync, /button\.setAttribute\('aria-pressed', String\(favorite\)\);/);
+  assert.match(favoriteSync, /button\.setAttribute\('aria-label', favorite \? 'Retirer des favoris' : 'Ajouter aux favoris'\);/);
   assert.match(favoriteSync, /button\.dataset\.inCart === 'true'/);
   assert.match(favoriteSync, /recipeActionCardLabel\(actionLabel, favorite, inCart\)/);
   assert.match(cartSync, /button\.dataset\.favorite === 'true'/);
   assert.match(cartSync, /recipeActionCardLabel\(actionLabel, favorite, added\)/);
 
-  assert.match(rules, /\.recipe-action-favorite-status\{display:none;position:absolute;z-index:4;left:6px;top:6px;width:17px;height:17px;/);
-  assert.match(rules, /\.recipe-action-favorite-status svg\{width:10px!important;height:10px!important;/);
-  assert.match(rules, /fill:currentColor!important;stroke:currentColor!important/);
+  assert.match(rules, /\.recipe-favorite-btn\{left:8px;top:8px;width:40px;height:40px;min-width:40px;min-height:40px;/);
+  assert.match(rules, /\.recipe-favorite-btn svg\{width:16px;height:16px;/);
+  assert.match(rules, /\.recipe-favorite-btn\.on\{color:var\(--green\)\}/);
+  assert.match(rules, /\.recipe-favorite-btn\.on svg\{fill:currentColor;stroke:currentColor\}/);
+  assert.match(rules, /\.recipe-favorite-btn:not\(\.on\) svg\{fill:none;stroke:currentColor\}/);
   assert.doesNotMatch(rules, /left:-3px;top:-3px/);
-  assert.match(rules, /\.recipe-action-favorite-status\[data-favorite="true"\]\{display:grid/);
-  assert.doesNotMatch(rules, /width:(?:[2-9]\d|\d{3,})px/);
+  assert.doesNotMatch(rules, /width:(?:[5-9]\d|\d{3,})px/);
 });
 
 test('Découvrir utilise un bouton trois-points compact et le ruban vitré anime une bulle active commune', () => {

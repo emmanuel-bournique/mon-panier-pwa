@@ -1,6 +1,6 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-21T09:38:22Z",
+  "generated_at": "2026-08-22T09:06:15Z",
   "status": "public_pilot_individual_pwa_only",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
   "deployment": {
@@ -23,31 +23,31 @@
   "candidate": {
     "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
     "file_count_excluding_manifest_self": 2555,
-    "bytes_excluding_manifest_self": 796401568,
-    "index_sha256": "b482b4d46e89f6c9385685d7d1c24e3c662c42e6acca10368dc52a51187572bc",
-    "app_css_sha256": "d8897008714b13d0d3ebeeabd847bb7d871d4615dda612c5fcabfe7eba094f90",
-    "app_js_sha256": "cf1d5672f5ad007eb4fe3c8954a2a03d01e61fba429495447e1b94e56927119b",
+    "bytes_excluding_manifest_self": 796402306,
+    "index_sha256": "5bacc00ce9ff478a70c09e237add150ae9886c92d00738c47b5a3ee2a759cd57",
+    "app_css_sha256": "b963b4f5461fd06c0ae1c023475a45765714b7657482becade12a97a5047daac",
+    "app_js_sha256": "acfb121ba02e3a692a7dbe0ce8619e0c7359422936073838b588b231c0eff802",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "b2e963539bdf41859aef00f19bc174ac9905c4bc67510f91acae1c7bdb12229a",
+    "service_worker_sha256": "5388b6094723c3db2ab402f73f9a7ab1ee979962a4c0f54c026b0d8b154977e3",
     "registration_sha256": "c6ced712ff7247a7b145c321c64d9c29b4cef14f0170cadc046dfc8e85ed5755",
-    "pwa_shell_test_sha256": "60f2a30773bde33e6e2c27106fc2ca33f48ac7a0590f3569d65a870cb8e83248",
+    "pwa_shell_test_sha256": "cdb4efa0167bce99fcaab0cb30de3e58b42f9e044b88b45753e97e921577858f",
     "shopping_flow_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
     "recipe_create_ui_contract_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a",
-    "recipe_detail_responsive_photo_test_sha256": "c3f4ac5c6325922029f5073258f6515f58760c4f3e477733bfa5a48b53caa142",
+    "recipe_detail_responsive_photo_test_sha256": "2a4502d3df2f07880d9071d7f2f008eb8f77e8c98879d5268487b43dd65d91aa",
     "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "2e3cff6837f7ec5d49dcf9fa9414a7bf132d0c7be6d7ee8863ae367aa6248062",
     "recipe_detail_top_safe_area_test_sha256": "4a93b7c997ba810c975e71c43467da1dc27085f948be7d91b3858eba99627ba8",
     "favorites_empty_state_test_sha256": "bb4eb74159b96f183bad7539792b66de79269ae6d538c1ecae7140057dc3286f",
     "discover_card_cart_state_test_sha256": "508340728554de23f2e01f16b1ac4b36a62e969feb2128a909cfb4ba2097611f",
-    "discover_card_favorite_state_test_sha256": "6c09cd33e13951c97967006c740a015fb57d1f55436d4eef9ce7d43a43e95df5",
-    "pwa_only_runtime_divergence_sha256": "343470ac3ac5889cac1890a6e82548827d4d78d7746b278bec36ea1cbd6005c5",
-    "cache_name": "mon-panier-runtime-v40-discover-glass-nav-compact-safe-area",
+    "discover_card_favorite_state_test_sha256": "8dc1cf1b03cb6f846734eb923049f45b2331f4d23ad80746d83d66ad9375435a",
+    "pwa_only_runtime_divergence_sha256": "e6254fbb233a91622632d8caf50e6f0151ef8bff7a0a4acff06bc9e7c92fe76b",
+    "cache_name": "mon-panier-runtime-v41-discover-favorite-heart",
     "versioned_runtime_urls": [
-      "app-v1.css?v=20260821-discover-glass-nav-v40-compact-safe-area",
-      "app-v1.js?v=20260821-discover-glass-nav-v40-compact-safe-area",
+      "app-v1.css?v=20260822-discover-favorite-heart-v41",
+      "app-v1.js?v=20260822-discover-favorite-heart-v41",
       "card-badge-core.js?v=20260813-pilot-v1",
       "grocery-cart-core.js?v=20260817-courses-create-v14",
       "personalization-core.js?v=20260808-avoid-v1",
-      "pwa-register.js?v=20260821-discover-glass-nav-v40-compact-safe-area"
+      "pwa-register.js?v=20260822-discover-favorite-heart-v41"
     ],
     "recipe_detail_ingredient_media_test_sha256": "3ed6a919e8a58922bb4f4b7a10ab03ba8396945406c0842e0b5d0554e96a86cb"
   },
@@ -55,7 +55,7 @@
     "mode": "pwa_only_declared_divergence",
     "declaration": "PWA_ONLY_RUNTIME_DIVERGENCE.json",
     "xcode_runtime_updated": false,
-    "reason": "PWA-only mobile navigation: compact 60px visual rail, safe-area clearance outside the painted capsule, exact centering, and shared recipe-detail geometry; v40 changes no Xcode/native runtime."
+    "reason": "PWA-only Découvrir card control: clickable upper-left favorite heart with outline/filled state; v41 changes no Xcode/native runtime."
   },
   "pwa_additions": [
     "manifest.webmanifest",

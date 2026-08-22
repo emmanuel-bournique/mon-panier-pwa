@@ -690,9 +690,12 @@ button:active{transform:translateY(1px)}
 /* recipe-action-cart-state-v1:end */
 
 /* recipe-action-favorite-state-v1:start */
-.recipe-action-favorite-status{display:none;position:absolute;z-index:4;left:6px;top:6px;width:17px;height:17px;place-items:center;pointer-events:none;border:2px solid rgba(255,255,255,.92);border-radius:999px;background:rgba(255,255,255,.94);color:var(--green);box-shadow:0 2px 5px rgba(18,61,44,.18)}
-.recipe-action-favorite-status svg{width:10px!important;height:10px!important;margin:0!important;opacity:1!important;fill:currentColor!important;stroke:currentColor!important;filter:none!important}
-.recipe-action-favorite-status[data-favorite="true"]{display:grid}
+.recipe-favorite-btn{left:8px;top:8px;width:40px;height:40px;min-width:40px;min-height:40px;border:1px solid rgba(255,255,255,.52);background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));color:rgba(28,64,51,.92);box-shadow:0 4px 12px rgba(25,61,48,.04),inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(25,61,48,.05);backdrop-filter:blur(1px) saturate(1.02);-webkit-backdrop-filter:blur(1px) saturate(1.02)}
+.recipe-favorite-btn svg{width:16px;height:16px;opacity:.9;filter:drop-shadow(0 1px 1px rgba(255,255,255,.25))}
+.recipe-favorite-btn.on{color:var(--green)}
+.recipe-favorite-btn.on svg{fill:currentColor;stroke:currentColor}
+.recipe-favorite-btn:not(.on) svg{fill:none;stroke:currentColor}
+.recipe-favorite-btn:active{background:linear-gradient(145deg,rgba(255,255,255,.3),rgba(255,255,255,.08))}
 /* recipe-action-favorite-state-v1:end */
 
 /* mobile-readability-and-safe-sheet-v1:start */
@@ -1598,6 +1601,19 @@ html,body{background:#f8fcf9}
 }
 [data-screen="discover-shelves"] .recipe-action-btn svg,
 [data-screen="discover-results"] .recipe-action-btn svg{
+  width:16px;
+  height:16px;
+  opacity:1;
+}
+[data-screen="discover-shelves"] .recipe-favorite-btn,
+[data-screen="discover-results"] .recipe-favorite-btn{
+  width:36px;
+  height:36px;
+  min-width:36px;
+  min-height:36px;
+}
+[data-screen="discover-shelves"] .recipe-favorite-btn svg,
+[data-screen="discover-results"] .recipe-favorite-btn svg{
   width:16px;
   height:16px;
   opacity:1;

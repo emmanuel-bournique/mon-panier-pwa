@@ -1,18 +1,18 @@
 {
   "scope": "pwa_only",
-  "runtime_revision": "20260821-discover-glass-nav-v40-compact-safe-area",
-  "reason": "PWA-only mobile surface update: the Découvrir action button remains compact; the shared bottom navigation keeps its glass treatment with one shared active bubble, visible spring motion, safe-area anchoring, stronger visual contrast, an exactly centered active indicator, and a compact 60px visual rail. v40 stops adding the iPhone safe-area inset to the painted rail height and moves that clearance outside the capsule and offsets the recipe-detail actions/cue by the same reserve; the recipe detail reuses the same rail geometry. The Xcode bundle stays on its prior runtime.",
+  "runtime_revision": "20260822-discover-favorite-heart-v41",
+  "reason": "PWA-only mobile surface update: Découvrir now exposes a compact clickable heart at the upper-left of each recipe card, with an outline at rest and a green filled state when favorited. The existing three-dot action button remains compact at the upper-right; the shared bottom navigation and recipe-detail geometry stay on the v40 runtime. The Xcode bundle stays on its prior runtime.",
   "runtime_paths": {
     "app-v1.css": {
-      "candidate_sha256": "d8897008714b13d0d3ebeeabd847bb7d871d4615dda612c5fcabfe7eba094f90",
+      "candidate_sha256": "b963b4f5461fd06c0ae1c023475a45765714b7657482becade12a97a5047daac",
       "canonical_sha256": "d8bad685fad2a3d29b2df64390d7a983ab8a3e36069fe9aef5350401f2085995"
     },
     "app-v1.js": {
-      "candidate_sha256": "cf1d5672f5ad007eb4fe3c8954a2a03d01e61fba429495447e1b94e56927119b",
+      "candidate_sha256": "acfb121ba02e3a692a7dbe0ce8619e0c7359422936073838b588b231c0eff802",
       "canonical_sha256": "73482698cdbafe469929cbadce947b64719ec320d7e53d8d9359e2c4c3be4c2b"
     },
     "sw.js": {
-      "candidate_sha256": "b2e963539bdf41859aef00f19bc174ac9905c4bc67510f91acae1c7bdb12229a",
+      "candidate_sha256": "5388b6094723c3db2ab402f73f9a7ab1ee979962a4c0f54c026b0d8b154977e3",
       "canonical_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
     }
   }
