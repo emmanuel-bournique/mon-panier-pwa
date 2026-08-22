@@ -1694,9 +1694,52 @@
     });
   }
 
+  let discoverScreenCache = null;
+  let discoverScreenCacheKey = '';
+  let discoverScreenCacheRenderer = null;
+  let discoverScreenCacheRows = null;
+  function buildDiscoverScreenCacheKey() {
+    const filters = Object.fromEntries(Object.entries(state.filters).map(([group, values]) => [group, [...values].sort()]));
+    const profile = ['adored', 'liked', 'avoid', 'strictAvoid', 'allergies'].map(key => [key, [...(PROFILE[key] || [])].sort()]);
+    const personal = recipes.filter(r => r.personal).map(r => [r.id, r.title, String(r.image || '').startsWith('data:') ? String(r.image).length : String(r.image || ''), JSON.stringify(r.personalTags || []), (r.ingredients || []).length, r.prep, r.cook, r.difficultyKey, r.budgetKey]);
+    return JSON.stringify({
+      search: state.search,
+      browseShelf: state.browseShelf,
+      filters,
+      favorites: [...state.favorites].sort(),
+      cart: [...(state.cart || [])].sort(([a], [b]) => String(a).localeCompare(String(b))),
+      choiceCounts: [...(state.choiceCounts || [])].sort(([a], [b]) => String(a).localeCompare(String(b))),
+      archived: (state.archived || []).map(item => item.signature || item.id || item.date),
+      profile,
+      personal,
+      rotation: Math.floor(Date.now() / 21600000),
+    });
+  }
+  function renderDiscoverScreen() {
+    const cacheKey = buildDiscoverScreenCacheKey();
+    if (discoverScreenCache && discoverScreenCacheKey === cacheKey && discoverScreenCacheRenderer === renderDiscover && discoverScreenCacheRows === homeShelfRows) {
+      screen.replaceChildren(discoverScreenCache);
+      return;
+    }
+    screen.innerHTML = renderDiscover();
+    discoverScreenCache = screen.firstElementChild;
+    discoverScreenCacheKey = cacheKey;
+    discoverScreenCacheRenderer = renderDiscover;
+    discoverScreenCacheRows = homeShelfRows;
+  }
+
   const coreRender = render;
   render = function fullAppRender() {
-    const result = coreRender();
+    const isDiscover = !state.detail && state.tab === 'discover';
+    const result = isDiscover && discoverScreenCache
+      ? (renderAuthGate(), renderHeader(), renderNav(), renderDiscoverScreen(), undefined)
+      : coreRender();
+    if (isDiscover && !state.detail) {
+      discoverScreenCache = screen.firstElementChild;
+      discoverScreenCacheKey = buildDiscoverScreenCacheKey();
+      discoverScreenCacheRenderer = renderDiscover;
+      discoverScreenCacheRows = homeShelfRows;
+    }
     preventRecipePhotoSaving();
     persistAppState();
     scheduleQa();

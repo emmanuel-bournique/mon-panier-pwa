@@ -1,6 +1,6 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-22T15:34:49Z",
+  "generated_at": "2026-08-22T16:07:39Z",
   "status": "public_pilot_individual_pwa_only",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
   "deployment": {
@@ -16,38 +16,38 @@
     "canonical_bytes": 796271695,
     "index_sha256": "03de57da89c30e31e900d9e54bc3eeae4b6d6effa63cd23535867a3bebf8cfa3",
     "app_css_sha256": "d8bad685fad2a3d29b2df64390d7a983ab8a3e36069fe9aef5350401f2085995",
-    "app_js_sha256": "73482698cdbafe469929cbadce947b64719ec320d7e53d8d9359e2c4c3be4c2b",
+    "app_js_sha256": "f45ce6fb0d925f8c7442de32b6969d3f9f2552353446f62439e4efebb439c50b",
     "grocery_cart_core_sha256": "01424ffad4ba117ddb1da8b870b9b4fd3c939f269f5b9da1c95b743fc3d86183",
     "service_worker_sha256": "9879c473243400ff42319fad289e2fade3c085ed350d734827173d1579f67d26"
   },
   "candidate": {
-    "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/mon-panier-glass-v47",
+    "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_discover_fix",
     "file_count_excluding_manifest_self": 2556,
-    "bytes_excluding_manifest_self": 796418275,
-    "index_sha256": "ebcf37a591c7161ad7e1656c25ccef8f054db182e82facb2efa3865ad631b9a0",
+    "bytes_excluding_manifest_self": 796421849,
+    "index_sha256": "112bb9e1c7bd07b12845287baf8d9c9d0c989796591e548fd52610b6d92fe1d4",
     "app_css_sha256": "9720b5f7457faa1f436b1e2ac9cd831a2f56a055b2b5378ba8eed879d683fd1d",
-    "app_js_sha256": "141f2586823e34f8d809bca9af81c38d1a5b5ca05612e0513217460417ec950e",
+    "app_js_sha256": "f45ce6fb0d925f8c7442de32b6969d3f9f2552353446f62439e4efebb439c50b",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "32d58056c91d71fb855e74e570b1022879691619b1dd8da37f5efa445bff7fd2",
+    "service_worker_sha256": "d3bd57432dbe3c436a3db619d01c9acead16dfef0c70bd310f915be73e497c5a",
     "registration_sha256": "ac9a640142f2b362ab9c07ce3e5d8aeac9eb0cea59aa378d00d0292dcd068590",
-    "pwa_shell_test_sha256": "0a1e98abce1a20b8d78132e7e3645a52c0d013c03bddec41ce445c30c8f6a895",
+    "pwa_shell_test_sha256": "9e8104087dce4260878e33326bb3568b3c674085a121b87be41f5ebc1c6a0977",
     "shopping_flow_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
     "recipe_create_ui_contract_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a",
-    "recipe_detail_responsive_photo_test_sha256": "67b9e30295b8a438b24135e79afa868f27c1f86e8844b13135eaa9b8b38cec72",
+    "recipe_detail_responsive_photo_test_sha256": "690b6ba49649df2960be8e473d1b0cfda213a51fb83b5346fe3d7c0176b74563",
     "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "2e3cff6837f7ec5d49dcf9fa9414a7bf132d0c7be6d7ee8863ae367aa6248062",
     "recipe_detail_top_safe_area_test_sha256": "4a93b7c997ba810c975e71c43467da1dc27085f948be7d91b3858eba99627ba8",
     "favorites_empty_state_test_sha256": "bb4eb74159b96f183bad7539792b66de79269ae6d538c1ecae7140057dc3286f",
     "discover_card_cart_state_test_sha256": "508340728554de23f2e01f16b1ac4b36a62e969feb2128a909cfb4ba2097611f",
     "discover_card_favorite_state_test_sha256": "630667fc4f2557b98849b6f02e74b3e07295fe4376697f6914111ce875441954",
-    "pwa_only_runtime_divergence_sha256": "46060bdb2391273d5edd514c6eb7aa36cdfdd26263da0b56bcdbd6ae673d112e",
-    "cache_name": "mon-panier-runtime-v48-navigation-glass",
+    "pwa_only_runtime_divergence_sha256": "96a3bcda7eadcb5f20bc89dbd72e6b4d173f8e22e950e29758109f724d494dbd",
+    "cache_name": "mon-panier-runtime-v49-navigation-glass",
     "versioned_runtime_urls": [
-      "app-v1.css?v=20260822-navigation-glass-v48",
-      "app-v1.js?v=20260822-navigation-glass-v48",
+      "app-v1.css?v=20260822-navigation-glass-v49",
+      "app-v1.js?v=20260822-navigation-glass-v49",
       "card-badge-core.js?v=20260813-pilot-v1",
       "grocery-cart-core.js?v=20260817-courses-create-v14",
       "personalization-core.js?v=20260808-avoid-v1",
-      "pwa-register.js?v=20260822-navigation-glass-v48"
+      "pwa-register.js?v=20260822-navigation-glass-v49"
     ],
     "recipe_detail_ingredient_media_test_sha256": "3ed6a919e8a58922bb4f4b7a10ab03ba8396945406c0842e0b5d0554e96a86cb",
     "launch_splash_test_sha256": "86c492179f89b422050d76c2764b71c217117a574eca4d20465bb9c8605de394"
@@ -56,7 +56,7 @@
     "mode": "pwa_only_declared_divergence",
     "declaration": "PWA_ONLY_RUNTIME_DIVERGENCE.json",
     "xcode_runtime_updated": false,
-    "reason": "PWA-only active navigation refinement: clearer pale glass contour, stronger organic spring, non-overshooting bubble trajectory and a barely perceptible rail movement; standalone launch splash and native bundle unchanged."
+    "reason": "PWA-only discovery performance refinement: unchanged bottom-tab returns reuse the already rendered Découvrir DOM; active navigation, standalone launch splash and native bundle unchanged."
   },
   "pwa_additions": [
     "manifest.webmanifest",
