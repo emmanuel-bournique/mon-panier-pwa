@@ -81,22 +81,31 @@ test('Découvrir utilise un bouton trois-points compact et le ruban vitré anime
   assert.match(nav, /\['discover', 'Découvrir', 'discover'\], \['favorites', 'Favoris', 'heart'\], \['cart', 'Mon panier', 'cart'\], \['groceries', 'Listes', 'list'\], \['profile', 'Profil', 'user'\]/);
 
   assert.match(navRules, /\.bottom-nav\s*\{[\s\S]*--nav-active-index:0/);
-  assert.match(navRules, /\.bottom-nav\s*\{[\s\S]*border-radius:18px/);
-  assert.match(navRules, /background:rgba\(255,255,255,\.58\)/, 'le rail vitré doit être clair et discret');
-  assert.match(navRules, /box-shadow:0 3px 10px rgba\(20,53,44,\.06\)/, 'le rail ne doit pas produire une seconde bulle');
+  assert.match(navRules, /\.bottom-nav\s*\{[\s\S]*border-radius:16px/);
+  assert.match(navRules, /background:rgba\(255,255,255,\.52\)/, 'le rail vitré doit rester clair mais moins présent');
+  assert.match(navRules, /box-shadow:0 4px 12px rgba\(20,53,44,\.04\)/, 'le rail ne doit pas produire une seconde bulle');
   assert.match(navRules, /backdrop-filter:blur\(/);
-  assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*border-radius:16px/);
-  assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*background:linear-gradient\(145deg,rgba\(11,138,98,\.86\),rgba\(8,127,91,\.74\)\)/, 'la seule bulle active doit être lisible et verte');
-  assert.match(navRules, /box-shadow:0 3px 9px rgba\(8,127,91,\.18\)/, 'la bulle active doit rester sans halo concurrent');
+  assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*border-radius:52% 48% 46% 54% \/ 48% 54% 52% 46%/);
+  assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*background:linear-gradient\(145deg,rgba\(11,138,98,\.92\),rgba\(8,127,91,\.80\)\)/, 'la seule bulle active doit être lisible et organique');
+  assert.match(navRules, /box-shadow:0 4px 10px rgba\(8,127,91,\.14\)/, 'la bulle active doit rester sans halo concurrent');
   assert.doesNotMatch(navRules, /border-radius:24px/);
+  assert.doesNotMatch(navRules, /border-radius:16px;\s*background:linear-gradient/);
   assert.doesNotMatch(navRules, /background:rgba\(255,255,255,\.38\)/);
+  assert.doesNotMatch(navRules, /background:rgba\(255,255,255,\.58\)/);
+  assert.doesNotMatch(navRules, /background:linear-gradient\(145deg,rgba\(11,138,98,\.86\),rgba\(8,127,91,\.74\)\)/);
   assert.doesNotMatch(navRules, /background:linear-gradient\(145deg,rgba\(8,127,91,\.22\),rgba\(47,158,114,\.34\)\)/);
-  assert.match(navRules, /margin-left:4px/);
+  assert.match(navRules, /margin-left:6px/);
+  assert.match(navRules, /width:calc\(\(100% - 8px\)\/5 - 12px\)/);
   assert.match(navRules, /\.nav-active-bubble\s*\{[\s\S]*position:absolute/);
   assert.match(navRules, /left:calc\(4px \+ var\(--nav-active-index\) \* \(\(100% - 8px\) \/ 5\)\)/);
   assert.match(navRules, /transform:none/);
   assert.match(navRules, /transition:left\s+\.46s\s+cubic-bezier\(\.16,1\.65\,.3,1\)/);
+  assert.match(navRules, /@keyframes nav-active-bubble-spring\s*\{[\s\S]*0%\{transform:scale\(\.86,\.92\) rotate\(-3deg\);border-radius:46% 54% 58% 42% \/ 52% 44% 56% 48%\}[\s\S]*24%\{transform:scale\(1\.1,\.9\) rotate\(2\.4deg\)/);
+  assert.match(navRules, /48%\{transform:scale\(\.94,1\.08\) rotate\(-1\.4deg\)/);
+  assert.match(navRules, /70%\{transform:scale\(1\.04,\.97\) rotate\(\.8deg\)/);
+  assert.match(navRules, /100%\{transform:scale\(1\) rotate\(0deg\);border-radius:52% 48% 46% 54% \/ 48% 54% 52% 46%\}/);
   assert.match(navRules, /\.bottom-nav \.nav-item\.active\s*\{[\s\S]*background:transparent!important[\s\S]*color:#fff/);
+  assert.match(navRules, /\.bottom-nav \.nav-item\.active\s*\{[\s\S]*border-radius:999px!important[\s\S]*backdrop-filter:none!important[\s\S]*-webkit-backdrop-filter:none!important/, 'le bouton actif ne doit pas conserver une capsule ou un filtre concurrent');
   assert.match(navRules, /\.bottom-nav \.nav-item\.active:after\s*\{display:none!important\}/);
   assert.doesNotMatch(navRules, /transform:translateX\(var\(--nav-active-offset\)\)/);
 

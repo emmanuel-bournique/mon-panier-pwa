@@ -1,6 +1,6 @@
 {
   "artifact": "mon-panier-pwa-exact-v1",
-  "generated_at": "2026-08-22T09:41:49Z",
+  "generated_at": "2026-08-22T11:13:04Z",
   "status": "public_pilot_individual_pwa_only",
   "public_url": "https://emmanuel-bournique.github.io/mon-panier-pwa/",
   "deployment": {
@@ -23,31 +23,31 @@
   "candidate": {
     "path": "/Volumes/USB/Hermes-External/workspaces/panier_ia/app_pwa_exact_v1",
     "file_count_excluding_manifest_self": 2555,
-    "bytes_excluding_manifest_self": 796402962,
-    "index_sha256": "e5e1b0f3d9f0f933844d9849571a84d01f59634b87b6343ad619c76434530e27",
-    "app_css_sha256": "4bcf2741897f68351c6bc605f92cb519174b745200ba5a063abd55ca72e5f663",
+    "bytes_excluding_manifest_self": 796404688,
+    "index_sha256": "0a93a0453d85a1d57fe3c1521b52985d5ef8dbae6183d4b207d687d1ad644765",
+    "app_css_sha256": "13d4468bbf48ff512e1898836ed188cba4facadf0597a4a7afb21d2824b96aba",
     "app_js_sha256": "acfb121ba02e3a692a7dbe0ce8619e0c7359422936073838b588b231c0eff802",
     "manifest_sha256": "ff7dbc67c3dd9bcfee64af18f6fa06b76f3a28b430ef58ffeb346bcf372e1d50",
-    "service_worker_sha256": "83989276b4a525c078708a211209cd3231911921b14134da38599d15b117fdef",
+    "service_worker_sha256": "97174080ccd12159d53fe42873fef5c12f1ef2063da62cccb5b703203f37cffe",
     "registration_sha256": "c6ced712ff7247a7b145c321c64d9c29b4cef14f0170cadc046dfc8e85ed5755",
-    "pwa_shell_test_sha256": "562f3b4711f4bd31d57b3123ed8ec3f89e03bd63db86ad563639ae66d25b6cf5",
+    "pwa_shell_test_sha256": "ea00d0692a3cd02bb6e8197b778fca0a43c608461c7d48c9fc67447fc43e59af",
     "shopping_flow_test_sha256": "3547f8d8ed026bb8a5953c8bad4101d89f415c8f32bb4b713881c0e5a3709de4",
     "recipe_create_ui_contract_test_sha256": "f0caf6f071a1baab3f50f8046235a15de72dbdb7b86f4185e67d6653af797b3a",
-    "recipe_detail_responsive_photo_test_sha256": "7764b863415205a16f37e633361686521802b8700519dd4b1d9c644f8caf0754",
+    "recipe_detail_responsive_photo_test_sha256": "d80705d74165fb90c9bca3e9e7d1d56b8d43108b98c752e1f1076fd489d8fc24",
     "recipe_detail_native_safe_area_and_meta_spacing_test_sha256": "2e3cff6837f7ec5d49dcf9fa9414a7bf132d0c7be6d7ee8863ae367aa6248062",
     "recipe_detail_top_safe_area_test_sha256": "4a93b7c997ba810c975e71c43467da1dc27085f948be7d91b3858eba99627ba8",
     "favorites_empty_state_test_sha256": "bb4eb74159b96f183bad7539792b66de79269ae6d538c1ecae7140057dc3286f",
     "discover_card_cart_state_test_sha256": "508340728554de23f2e01f16b1ac4b36a62e969feb2128a909cfb4ba2097611f",
-    "discover_card_favorite_state_test_sha256": "07aa60121fb7c26f9ba06a1570e556a24843a9f27582e3f69986e9fa89d47ec8",
-    "pwa_only_runtime_divergence_sha256": "cf8d30094c6e4cfd4d0dd2b1238b9c3f07fc9d9565a1cd00fdc5e9976e0f0caf",
-    "cache_name": "mon-panier-runtime-v43-discover-single-green-bubble",
+    "discover_card_favorite_state_test_sha256": "ee3d4316dacef62a3f55282f18854df78315be8730f7a45284b186e3ed492954",
+    "pwa_only_runtime_divergence_sha256": "05b768ed6dc6cbd26a3e73533c775bb178501aa07734e17218ed7f3b019e49af",
+    "cache_name": "mon-panier-runtime-v44-discover-single-green-bubble",
     "versioned_runtime_urls": [
-      "app-v1.css?v=20260822-discover-single-green-bubble-v43",
-      "app-v1.js?v=20260822-discover-single-green-bubble-v43",
+      "app-v1.css?v=20260822-discover-single-green-bubble-v44",
+      "app-v1.js?v=20260822-discover-single-green-bubble-v44",
       "card-badge-core.js?v=20260813-pilot-v1",
       "grocery-cart-core.js?v=20260817-courses-create-v14",
       "personalization-core.js?v=20260808-avoid-v1",
-      "pwa-register.js?v=20260822-discover-single-green-bubble-v43"
+      "pwa-register.js?v=20260822-discover-single-green-bubble-v44"
     ],
     "recipe_detail_ingredient_media_test_sha256": "3ed6a919e8a58922bb4f4b7a10ab03ba8396945406c0842e0b5d0554e96a86cb"
   },
@@ -55,7 +55,7 @@
     "mode": "pwa_only_declared_divergence",
     "declaration": "PWA_ONLY_RUNTIME_DIVERGENCE.json",
     "xcode_runtime_updated": false,
-    "reason": "PWA-only shared navigation refinement: lighter flat glass rail and one clearly readable green active tile; the native bundle remains unchanged."
+    "reason": "PWA-only shared navigation refinement: subdued glass tray and one organic green active bubble with visible elastic contour motion; native bundle unchanged."
   },
   "pwa_additions": [
     "manifest.webmanifest",
@@ -68,7 +68,7 @@
   ],
   "local_data_model": "separate browser-local state; no account, backend, or cross-device synchronization",
   "qa_command": "node --test qa/*.test.cjs qa/*.test.mjs",
-  "rollback_backup": "/Volumes/USB/Hermes-External/backups/mon-panier-pwa-before-nav-visual-v43-20260822.tar",
+  "rollback_backup": "/Volumes/USB/Hermes-External/backups/mon-panier-pwa-before-organic-bubble-v44-20260822.tar",
   "promotion_blockers": [
     "Real iPhone PWA smoke remains a human check."
   ]

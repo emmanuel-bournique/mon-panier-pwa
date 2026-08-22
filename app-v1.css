@@ -1632,10 +1632,10 @@ html,body{background:#f8fcf9}
   grid-template-columns:repeat(5,minmax(0,1fr));
   padding:4px!important;
   overflow:visible;
-  border:1px solid rgba(255,255,255,.68);
-  border-radius:18px;
-  background:rgba(255,255,255,.58);
-  box-shadow:0 3px 10px rgba(20,53,44,.06),inset 0 1px 0 rgba(255,255,255,.72);
+  border:1px solid rgba(255,255,255,.50);
+  border-radius:16px;
+  background:rgba(255,255,255,.52);
+  box-shadow:0 4px 12px rgba(20,53,44,.04),inset 0 1px 0 rgba(255,255,255,.64);
   backdrop-filter:blur(16px) saturate(1.05);
   -webkit-backdrop-filter:blur(16px) saturate(1.05);
 }
@@ -1645,22 +1645,24 @@ html,body{background:#f8fcf9}
   top:4px;
   bottom:4px;
   left:calc(4px + var(--nav-active-index) * ((100% - 8px) / 5));
-  width:calc((100% - 8px)/5 - 8px);
-  margin-left:4px;
-  border:1px solid rgba(255,255,255,.50);
-  border-radius:16px;
-  background:linear-gradient(145deg,rgba(11,138,98,.86),rgba(8,127,91,.74));
-  box-shadow:0 3px 9px rgba(8,127,91,.18),inset 0 1px 0 rgba(255,255,255,.32);
+  width:calc((100% - 8px)/5 - 12px);
+  margin-left:6px;
+  border:1px solid rgba(255,255,255,.42);
+  border-radius:52% 48% 46% 54% / 48% 54% 52% 46%;
+  background:linear-gradient(145deg,rgba(11,138,98,.92),rgba(8,127,91,.80));
+  box-shadow:0 4px 10px rgba(8,127,91,.14),inset 0 1px 0 rgba(255,255,255,.28);
   transform:none;
   transition:left .46s cubic-bezier(.16,1.65,.3,1);
   will-change:left,transform;
   pointer-events:none;
 }
 @keyframes nav-active-bubble-spring{
-  0%{transform:scale(.88,.94)}
-  52%{transform:scale(1.08,1.04)}
-  76%{transform:scale(.98,1)}
-  100%{transform:scale(1)}
+  0%{transform:scale(.86,.92) rotate(-3deg);border-radius:46% 54% 58% 42% / 52% 44% 56% 48%}
+  24%{transform:scale(1.1,.9) rotate(2.4deg);border-radius:58% 42% 45% 55% / 42% 58% 48% 52%}
+  48%{transform:scale(.94,1.08) rotate(-1.4deg);border-radius:43% 57% 54% 46% / 58% 42% 50% 50%}
+  70%{transform:scale(1.04,.97) rotate(.8deg);border-radius:55% 45% 48% 52% / 46% 54% 54% 46%}
+  86%{transform:scale(.985,1.015) rotate(-.25deg);border-radius:49% 51% 52% 48% / 52% 48% 48% 52%}
+  100%{transform:scale(1) rotate(0deg);border-radius:52% 48% 46% 54% / 48% 54% 52% 46%}
 }
 .bottom-nav .nav-active-bubble.is-moving{
   animation:nav-active-bubble-spring .46s cubic-bezier(.22,1.28,.36,1);
@@ -1685,7 +1687,7 @@ html,body{background:#f8fcf9}
 }
 .bottom-nav .nav-item svg{width:19px;height:19px}
 .bottom-nav .nav-item span{font-weight:700}
-.bottom-nav .nav-item.active{background:transparent!important;color:#fff}
+.bottom-nav .nav-item.active{background:transparent!important;color:#fff;border-radius:999px!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 .bottom-nav .nav-item.active span{font-weight:850}
 .bottom-nav .nav-item.active:after{display:none!important}
 .bottom-nav .badge-count{top:2px;right:7px;z-index:2}
