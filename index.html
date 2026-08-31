@@ -1,0 +1,55 @@
+<!doctype html>
+  
+<html lang="fr">
+  
+<head>
+  
+  <meta charset="utf-8">
+  
+  <meta name="robots" content="noindex">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta http-equiv="refresh" content="0; url=https://mon-panier-pwa.pages.dev/">
+  
+  <title>Mon Panier</title>
+  
+  <script>
+  
+    (() => {
+  
+      const oldBase = "/mon-panier-pwa";
+
+      const path = location.pathname.startsWith(oldBase)
+
+        ? location.pathname.slice(oldBase.length) || "/"
+
+        : "/";
+
+      location.replace(`https://mon-panier-pwa.pages.dev${path}${location.search}${location.hash}`);
+
+})();
+
+  </script>
+  
+</head>
+
+<body>
+
+  <p>Redirection vers <a href="https://mon-panier-pwa.pages.dev/">Mon Panier</a>…</p>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
